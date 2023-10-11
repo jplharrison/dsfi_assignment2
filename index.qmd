@@ -7,21 +7,58 @@ This is a Quarto website.
 To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
 
 ```{python}
+#| include: false
+# General imports
+import pickle
+from joblib import dump, load
+import os
 import pandas as pd
+import re
+import numpy as np
+
+# NLTK imports
+import nltk
+from nltk.tokenize import sent_tokenize
+nltk.download('punkt')
+
+# Visualization imports
+import matplotlib.pyplot as plt
+import seaborn as sns
+from wordcloud import WordCloud, STOPWORDS
+
+# Preprocessing imports
+from sklearn.feature_extraction.text import CountVectorizer, ENGLISH_STOP_WORDS, TfidfVectorizer
+from sklearn.preprocessing import LabelEncoder
+
+# Model selection imports
+from sklearn.model_selection import train_test_split, GridSearchCV
+
+# Machine learning model imports
+from sklearn.svm import SVC
+from catboost import CatBoostClassifier
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.regularizers import l2
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+from catboost import Pool, cv, CatBoostClassifier
+
+# Word embedding imports
+from gensim.models import Word2Vec
+
+# Metrics import
+from sklearn.metrics import classification_report, accuracy_score
 ```
 
 
 ```{python}
 #| echo: false
-folder_path = 'speeches'  # Ensure this is your correct folder path
+folder_path = 'speeches'  
 files = os.listdir(folder_path)
 files = sorted([file for file in files if os.path.isfile(os.path.join(folder_path, file)) and file.endswith('.txt')])
 
 president_names = []
 
-# Updated regex pattern to handle more cases
-pattern = r'_(.+?)\.txt'  # Non-greedy match to get the president name
-
+pattern = r'_(.+?)\.txt'  
 for file in files:
     match = re.search(pattern, file)
     if match:
@@ -33,18 +70,18 @@ for file in files:
         print(f"Warning: No match found in filename: {file}")
         president_names.append('Unknown')  # Placeholder for missing names
 
-# Check the lengths of files and president_names lists
+# Check  lengths
 if len(files) != len(president_names):
     print(f"Warning: Number of files ({len(files)}) does not match number of president names ({len(president_names)})")
 
-# Initialize dataframe with appropriate column names
+
 df = pd.DataFrame(columns=['Presidents', 'Sentences'])
 
-# Iterate over all files and extract sentences
+# Iterate over all files and extract sentence
 for file_index in range(len(files)):
     file_path = os.path.join(folder_path, files[file_index])
     with open(file_path, 'r', encoding='utf-8') as file:
-        lines = file.readlines()[2:]  # Adjust if your files have a different structure
+        lines = file.readlines()[2:] 
 
     text = ' '.join(lines)
     sentences = sent_tokenize(text)
