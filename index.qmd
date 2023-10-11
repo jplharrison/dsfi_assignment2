@@ -9,3 +9,53 @@ To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
 ```{python}
 import pandas as pd
 ```
+
+
+```{python}
+#| echo: false
+folder_path = 'speeches'  # Ensure this is your correct folder path
+files = os.listdir(folder_path)
+files = sorted([file for file in files if os.path.isfile(os.path.join(folder_path, file)) and file.endswith('.txt')])
+
+president_names = []
+
+# Updated regex pattern to handle more cases
+pattern = r'_(.+?)\.txt'  # Non-greedy match to get the president name
+
+for file in files:
+    match = re.search(pattern, file)
+    if match:
+        president_name = match.group(1)
+        # Remove the "_2" suffix from the president names here
+        cleaned_president_name = president_name.replace('_2', '')
+        president_names.append(cleaned_president_name)
+    else:
+        print(f"Warning: No match found in filename: {file}")
+        president_names.append('Unknown')  # Placeholder for missing names
+
+# Check the lengths of files and president_names lists
+if len(files) != len(president_names):
+    print(f"Warning: Number of files ({len(files)}) does not match number of president names ({len(president_names)})")
+
+# Initialize dataframe with appropriate column names
+df = pd.DataFrame(columns=['Presidents', 'Sentences'])
+
+# Iterate over all files and extract sentences
+for file_index in range(len(files)):
+    file_path = os.path.join(folder_path, files[file_index])
+    with open(file_path, 'r', encoding='utf-8') as file:
+        lines = file.readlines()[2:]  # Adjust if your files have a different structure
+
+    text = ' '.join(lines)
+    sentences = sent_tokenize(text)
+    cleaned_sentences = [sentence.replace('\n', '') for sentence in sentences]
+
+    current_president = president_names[file_index]
+    dftemp = pd.DataFrame({'Presidents': [current_president] * len(cleaned_sentences), 'Sentences': cleaned_sentences})
+    df = pd.concat([df, dftemp], axis=0, ignore_index=True)
+
+df.reset_index(drop=True, inplace=True)
+
+# Save the DataFrame to a CSV file
+df.to_csv('finalSentences2.csv', index=False)
+```
