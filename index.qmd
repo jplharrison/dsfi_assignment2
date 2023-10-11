@@ -1,36 +1,11 @@
 ---
-title: "STA5073Z, Data Science for Industry: Assignment 2"
-author: "Taahir Bhorat, Jonathan Harrison, Wesley King"
-format: html
-editor: visual
+title: "DSFI_A2"
 ---
 
+This is a Quarto website.
+
+To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+
 ```{python}
-#CODE HERE
 import pandas as pd
 ```
-## Abstract
-
-```{python}
-import matlab 
-
-```
-
-## Introduction
-
-
-## Literature Review
-
-
-## Data Exploration and Methods
-
-
-## Results
-
-
-## Discussion and Conclusion
-
-
-## References
-
-
