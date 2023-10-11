@@ -1,0 +1,28 @@
+---
+title: "STA5073Z, Data Science for Industry: Assignment 2"
+author: "Taahir Bhorat, Jonathan Harrison, Wesley King"
+format: html
+editor: visual
+---
+
+## Abstract
+
+
+## Introduction
+
+
+## Literature Review
+
+
+## Data Exploration and Methods
+
+
+## Results
+
+
+## Discussion and Conclusion
+
+
+## References
+
+
