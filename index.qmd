@@ -94,5 +94,10 @@ for file_index in range(len(files)):
 df.reset_index(drop=True, inplace=True)
 
 # Save the DataFrame to a CSV file
-df.to_csv('finalSentences2.csv', index=False)
+#df.to_csv('finalSentences2.csv', index=False)
+```
+
+
+```{python}
+a2data = pd.read_csv("finalSentences2.csv")
 ```
