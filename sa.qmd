@@ -1,0 +1,174 @@
+
+
+## Sentiment Analysis
+
+First we use the Afinn lexicon. It's comprised of negative scores (e.g., -5, -4, -3, -2, -1) which represent negative or unfavorable sentiment, with the magnitude of the score being associated with The lower the score, the more negative the sentiment associated with the word. On the other hand positive scores (e.g., +1, +2, +3, +4, +5) represent positive or favorable sentiment. The higher the score, the more positive the sentiment associated with the word. A score of 0 represents neutral or sentimentless words that don't convey strong positive or negative emotions.
+
+```{python}
+#!pip install afinn
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import nltk
+from afinn import Afinn
+ 
+#instantiate afinn
+afn = Afinn()
+data = pd.read_csv("finalSentences2.csv")
+
+# compute scores (polarity) and labels
+scores = [afn.score(sentence) for sentence in data["Sentences"]]
+sentiment = ['positive' if score > 0
+						else 'negative' if score < 0
+							else 'neutral'
+								for score in scores]
+	
+# dataframe creation
+afn_df = pd.DataFrame()
+afn_df['Presidents'] = data['Presidents']
+afn_df['Sentences'] = data['Sentences']
+afn_df['scores'] = scores
+afn_df['sentiments'] = sentiment
+
+
+presidents = afn_df['Presidents'].unique()
+
+for president in presidents:
+    president_data = afn_df[afn_df['Presidents'] == president]
+    
+    total_sentences = len(president_data)
+    
+    plt.hist(president_data['scores'], bins=10, alpha=0.5, label=president, density=True, 
+             weights=np.ones(total_sentences) / total_sentences)
+
+plt.xlabel('Scores')
+plt.ylabel('Percentage')
+plt.title('Percentage Histogram of Scores for Each President')
+plt.legend()
+plt.show()
+
+```
+
+Very similar sentiment profiles can be seen for each president, with a standout feature being that of deKlerk having 20% of his sentences containing neutral sentiment. Mbeki is seen to have quite a dispersed sentiment, as he has very positive sentences, a well as a few negative ones, with the majority of his sentiments lying somewhere in the middle. 
+
+Another rule based way to do sentiment analysis involving a new dictionary:
+
+The NRC (National Research Council) Emotion Lexicon, is a dictionary of words and their associed emotions and sentiments. This lexicon was developed by the National Research Council of Canada and is particularly designed for sentiment analysis and emotion analysis in text.
+
+It includes thousands of English words and provides information about how strongly each word is associated with various emotions and sentiments. For each word in the lexicon, it indicates whether the word is associated with a specific emotion or sentiment, and if so, to what degree. The emotional and sentiment categories covered include: Anger, Anticipation, Disgust, Fear, Joy, Negative sentiment, Positive sentiment, Sadness, Surprise, Trust.
+
+Foe each it provides intensity scores that indicate the strength of the association. These intensity scores are typically represented as values between 0 and 1, where higher values indicate a stronger association with the emotion or sentiment.
+
+```{python}
+import pandas as pd
+from nrclex import NRCLex
+
+# Function to find the top emotions for a text
+def find_top_emotions(text):
+    emotion = NRCLex(text)
+    return emotion.top_emotions
+
+# Apply the function to each row in the DataFrame
+data['Top_Emotions'] = data['Sentences'].apply(find_top_emotions)
+
+unique_emotion_columns = ['fear', 'anger', 'anticipation','anticip', 'trust', 'surprise', 'positive', 'negative', 'sadness', 'disgust', 'joy']
+presidents = data['Presidents'].unique()
+
+president_dataframes = {president: pd.DataFrame(0, columns=unique_emotion_columns, index=[0]) for president in presidents}
+
+for index, row in data.iterrows():
+    president = row['Presidents']
+    emotions = dict(row['Top_Emotions'])
+    #president_df = president_dataframes[president]
+    
+    # Iterate through unique_emotion_columns
+    for emotion_column in emotions.keys():
+        if emotion_column in emotions:
+            value = emotions[emotion_column]
+            president_dataframes[president][emotion_column] += value
+
+president_dataframes['Mandela']
+
+for pres in presidents:
+    president_dataframes[pres] = president_dataframes[pres].div(president_dataframes[pres].sum(axis=1), axis=0)
+
+for president, df in president_dataframes.items():
+    if 'anticipation' in df.columns and 'anticip' in df.columns:
+        df['anticipation'] += df['anticip']  # Add 'anticip' to 'anticipation'
+        df.drop(columns=['anticip'], inplace=True)  # Remove 'anticip' column
+
+for president, df in president_dataframes.items():
+    plt.figure(figsize=(12, 6))
+    mean_values = df.mean()
+    emotions = mean_values.index
+    values = mean_values.values
+
+    plt.bar(emotions, values)
+    plt.xlabel('Emotions')
+    plt.ylabel('Mean Values')
+    plt.title(f'Bar Plot for {president}')
+    plt.show()
+```
+
+The output isn't completely helpful when trying to differentiate between the presidents, with all presidents' dominated emotion being that of positivity. Trust and negativity appear to be the other two common emotions that the presidents demonstrate. Interestingly, Zuma has a high degree of positivity, even though his reign as president was littered with corruption and drama.
+
+textblob
+
+Polarity is a float that lies between [-1,1], -1 indicates negative sentiment and +1 indicates positive sentiments. 
+
+Subjectivity is also a float which lies in the range of [0,1]. Subjective sentences generally refer to personal opinion, emotion, or judgment. 
+
+
+```{python}
+from textblob import TextBlob
+data_blob = pd.read_csv("finalSentences2.csv")
+# Compute sentiment scores using TextBlob
+data_blob['sentiment_score'] = data_blob['Sentences'].apply(lambda x: TextBlob(x).sentiment)
+
+Polarity is a float that lies between [-1,1], -1 indicates negative sentiment and +1 indicates positive sentiments. 
+
+Subjectivity is also a float which lies in the range of [0,1]. Subjective sentences generally refer to personal opinion, emotion, or judgment. 
+
+sum_sentiment = data_blob.groupby('Presidents')['sentiment_score'].apply(lambda x: (x.str[0].sum(), x.str[1].sum())).reset_index()
+
+# Rename the columns for clarity
+sum_sentiment[['polarity', 'subjectivity']] = sum_sentiment['sentiment_score'].apply(lambda x: pd.Series([x[0], x[1]]))
+sum_sentiment.drop(columns=['sentiment_score'], inplace=True)
+
+sentence_count = data['Presidents'].value_counts().reset_index()
+sentence_count.columns = ['Presidents', 'Sentence_Count']
+merged_df = sum_sentiment.merge(sentence_count, on='Presidents')
+merged_df['polarity'] = merged_df['polarity'] / merged_df['Sentence_Count']
+merged_df['subjectivity'] = merged_df['subjectivity'] / merged_df['Sentence_Count']
+
+plt.figure(figsize=(10, 6))
+
+# Define colors for each president
+colors = {
+    'Motlanthe': 'blue',
+    'Mandela': 'green',
+    'Mbeki': 'red',
+    'Ramaphosa': 'purple',
+    'Zuma': 'orange',
+    'deKlerk': 'brown'
+}
+
+# Create bar plots for 'polarity' and 'subjectivity' per president
+for president, color in colors.items():
+    president_data = merged_df[merged_df['Presidents'] == president]
+    plt.bar(president_data['Presidents'], president_data['polarity'], label=f'{president} Polarity', color=color, width=0.2)
+    plt.bar(president_data['Presidents'], president_data['subjectivity'], label=f'{president} Subjectivity', color=color, alpha=0.5, width=0.2)
+
+# Set labels and title
+plt.xlabel('Presidents')
+plt.ylabel('Scores')
+plt.title('Polarity and Subjectivity by President')
+
+# Add a legend
+#plt.legend()
+
+# Show the bar plot
+plt.show()
+```
+
+Once again the profiles are not drastically different between the presidents, with their polarity scores all being situated around the 0.1 mark. Subjectivity on the other hand is seen to be fairly different between the presidents, with deKlerk having the largest degree of 'personal opinion' filter into his speeches, while the other presidents remain more objective. Mandela is the closest to deKlerk in terms of amount of opinion in his speeches, with a value of 0.05 separating the two subjectivity scores.
