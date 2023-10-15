@@ -157,6 +157,13 @@ from scipy.special import softmax
 #| eval: false
 #| include: false
 data = a2data
+
+import numpy as np
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, AutoConfig
+
+# Assuming a2data is loaded
+data = a2data
+
 # Define the preprocess function
 def preprocess(text):
     new_text = []
@@ -175,29 +182,43 @@ model = AutoModelForSequenceClassification.from_pretrained(MODEL)
 # Preprocess the sentences
 data['Preprocessed_Sentences'] = data['Sentences'].apply(preprocess)
 
-# Predict sentiments for the preprocessed sentences
-def predict_sentiment(text):
+# Compute the weighted sentiment score and get the model's sentiment classification
+def compute_sentiment_data(text):
+    # Tokenize and get model output
     encoded_input = tokenizer(text, return_tensors='pt', truncation=True, max_length=512)
     output = model(**encoded_input)
     scores = output[0][0].detach().numpy()
-    scores = softmax(scores)
+    probabilities = softmax(scores)
+    
+    # Compute the weighted sentiment score
+    sentiment_values = np.array([-1, 0, 1])  # Corresponding to Negative, Neutral, and Positive
+    sentiment_score = np.dot(sentiment_values, probabilities)
+    
+    # Get the model's sentiment classification
     ranking = np.argsort(scores)
     ranking = ranking[::-1]
     label = config.id2label[ranking[0]]
-    score = scores[ranking[0]]
-    return label, np.round(float(score), 4)
+    
+    return sentiment_score, label
 
-sentiments = data['Preprocessed_Sentences'].apply(predict_sentiment)
-data['Predicted_Label'] = [s[0] for s in sentiments]
-data['Score'] = [s[1] for s in sentiments]
+# Predict sentiment data for the preprocessed sentences
+sentiment_data = data['Preprocessed_Sentences'].apply(compute_sentiment_data)
+data['Sentiment_Score'] = [s[0] for s in sentiment_data]
+data['Predicted_Label'] = [s[1] for s in sentiment_data]
+
+# Save the results
+data.to_csv("HFM1_SentimentData.csv")
 
 data.head()
-data.to_csv("HFM1.csv")
+
 ```
 
 
+
 ```{python}
-HFM1 = pd.read_csv("HFM1.csv")
+HFM1 = pd.read_csv("HFM1_SentimentData.csv")
+mean_scores_per_president = HFM1.groupby('Presidents')['Sentiment_Score'].mean()
+adjusted_presidents_order = ['deKlerk'] + [president for president in presidents_order if president != 'deKlerk']
 mean_scores_reordered = mean_scores_per_president.reindex(adjusted_presidents_order)
 
 # Plotting the reordered mean sentiment scores
@@ -206,14 +227,15 @@ mean_scores_reordered.plot(kind='bar', color='skyblue')
 plt.title('Mean Sentiment Scores per President')
 plt.xlabel('President')
 plt.ylabel('Mean Sentiment Score')
-plt.axhline(0, color='red', linestyle='--')  # Add a line at y=0 for reference
+plt.axhline(0, color='red', linestyle='--')  #line at y=0 for reference
 plt.tight_layout()
 plt.show()
 ```
 
 
 ```{python}
-colors = {'Negative': '#FF9999', 'Neutral': '#99CCFF', 'Positive': '#99FF99'}
+colors = {'negative': '#FF9999', 'neutral': '#99CCFF', 'positive': '#99FF99'}
+sentiment_counts = HFM1.groupby('Presidents')['Predicted_Label'].value_counts(normalize=True).unstack().fillna(0)
 
 sentiment_counts.reindex(adjusted_presidents_order).plot(kind='bar', stacked=True, figsize=(12,7), color=[colors[col] for col in sentiment_counts.columns])
 plt.title('Sentiment Distribution per President')
@@ -222,4 +244,37 @@ plt.xlabel('President')
 plt.legend(title='Sentiment')
 plt.tight_layout()
 plt.show()
+```
+
+
+```{python}
+data = {
+    'President': ['A', 'A', 'B', 'B', 'A', 'B'],
+    'Order': [1, 2, 1, 2, 3, 3],
+    'Sentiment_Score': [0.5, -0.3, 0.8, -0.6, 0.4, -0.2]
+}
+
+def plot_for_president(president, df):
+    # Filter dataframe for the selected president
+    president_df = df[df['President'] == president]
+    
+    # Sorting data by order
+    president_df = president_df.sort_values(by='Order')
+    
+    # Plotting
+    plt.figure(figsize=(10, 5))
+    plt.bar(president_df['Order'], president_df['Sentiment_Score'], 
+            color=np.where(president_df['Sentiment_Score'] > 0, 'b', 'r'))
+    
+    plt.title(f'Sentiment Score over time for President {president}')
+    plt.xlabel('Order of Sentences')
+    plt.ylabel('Sentiment Intensity')
+    plt.axhline(0, color='black',linewidth=0.5)
+    plt.grid(axis='y')
+    
+    plt.show()
+
+# For demonstration, plotting for President 'A'
+plot_for_president('A', data)
+
 ```
