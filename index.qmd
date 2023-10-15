@@ -15,11 +15,16 @@ import os
 import pandas as pd
 import re
 import numpy as np
+import string
 
 # NLTK imports
 import nltk
-from nltk.tokenize import sent_tokenize
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
 nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
 
 # Visualization imports
 import matplotlib.pyplot as plt
@@ -35,7 +40,6 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 
 # Machine learning model imports
 from sklearn.svm import SVC
-from catboost import CatBoostClassifier
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.regularizers import l2
@@ -74,13 +78,30 @@ for file in files:
 if len(files) != len(president_names):
     print(f"Warning: Number of files ({len(files)}) does not match number of president names ({len(president_names)})")
 
+def preprocess_speeches(speech):
+    # Tokenize the text
+    tokens = word_tokenize(speech)
+    # Remove punctuation and convert to lowercase
+    tokens = [token.lower() for token in tokens if token not in string.punctuation]
+    # Remove stopwords
+    stop_words = set(stopwords.words('english'))
+    tokens = [token for token in tokens if token not in stop_words]
+    # Lemmatize tokens
+    lemmatizer = WordNetLemmatizer()
+    tokens = [lemmatizer.lemmatize(token) for token in tokens]
+    return tokens
+
 
 df = pd.DataFrame(columns=['Presidents', 'Sentences'])
+tokenised_speeches = pd.DataFrame(columns=['Presidents', 'Tokens'])  # To store the speeches tokenized by word
 
 # Iterate over all files and extract sentence
 for file_index in range(len(files)):
     file_path = os.path.join(folder_path, files[file_index])
     with open(file_path, 'r', encoding='utf-8') as file:
+        speech = file.read()    
+        tokens = preprocess_speeches(speech)
+
         lines = file.readlines()[2:] 
 
     text = ' '.join(lines)
@@ -89,15 +110,23 @@ for file_index in range(len(files)):
 
     current_president = president_names[file_index]
     dftemp = pd.DataFrame({'Presidents': [current_president] * len(cleaned_sentences), 'Sentences': cleaned_sentences})
+    dftemp2 = pd.DataFrame({'Presidents': [current_president] * len(tokens), 'Tokens': tokens})
     df = pd.concat([df, dftemp], axis=0, ignore_index=True)
+    tokenised_speeches = pd.concat([tokenised_speeches, dftemp2], axis=0, ignore_index=True)
 
 df.reset_index(drop=True, inplace=True)
+tokenised_speeches.reset_index(drop=True, inplace=True)
+tokenised_speeches = tokenised_speeches[~tokenised_speeches['Tokens'].str.contains(r'[0-9]', na=False)]  ## Remove numeric tokens
+
 
 # Save the DataFrame to a CSV file
 #df.to_csv('finalSentences2.csv', index=False)
+#tokenised_speeches.to_csv('finalTokens.csv', index=False)
+
 ```
 
 
 ```{python}
 a2data = pd.read_csv("finalSentences2.csv")
+a2tokens = pd.read_csv("finalTokens.csv")
 ```
