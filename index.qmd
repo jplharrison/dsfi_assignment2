@@ -6,6 +6,12 @@ This is a Quarto website.
 
 To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
 
+
+
+```{python}
+pip install transformers
+```
+
 ```{python}
 #| include: false
 # General imports
@@ -56,6 +62,8 @@ from sklearn.metrics import classification_report, accuracy_score
 
 ```{python}
 #| echo: false
+#| eval: false
+#| include: false
 folder_path = 'speeches'  
 files = os.listdir(folder_path)
 files = sorted([file for file in files if os.path.isfile(os.path.join(folder_path, file)) and file.endswith('.txt')])
@@ -129,4 +137,89 @@ tokenised_speeches = tokenised_speeches[~tokenised_speeches['Tokens'].str.contai
 ```{python}
 a2data = pd.read_csv("finalSentences2.csv")
 a2tokens = pd.read_csv("finalTokens.csv")
+```
+
+# Sentiment Analysis
+
+## Hugging Face 1 
+link: https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest?text=ayo
+```{python}
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, AutoConfig
+import numpy as np
+from scipy.special import softmax
+
+
+```
+
+
+```{python}
+#| echo: false
+#| eval: false
+#| include: false
+data = a2data
+# Define the preprocess function
+def preprocess(text):
+    new_text = []
+    for t in text.split(" "):
+        t = '@user' if t.startswith('@') and len(t) > 1 else t
+        t = 'http' if t.startswith('http') else t
+        new_text.append(t)
+    return " ".join(new_text)
+
+# Define the model details
+MODEL = "cardiffnlp/twitter-roberta-base-sentiment-latest"
+tokenizer = AutoTokenizer.from_pretrained(MODEL)
+config = AutoConfig.from_pretrained(MODEL)
+model = AutoModelForSequenceClassification.from_pretrained(MODEL)
+
+# Preprocess the sentences
+data['Preprocessed_Sentences'] = data['Sentences'].apply(preprocess)
+
+# Predict sentiments for the preprocessed sentences
+def predict_sentiment(text):
+    encoded_input = tokenizer(text, return_tensors='pt', truncation=True, max_length=512)
+    output = model(**encoded_input)
+    scores = output[0][0].detach().numpy()
+    scores = softmax(scores)
+    ranking = np.argsort(scores)
+    ranking = ranking[::-1]
+    label = config.id2label[ranking[0]]
+    score = scores[ranking[0]]
+    return label, np.round(float(score), 4)
+
+sentiments = data['Preprocessed_Sentences'].apply(predict_sentiment)
+data['Predicted_Label'] = [s[0] for s in sentiments]
+data['Score'] = [s[1] for s in sentiments]
+
+data.head()
+data.to_csv("HFM1.csv")
+```
+
+
+```{python}
+HFM1 = pd.read_csv("HFM1.csv")
+mean_scores_reordered = mean_scores_per_president.reindex(adjusted_presidents_order)
+
+# Plotting the reordered mean sentiment scores
+plt.figure(figsize=(12, 7))
+mean_scores_reordered.plot(kind='bar', color='skyblue')
+plt.title('Mean Sentiment Scores per President')
+plt.xlabel('President')
+plt.ylabel('Mean Sentiment Score')
+plt.axhline(0, color='red', linestyle='--')  # Add a line at y=0 for reference
+plt.tight_layout()
+plt.show()
+```
+
+
+```{python}
+colors = {'Negative': '#FF9999', 'Neutral': '#99CCFF', 'Positive': '#99FF99'}
+
+sentiment_counts.reindex(adjusted_presidents_order).plot(kind='bar', stacked=True, figsize=(12,7), color=[colors[col] for col in sentiment_counts.columns])
+plt.title('Sentiment Distribution per President')
+plt.ylabel('Percentage')
+plt.xlabel('President')
+plt.legend(title='Sentiment')
+plt.tight_layout()
+plt.show()
 ```
