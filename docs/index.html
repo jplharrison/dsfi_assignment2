@@ -166,9 +166,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
+  <ul class="collapse">
   <li><a href="#sentiment-analysis" id="toc-sentiment-analysis" class="nav-link" data-scroll-target="#sentiment-analysis">Sentiment Analysis</a>
   <ul class="collapse">
   <li><a href="#hugging-face-1" id="toc-hugging-face-1" class="nav-link" data-scroll-target="#hugging-face-1">Hugging Face 1</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -204,16 +207,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>Requirement already satisfied: transformers in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (4.34.0)</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Requirement already satisfied: filelock in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from transformers) (3.12.4)
-Requirement already satisfied: safetensors&gt;=0.3.1 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from transformers) (0.4.0)
+<pre><code>Requirement already satisfied: numpy&gt;=1.17 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from transformers) (1.24.4)
 Requirement already satisfied: requests in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from transformers) (2.28.1)
-Requirement already satisfied: pyyaml&gt;=5.1 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from transformers) (6.0.1)
 Requirement already satisfied: packaging&gt;=20.0 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from transformers) (21.3)
-Requirement already satisfied: huggingface-hub&lt;1.0,&gt;=0.16.4 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from transformers) (0.17.3)
-Requirement already satisfied: numpy&gt;=1.17 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from transformers) (1.24.4)
+Requirement already satisfied: safetensors&gt;=0.3.1 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from transformers) (0.4.0)
+Requirement already satisfied: tqdm&gt;=4.27 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from transformers) (4.66.1)
 Requirement already satisfied: regex!=2019.12.17 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from transformers) (2023.8.8)
-Requirement already satisfied: tokenizers&lt;0.15,&gt;=0.14 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from transformers) (0.14.1)
-Requirement already satisfied: tqdm&gt;=4.27 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from transformers) (4.66.1)</code></pre>
+Requirement already satisfied: pyyaml&gt;=5.1 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from transformers) (6.0.1)
+Requirement already satisfied: huggingface-hub&lt;1.0,&gt;=0.16.4 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from transformers) (0.17.3)
+Requirement already satisfied: filelock in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from transformers) (3.12.4)
+Requirement already satisfied: tokenizers&lt;0.15,&gt;=0.14 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from transformers) (0.14.1)</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Requirement already satisfied: typing-extensions&gt;=3.7.4.3 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from huggingface-hub&lt;1.0,&gt;=0.16.4-&gt;transformers) (4.3.0)
@@ -221,10 +224,10 @@ Requirement already satisfied: fsspec in /opt/anaconda3/envs/firstEnv/lib/python
 Requirement already satisfied: pyparsing!=3.0.5,&gt;=2.0.2 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from packaging&gt;=20.0-&gt;transformers) (3.0.9)</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from requests-&gt;transformers) (2.1.1)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from requests-&gt;transformers) (2022.6.15)
+<pre><code>Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from requests-&gt;transformers) (1.26.11)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from requests-&gt;transformers) (3.3)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from requests-&gt;transformers) (1.26.11)</code></pre>
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from requests-&gt;transformers) (2.1.1)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages (from requests-&gt;transformers) (2022.6.15)</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Note: you may need to restart the kernel to use updated packages.</code></pre>
@@ -235,10 +238,17 @@ Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/anaconda3/env
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>a2tokens <span class="op">=</span> pd.read_csv(<span class="st">"finalTokens.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="sentiment-analysis" class="level1">
-<h1>Sentiment Analysis</h1>
-<section id="hugging-face-1" class="level2">
-<h2 class="anchored" data-anchor-id="hugging-face-1">Hugging Face 1</h2>
+<section id="methods" class="level1">
+<h1>Methods</h1>
+<section id="sentiment-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="sentiment-analysis">Sentiment Analysis</h2>
+<section id="hugging-face-1" class="level3">
+<h3 class="anchored" data-anchor-id="hugging-face-1">Hugging Face 1</h3>
+<p>For sentiment analysis, we also employed a model belonging to hugging face called “twitter-roberta-base-sentiment-latest” and ““. The architecture for these models is largely the same, but”” differs in that it was trained primarily on political tweets, which is lesser in the training data size but potentially more domain relevant to the task at hand.</p>
+<p>This is a transformer-based transfer learning approach. Essentially this means that the model has been pretrained on data to learn how to assign sentiment scores then the trained model is used to extract sentiment scores for our dataset. The model used is more specifically considered a time language model. The time Language Models (LM) foundation is anchored on the RoBERTa architecture, which is a refined variant of BERT (Bidirectional Encoder Representations from Transformers). One of the standout characteristics of RoBERTa is its bidirectional context processing. Unlike conventional models, RoBERTa reviews words in relation to their entire surrounding context, absorbing nuances from both the preceding and following parts of the text.</p>
+<p>Moreover, RoBERTa adopts a Transformer architecture, known for its self-attention mechanism. This mechanism empowers RoBERTa to assign varying importance levels to distinct words in a sentence, ensuring it recognizes and processes dependencies irrespective of their dispersion within the body of text.</p>
+<p>Key to its training process is RoBERTa’s utilization of masked language modelling. Here, select words in a sentence are intermittently substituted with a [MASK] token. The model is then tasked with deducing the original word, relying solely on the surrounding context. This method is important in refining RoBERTa’s grasp of language semantics.</p>
+<p>Differentiating from its predecessor, BERT, RoBERTa’s pretraining process has been further optimized. It undergoes training on a more expansive dataset of 10 years of Twitter data. Another differentiating factor from BERT is how RoBERTa dispenses with the next sentence prediction task, a staple in BERT, and recalibrates the masking strategy to elevate its efficiency. The RoBERTa model for a given body of text returns a class probability value of -1 for negative sentiment, 0 for neutral and 1 for positive the highest probability over the three classes is the assigned sentiment. We multiply the class values by their probabilities and sum them to gain a sentiment score between -1 and 1 and use this coupled with the assigned sentiment class for our model evaluation.</p>
 <p>link: https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest?text=ayo</p>
 <div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> AutoTokenizer, AutoModelForSequenceClassification, AutoConfig</span>
@@ -259,7 +269,7 @@ IProgress not found. Please update jupyter and ipywidgets. See https://ipywidget
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>mean_scores_reordered <span class="op">=</span> mean_scores_per_president.reindex(adjusted_presidents_order)</span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the reordered mean sentiment scores</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">7</span>))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#plt.figure(figsize=(12, 7))</span></span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>mean_scores_reordered.plot(kind<span class="op">=</span><span class="st">'bar'</span>, color<span class="op">=</span><span class="st">'skyblue'</span>)</span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Mean Sentiment Scores per President'</span>)</span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'President'</span>)</span>
@@ -275,7 +285,7 @@ IProgress not found. Please update jupyter and ipywidgets. See https://ipywidget
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> {<span class="st">'negative'</span>: <span class="st">'#FF9999'</span>, <span class="st">'neutral'</span>: <span class="st">'#99CCFF'</span>, <span class="st">'positive'</span>: <span class="st">'#99FF99'</span>}</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>sentiment_counts <span class="op">=</span> HFM1.groupby(<span class="st">'Presidents'</span>)[<span class="st">'Predicted_Label'</span>].value_counts(normalize<span class="op">=</span><span class="va">True</span>).unstack().fillna(<span class="dv">0</span>)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>sentiment_counts.reindex(adjusted_presidents_order).plot(kind<span class="op">=</span><span class="st">'bar'</span>, stacked<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>(<span class="dv">12</span>,<span class="dv">7</span>), color<span class="op">=</span>[colors[col] <span class="cf">for</span> col <span class="kw">in</span> sentiment_counts.columns])</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>sentiment_counts.reindex(adjusted_presidents_order).plot(kind<span class="op">=</span><span class="st">'bar'</span>, stacked<span class="op">=</span><span class="va">True</span>, color<span class="op">=</span>[colors[col] <span class="cf">for</span> col <span class="kw">in</span> sentiment_counts.columns])</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Sentiment Distribution per President'</span>)</span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Percentage'</span>)</span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'President'</span>)</span>
@@ -305,7 +315,7 @@ IProgress not found. Please update jupyter and ipywidgets. See https://ipywidget
 <span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    custom_cmap <span class="op">=</span> LinearSegmentedColormap.from_list(<span class="st">"custom"</span>, [<span class="st">"red"</span>, <span class="st">"gray"</span>, <span class="st">"blue"</span>])</span>
 <span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting with a black background and custom colormap</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    bars <span class="op">=</span> ax.bar(np.arange(<span class="bu">len</span>(president_df)), president_df[<span class="st">'Sentiment_Score'</span>], </span>
 <span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>                  color<span class="op">=</span>custom_cmap(norm(president_df[<span class="st">'Sentiment_Score'</span>])), width<span class="op">=</span><span class="fl">1.0</span>)</span>
 <span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    </span>
@@ -338,7 +348,7 @@ IProgress not found. Please update jupyter and ipywidgets. See https://ipywidget
 <span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    ax.set_facecolor(<span class="st">'black'</span>)</span>
 <span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a 2x3 grid plot for all presidents</span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">10</span>))</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">3</span>)</span>
 <span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">'Sentiment Scores over time for each President'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
 <span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> president, ax <span class="kw">in</span> <span class="bu">zip</span>(adjusted_presidents_order, axes.ravel()):</span>
@@ -365,7 +375,7 @@ IProgress not found. Please update jupyter and ipywidgets. See https://ipywidget
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    ax.grid(axis<span class="op">=</span><span class="st">'y'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a 2x3 grid plot for histograms of all presidents</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">10</span>))</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">3</span>)</span>
 <span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">'Distribution of Sentiment Scores for each President'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
 <span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> president, color, ax <span class="kw">in</span> <span class="bu">zip</span>(adjusted_presidents_order, pastel_colors, axes.ravel()):</span>
@@ -381,6 +391,7 @@ IProgress not found. Please update jupyter and ipywidgets. See https://ipywidget
 </div>
 
 
+</section>
 </section>
 </section>
 

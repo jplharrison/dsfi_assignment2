@@ -145,9 +145,22 @@ a2data = pd.read_csv("finalSentences2.csv")
 a2tokens = pd.read_csv("finalTokens.csv")
 ```
 
-# Sentiment Analysis
 
-## Hugging Face 1 
+# Methods
+
+## Sentiment Analysis
+### Hugging Face 1 
+
+For sentiment analysis, we also employed a model belonging to hugging face called "twitter-roberta-base-sentiment-latest" and "". The architecture for these models is largely the same, but "" differs in that it was trained primarily on political tweets, which is lesser in the training data size but potentially more domain relevant to the task at hand. 
+
+ This is a transformer-based transfer learning approach. Essentially this means that the model has been pretrained on data to learn how to assign sentiment scores then the trained model is used to extract sentiment scores for our dataset. The model used is more specifically considered a time language model. The time Language Models (LM) foundation is anchored on the RoBERTa architecture, which is a refined variant of BERT (Bidirectional Encoder Representations from Transformers). One of the standout characteristics of RoBERTa is its bidirectional context processing. Unlike conventional models, RoBERTa reviews words in relation to their entire surrounding context, absorbing nuances from both the preceding and following parts of the text. 
+
+Moreover, RoBERTa adopts a Transformer architecture, known for its self-attention mechanism. This mechanism empowers RoBERTa to assign varying importance levels to distinct words in a sentence, ensuring it recognizes and processes dependencies irrespective of their dispersion within the body of text.
+
+Key to its training process is  RoBERTa's utilization of masked language modelling. Here, select words in a sentence are intermittently substituted with a [MASK] token. The model is then tasked with deducing the original word, relying solely on the surrounding context. This method is important in refining RoBERTa's grasp of language semantics.
+
+Differentiating from its predecessor, BERT, RoBERTa's pretraining process has been further optimized. It undergoes training on a more expansive dataset of 10 years of Twitter data. Another differentiating factor from BERT is how RoBERTa dispenses with the next sentence prediction task, a staple in BERT, and recalibrates the masking strategy to elevate its efficiency. The RoBERTa model for a given body of text returns a class probability value of -1 for negative sentiment, 0 for neutral and 1 for positive the highest probability over the three classes is the assigned sentiment. We multiply the class values by their probabilities and sum them to gain a sentiment score between -1 and 1 and use this coupled with the assigned sentiment class for our model evaluation. 
+
 link: https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest?text=ayo
 ```{python}
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, AutoConfig
@@ -229,7 +242,7 @@ adjusted_presidents_order = ['deKlerk'] + [president for president in presidents
 mean_scores_reordered = mean_scores_per_president.reindex(adjusted_presidents_order)
 
 # Plotting the reordered mean sentiment scores
-plt.figure(figsize=(12, 7))
+#plt.figure(figsize=(12, 7))
 mean_scores_reordered.plot(kind='bar', color='skyblue')
 plt.title('Mean Sentiment Scores per President')
 plt.xlabel('President')
@@ -244,7 +257,7 @@ plt.show()
 colors = {'negative': '#FF9999', 'neutral': '#99CCFF', 'positive': '#99FF99'}
 sentiment_counts = HFM1.groupby('Presidents')['Predicted_Label'].value_counts(normalize=True).unstack().fillna(0)
 
-sentiment_counts.reindex(adjusted_presidents_order).plot(kind='bar', stacked=True, figsize=(12,7), color=[colors[col] for col in sentiment_counts.columns])
+sentiment_counts.reindex(adjusted_presidents_order).plot(kind='bar', stacked=True, color=[colors[col] for col in sentiment_counts.columns])
 plt.title('Sentiment Distribution per President')
 plt.ylabel('Percentage')
 plt.xlabel('President')
@@ -273,7 +286,7 @@ def plot_for_president_gradient(president, df):
     custom_cmap = LinearSegmentedColormap.from_list("custom", ["red", "gray", "blue"])
     
     # Plotting with a black background and custom colormap
-    fig, ax = plt.subplots(figsize=(10, 5))
+    fig, ax = plt.subplots()
     bars = ax.bar(np.arange(len(president_df)), president_df['Sentiment_Score'], 
                   color=custom_cmap(norm(president_df['Sentiment_Score'])), width=1.0)
     
@@ -309,7 +322,7 @@ def plot_in_grid(president, ax):
     ax.set_facecolor('black')
 
 # Creating a 2x3 grid plot for all presidents
-fig, axes = plt.subplots(2, 3, figsize=(18, 10))
+fig, axes = plt.subplots(2, 3)
 fig.suptitle('Sentiment Scores over time for each President', fontsize=16)
 
 for president, ax in zip(adjusted_presidents_order, axes.ravel()):
@@ -336,7 +349,7 @@ def plot_histogram(president, color, ax):
     ax.grid(axis='y', linestyle='--', linewidth=0.5)
 
 # Creating a 2x3 grid plot for histograms of all presidents
-fig, axes = plt.subplots(2, 3, figsize=(18, 10))
+fig, axes = plt.subplots(2, 3)
 fig.suptitle('Distribution of Sentiment Scores for each President', fontsize=16)
 
 for president, color, ax in zip(adjusted_presidents_order, pastel_colors, axes.ravel()):
