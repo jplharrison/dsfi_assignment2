@@ -2,9 +2,15 @@
 title: "DSFI_A2"
 ---
 
-This is a Quarto website.
+# Introduction
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+The State of the Nation Address (SONA) serves as an annual narrative roadmap of South Africa, highlighting its triumphs, challenges, and future trajectories. Delivered by the President, this address not only provides a summary of the nation's current status but also sets the tone for governmental strategies, policies, and priorities for the coming year. The addresses serve as a snapshot into South Africa's challenges, successes and socioeconomic state at a given time. Hence analysis of the sentiment and topics of the speeches can provide a framework for a deeper understanding of trends and topics from presidents' rhetoric less clouded by the bias of political analysts. 
+
+In the era of data science, where Natural Language Processing(NLP) has become a potent tool to extract meaningful patterns from large volumes of textual data, it is of profound interest to apply such methods to SONA speeches. By employing advanced techniques such as sentiment analysis and topic modelling, one can unearth the latent themes dominating these addresses over three decades and gauge the sentiment fluctuations accompanying them. This presents a data-driven perspective on South Africa's political discourse,
+
+The following proceeds XXX first sections. Firstly a literature review will be conducted on the existing sentiment analysis and topic modelling methods available and used in academia and industry. Thereafter a preliminary exploration of the data occurs to understand the structure and potential trends in the data prior to modelling applications. The Methods section will then detail the sentiment analysis, topic modelling and metrics used in these models. The results of the paper are briefly presented and interpreted before we discuss the overall trends and findings of the paper. We conclude by surmising the findings of the paper, highlighting limitations and presenting avenues for future research into SONA NLP work. 
+
+
 
 
 
@@ -217,7 +223,7 @@ data.head()
 
 ```{python}
 HFM1 = pd.read_csv("HFM1_SentimentData.csv")
-presidents_order = ['Mandela', 'deKlerk', 'Mbeki', 'Motlanthe', 'Zuma', 'Ramaphosa']
+presidents_order = ['Mandela', 'deKlerk', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
 mean_scores_per_president = HFM1.groupby('Presidents')['Sentiment_Score'].mean()
 adjusted_presidents_order = ['deKlerk'] + [president for president in presidents_order if president != 'deKlerk']
 mean_scores_reordered = mean_scores_per_president.reindex(adjusted_presidents_order)
