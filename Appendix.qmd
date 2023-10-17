@@ -1,0 +1,109 @@
+---
+title: "Appendix"
+---
+
+```{python}
+HFM1 = pd.read_csv("HFM1_SentimentData.csv")
+#| echo: false
+import pandas as pd
+from matplotlib.colors import LinearSegmentedColormap
+from matplotlib import cm
+from matplotlib import cm
+
+def plot_for_president_gradient(president, df):
+    # Filter dataframe for the selected president
+    president_df = df[df['Presidents'] == president]
+    
+    # Sorting data by order (using the 'Unnamed: 0' column as the order)
+    president_df = president_df.sort_values(by='Unnamed: 0')
+    
+    # Normalize the scores to [0,1] for colormap
+    norm = plt.Normalize(-1, 1)
+    
+    # Custom colormap: Red -> Gray -> Blue
+    custom_cmap = LinearSegmentedColormap.from_list("custom", ["red", "gray", "blue"])
+    
+    # Plotting with a black background and custom colormap
+    fig, ax = plt.subplots()
+    bars = ax.bar(np.arange(len(president_df)), president_df['Sentiment_Score'], 
+                  color=custom_cmap(norm(president_df['Sentiment_Score'])), width=1.0)
+    
+    ax.set_title(f'Sentiment Score over time for President {president}')
+    ax.set_xlabel('Order of Sentences')
+    ax.set_ylabel('Sentiment Intensity')
+    ax.axhline(0, color='white',linewidth=0.5)
+    ax.grid(axis='y', color='white', linestyle='--', linewidth=0.5)
+    ax.set_facecolor('black')
+    fig.colorbar(cm.ScalarMappable(norm=norm, cmap=custom_cmap), ax=ax, label='Sentiment Score')
+    
+    plt.show()
+
+```
+
+
+```{python}
+#| echo: false
+presidents_list = HFM1['Presidents'].unique()
+def plot_in_grid(president, ax):
+    """Plot sentiment scores for a given president on a given axes."""
+    president_df = HFM1[HFM1['Presidents'] == president]
+    president_df = president_df.sort_values(by='Unnamed: 0')
+    
+    # Normalize the scores for colormap
+    norm = plt.Normalize(-1, 1)
+    custom_cmap = LinearSegmentedColormap.from_list("custom", ["red", "gray", "blue"])
+
+    bars = ax.bar(np.arange(len(president_df)), president_df['Sentiment_Score'], 
+                  color=custom_cmap(norm(president_df['Sentiment_Score'])), width=1.0)
+    ax.set_title(f'{president}')
+    ax.axhline(0, color='white', linewidth=0.5)
+    ax.grid(axis='y', color='white', linestyle='--', linewidth=0.5)
+    ax.set_facecolor('black')
+
+# Creating a 2x3 grid plot for all presidents
+fig, axes = plt.subplots(2, 3)
+fig.suptitle('Sentiment Scores over time for each President', fontsize=16)
+
+for president, ax in zip(adjusted_presidents_order, axes.ravel()):
+    plot_in_grid(president, ax)
+
+# Adjust layout
+plt.tight_layout()
+plt.subplots_adjust(top=0.90)
+plt.show()
+```
+
+
+```{python}
+#| echo: false
+HFM2 = pd.read_csv("HFM2_SentimentData.csv")
+
+presidents_list = HFM2['Presidents'].unique()
+def plot_in_grid(president, ax):
+    """Plot sentiment scores for a given president on a given axes."""
+    president_df = HFM2[HFM2['Presidents'] == president]
+    president_df = president_df.sort_values(by='Unnamed: 0')
+    
+    # Normalize the scores for colormap
+    norm = plt.Normalize(-1, 1)
+    custom_cmap = LinearSegmentedColormap.from_list("custom", ["red", "gray", "blue"])
+
+    bars = ax.bar(np.arange(len(president_df)), president_df['Sentiment_Score'], 
+                  color=custom_cmap(norm(president_df['Sentiment_Score'])), width=1.0)
+    ax.set_title(f'{president}')
+    ax.axhline(0, color='white', linewidth=0.5)
+    ax.grid(axis='y', color='white', linestyle='--', linewidth=0.5)
+    ax.set_facecolor('black')
+
+# Creating a 2x3 grid plot for all presidents
+fig, axes = plt.subplots(2, 3)
+fig.suptitle('Sentiment Scores over time for each President', fontsize=16)
+
+for president, ax in zip(adjusted_presidents_order, axes.ravel()):
+    plot_in_grid(president, ax)
+
+# Adjust layout
+plt.tight_layout()
+plt.subplots_adjust(top=0.90)
+plt.show()
+```
