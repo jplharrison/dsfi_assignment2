@@ -521,7 +521,7 @@ md_tbl
 
 ```{python}
 #| echo: false
-#| eval: false
+#| eval: true
 #| include: false
 
 
@@ -560,9 +560,21 @@ mean_scores_per_president = afn_df.groupby('Presidents')['scores'].mean()
 adjusted_presidents_order = ['deKlerk'] + [president for president in presidents_order if president != 'deKlerk']
 mean_scores_reordered = mean_scores_per_president.reindex(adjusted_presidents_order)
 
+# save object
+# mean_scores_reordered.to_csv('wes_appendix/mean_scores_reordered.csv')
+```
+
+The mean sentiment scores per president show President Mbeki exhibiting the highest mean sentiment score at approximately 1.65, suggesting a generally positive sentiment in his speeches. President Motlanthe followed closely with a mean sentiment score of approximately 1.44, indicating a similar trend of positively oriented speeches. In contrast, President de Klerk presented the lowest mean sentiment score, around 0.67, while Presidents Ramaphosa and Zuma demonstrated mean sentiment scores around 0.95 and 0.92, respectively.
+
+
+```{python}
+#| echo: False
+mean_scores_reordered = pd.read_csv('wes_appendix/mean_scores_reordered.csv')
 # Plotting the reordered mean sentiment scores
 plt.figure(figsize=(12, 7))
-mean_scores_reordered.plot(kind='bar', color='skyblue')
+#mean_scores_reordered.plot(kind='bar', color='skyblue')
+plt.bar(mean_scores_reordered['Presidents'], mean_scores_reordered['scores'], color='skyblue')
+
 plt.title('Mean Sentiment Scores per President')
 
 plt.title("Mean Sentiment Scores per President", fontsize=20)
@@ -574,31 +586,22 @@ plt.tight_layout()
 plt.show()
 ```
 
-The mean sentiment scores per president show President Mbeki exhibiting the highest mean sentiment score at approximately 1.65, suggesting a generally positive sentiment in his speeches. President Motlanthe followed closely with a mean sentiment score of approximately 1.44, indicating a similar trend of positively oriented speeches. In contrast, President de Klerk presented the lowest mean sentiment score, around 0.67, while Presidents Ramaphosa and Zuma demonstrated mean sentiment scores around 0.95 and 0.92, respectively.
-
-
-```{python}
-#| echo: false
-from PIL import Image
-import matplotlib.pyplot as plt
-
-# Open the PNG image
-image = Image.open("wes_appendix/sent_mean.png")
-
-# Display the image using Matplotlib
-plt.imshow(image)
-plt.axis('off')  # Turn off axis labels and ticks
-plt.show()
-```
-
 ```{python}
 #| echo: false
 #| eval: false
 #| include: false
 colors = {'negative': '#FF9999', 'neutral': '#99CCFF', 'positive': '#99FF99'}
 sentiment_counts = afn_df.groupby('Presidents')['sentiments'].value_counts(normalize=True).unstack().fillna(0)
+```
 
-sentiment_counts.reindex(adjusted_presidents_order).plot(kind='bar', stacked=True, figsize=(12,7), color=[colors[col] for col in sentiment_counts.columns])
+
+Figure X below shows that deKlerk is once again seen to possess less positive sentiments in his speeches than most of the other presidents, apart from Zuma, who has a very similar amount of positivity. Motlanthe and Mbeki are seen to have the greatest proportion of positive sentiments, while Zuma is seen to have the largest amount of neutral sentiments compared to the other presidents. As well as having the smallest proportion of positivity, deKlerk also has a large proportion of his sentences carrying negative sentiments.
+
+```{python}
+# save object
+# sentiment_counts.reindex(adjusted_presidents_order).to_csv('wes_appendix/sentiment_counts.csv')
+sentiment_counts = pd.read_csv("wes_appendix/sentiment_counts.csv")
+sentiment_counts.plot(kind='bar', stacked=True, figsize=(12,7), color=[colors[col] for col in sentiment_counts.columns if col != 'Presidents'])
 plt.title('Sentiment Distribution per President', fontsize=20)
 plt.ylabel('Percentage', fontsize=20)
 plt.xlabel('President', fontsize=20)
@@ -609,29 +612,12 @@ plt.yticks(fontsize=16)
 plt.show()
 ```
 
-Figure X below shows that deKlerk is once again seen to possess less positive sentiments in his speeches than most of the other presidents, apart from Zuma, who has a very similar amount of positivity. Motlanthe and Mbeki are seen to have the greatest proportion of positive sentiments, while Zuma is seen to have the largest amount of neutral sentiments compared to the other presidents. As well as having the smallest proportion of positivity, deKlerk also has a large proportion of his sentences carrying negative sentiments.
-
-```{python}
-#| echo: false
-#| fig-cap: "Figure X: Proportion of positive, neutral and negative sentiments per president"
-from PIL import Image
-import matplotlib.pyplot as plt
-
-# Open the PNG image
-image = Image.open("wes_appendix/sent_percentage.png")
-
-# Display the image using Matplotlib
-plt.imshow(image)
-plt.axis('off')  # Turn off axis labels and ticks
-plt.show()
-```
 
 Figure Ax in the appendix shows the sentiments of each president over time. However, once again the extreme granularity of the plots makes it difficult to extract any useful information. Noticeably however, deKlerk's strong negative sentiments are apparent from such a broad scoped view.
 
 ```{python}
-#| echo: false
-#| eval: false
-#| include: false
+#| eval: true
+
 
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib import cm
@@ -707,29 +693,13 @@ for ax in axes[:, 0]:
 plt.show()
 ```
 
-```{python}
-#| echo: false
-#| fig-cap: Figure Ax: Sentiments over time per president
-from PIL import Image
-import matplotlib.pyplot as plt
-
-# Open the PNG image
-image = Image.open("wes_appendix/sent_over_time.png")
-
-# Display the image using Matplotlib
-plt.imshow(image)
-plt.axis('off')  # Turn off axis labels and ticks
-plt.show()
-```
-
-
 
 The histograms below show the sentiment score distribution for the presidents. All histograms appear to be slightly skewed to the left, indicating a high frequency of positive sentiment. Mandela appears to have the most evenly spread sentiment distribution, with the fewest number of protruding bars, while de Klerk mainly has a uniform sentiment distribution, with a notable deviation from that occuring in the neutral sentiment territory. Ramaphosa's, Mbeki's and Zuma's sentiment distributions are both centered on the positive side of zero, indicating a generally positive sentiment, while Motlanthe's most common sentiment is actually slightly negative, however that is offset by the high frequency of positive sentiments.
 
 ```{python}
 #| echo: false
-#| eval: false
-#| include: false
+#| eval: true
+
 pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
 
 def plot_histogram(president, color, ax):
@@ -764,26 +734,13 @@ plt.show()
 
 ```
 
-```{python}
-#| echo: false
 
-from PIL import Image
-import matplotlib.pyplot as plt
-
-# Open the PNG image
-image = Image.open("wes_appendix/sent_histograms.png")
-
-# Display the image using Matplotlib
-plt.imshow(image)
-plt.axis('off')  # Turn off axis labels and ticks
-plt.show()
-```
 
 ### NRC
 
 ```{python}
 #| echo: false
-#| eval: false
+#| eval: true
 #| include: false
 import pandas as pd
 from nrclex import NRCLex
@@ -850,15 +807,3 @@ plt.show()
 
 Using the NRC emotion lexicon we see that all presidents have their most common sentiment being positive, while the particular emotions in there sentences differ. A common emotion amongst all presidents is trust. Anticipation is a frequently evoked emotion from the presidents, besides for deKlerk. Other relatively common emotions include fear and joy.
 
-```{python}
-#| echo: false
-
-from PIL import Image
-import matplotlib.pyplot as plt
-
-image = Image.open("wes_appendix/emotion_scores.png")
-# Display the image using Matplotlib
-plt.imshow(image)
-plt.axis('off')  # Turn off axis labels and ticks
-plt.show()
-```
