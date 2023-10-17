@@ -1065,7 +1065,7 @@ for i in [0,1]:
         axs[i, j].set_ylabel('Weight')
         axs[i, j].set_title(f'M4: Topic {t}')
         axs[i, j].tick_params(axis='x', rotation=90, labelsize=10)
-        axs[i, j].tick_params(axis='y', rotation=0, labelsize=9)
+        axs[i, j].tick_params(axis='y', rotation=0, labelsize=6)
 plt.tight_layout()
 plt.show()
 ```
