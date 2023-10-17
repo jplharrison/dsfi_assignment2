@@ -180,6 +180,7 @@ tokenised_speeches = tokenised_speeches[~tokenised_speeches['Tokens'].str.contai
 
 
 ```{python}
+#| include: false
 a2data = pd.read_csv("finalSentences2.csv")
 a2tokens = pd.read_csv("finalTokens.csv")
 ```
@@ -220,6 +221,7 @@ from scipy.special import softmax
 ```
 
 # Results
+
 ```{python}
 #| echo: false
 #| eval: false
@@ -287,6 +289,7 @@ Following Mbeki, Motlanthe's sentiment score experiences a slight dip but remain
 
 
 ```{python}
+#| echo: false
 HFM1 = pd.read_csv("HFM1_SentimentData.csv")
 presidents_order = ['Mandela', 'deKlerk', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
 mean_scores_per_president = HFM1.groupby('Presidents')['Sentiment_Score'].mean()
@@ -307,6 +310,7 @@ plt.show()
 In Figure XXX we plot the proportion of each sentiment class across all sentences per president.Mandela and Ramaphosa primarily have positive and neutral sentiments, with Mandela possessing a slightly broader share of positive mentions. De Klerk presents an interesting case; while he has the least proportion of positive sentiments among all the presidents, he also claims the highest negative sentiment. Mbeki and Zuma display an almost balanced distribution between positive and neutral sentiments, with Mbeki tipping slightly more towards the positive end. Motlanthe distinctly stands out, characterized by an overwhelming positive sentiment that far surpasses both the neutral and negative sentiments.
 
 ```{python}
+#| echo: false
 colors = {'negative': '#FF9999', 'neutral': '#99CCFF', 'positive': '#99FF99'}
 sentiment_counts = HFM1.groupby('Presidents')['Predicted_Label'].value_counts(normalize=True).unstack().fillna(0)
 
@@ -319,79 +323,10 @@ plt.tight_layout()
 plt.show()
 ```
 
-To gain a depper understading of the change in sentiment over timie for each given president, and their speeches, we can look to figure XXX in the appendix. While the plot dos provide a granular insight into the variety of sentiment across sentences in presidents' speaches the lack of discernable trend makes the plot difficult to interpret. Furthermore the sentiment aggregatioin plots at an overall president level provides sufficient insiight.  
+To gain a depper understading of the change in sentiment over timie for each given president, and their speeches, we can look to figure XXX in the appendix. While the plot dos provide a granular insight into the variety of sentiment across sentences in presidents' speaches the lack of discernable trend makes the plot difficult to interpret. Furthermore the sentiment aggregatioin plots at an overall president level provides sufficient insiight.  Figure XXX plots the distribution of sentiment scores for each president. For de Klerk, there's a noticeable tilt towards neutral to negative sentiments. On the other hand, Mandela's mentions are predominantly positive. Mbeki's sentiment profile reveals an overwhelmingly positive tone, with more neutrality in tone than Mandela. Motlanthe's mentions also predominantly exhibit positivity, especially between the 0.50 to 1.00 range. Zuma presents a diverse sentiment spectrum; while there's a substantial representation in the positive range, especially towards the higher end, there's also a notable amount neutral sentiment and almost no negative rhetoric. Lastly, discussions about Ramaphosa are mostly tinted with positivity, particularly around the 0.50 to 0.75 range, although some neutral and negative sentiments are present. Overall, while Mandela, Mbeki, Motlanthe, Zuma, and Ramaphosa's mentions lean more towards positivity, de Klerk's profile hints at a more neutral with a  greater tilt towards negativity. 
 
 ```{python}
-from matplotlib.colors import LinearSegmentedColormap
-from matplotlib import cm
-from matplotlib import cm
-
-def plot_for_president_gradient(president, df):
-    # Filter dataframe for the selected president
-    president_df = df[df['Presidents'] == president]
-    
-    # Sorting data by order (using the 'Unnamed: 0' column as the order)
-    president_df = president_df.sort_values(by='Unnamed: 0')
-    
-    # Normalize the scores to [0,1] for colormap
-    norm = plt.Normalize(-1, 1)
-    
-    # Custom colormap: Red -> Gray -> Blue
-    custom_cmap = LinearSegmentedColormap.from_list("custom", ["red", "gray", "blue"])
-    
-    # Plotting with a black background and custom colormap
-    fig, ax = plt.subplots()
-    bars = ax.bar(np.arange(len(president_df)), president_df['Sentiment_Score'], 
-                  color=custom_cmap(norm(president_df['Sentiment_Score'])), width=1.0)
-    
-    ax.set_title(f'Sentiment Score over time for President {president}')
-    ax.set_xlabel('Order of Sentences')
-    ax.set_ylabel('Sentiment Intensity')
-    ax.axhline(0, color='white',linewidth=0.5)
-    ax.grid(axis='y', color='white', linestyle='--', linewidth=0.5)
-    ax.set_facecolor('black')
-    fig.colorbar(cm.ScalarMappable(norm=norm, cmap=custom_cmap), ax=ax, label='Sentiment Score')
-    
-    plt.show()
-
-```
-
-
-```{python}
-presidents_list = HFM1['Presidents'].unique()
-def plot_in_grid(president, ax):
-    """Plot sentiment scores for a given president on a given axes."""
-    president_df = HFM1[HFM1['Presidents'] == president]
-    president_df = president_df.sort_values(by='Unnamed: 0')
-    
-    # Normalize the scores for colormap
-    norm = plt.Normalize(-1, 1)
-    custom_cmap = LinearSegmentedColormap.from_list("custom", ["red", "gray", "blue"])
-
-    bars = ax.bar(np.arange(len(president_df)), president_df['Sentiment_Score'], 
-                  color=custom_cmap(norm(president_df['Sentiment_Score'])), width=1.0)
-    ax.set_title(f'{president}')
-    ax.axhline(0, color='white', linewidth=0.5)
-    ax.grid(axis='y', color='white', linestyle='--', linewidth=0.5)
-    ax.set_facecolor('black')
-
-# Creating a 2x3 grid plot for all presidents
-fig, axes = plt.subplots(2, 3)
-fig.suptitle('Sentiment Scores over time for each President', fontsize=16)
-
-for president, ax in zip(adjusted_presidents_order, axes.ravel()):
-    plot_in_grid(president, ax)
-
-# Adjust layout
-plt.tight_layout()
-plt.subplots_adjust(top=0.90)
-plt.show()
-```
-
-Figure XXX plots the distribution of sentiment scores for each president.
-For de Klerk, there's a noticeable tilt towards neutral to negative sentiments. On the other hand, Mandela's mentions are predominantly positive. Mbeki's sentiment profile reveals an overwhelmingly positive tone, with more neutrality in tone than Mandela. Motlanthe's mentions also predominantly exhibit positivity, especially between the 0.50 to 1.00 range. Zuma presents a diverse sentiment spectrum; while there's a substantial representation in the positive range, especially towards the higher end, there's also a notable amount neutral sentiment and almost no negative rhetoric. Lastly, discussions about Ramaphosa are mostly tinted with positivity, particularly around the 0.50 to 0.75 range, although some neutral and negative sentiments are present. Overall, while Mandela, Mbeki, Motlanthe, Zuma, and Ramaphosa's mentions lean more towards positivity, de Klerk's profile hints at a more neutral with a  greater tilt towards negativity. 
-
-```{python}
+#| include: false
 pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
 
 def plot_histogram(president, color, ax):
@@ -475,6 +410,7 @@ data.head()
 
 In Figure XXX we look at the mean sentiment scorees for each president. The resuls are largely similar as the prior model. De Klerk remains the president with the lowest mean sentiment score while Zuma retainis the highest value. The other preseidents scores while slighly altered still behave similar relative to eachother.
 ```{python}
+#| echo: false
 HFM2 = pd.read_csv("HFM2_SentimentData.csv")
 presidents_order = ['Mandela', 'deKlerk', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
 mean_scores_per_president = HFM2.groupby('Presidents')['Sentiment_Score'].mean()
@@ -497,6 +433,7 @@ Now looking to the proportion of sentiment classes per president in Figure XXX. 
 
 
 ```{python}
+#| echo: false
 colors = {'Negative': '#FF9999', 'Neutral': '#99CCFF', 'Positive': '#99FF99'}
 sentiment_counts = HFM2.groupby('Presidents')['Predicted_Label'].value_counts(normalize=True).unstack().fillna(0)
 
@@ -511,40 +448,12 @@ plt.show()
 
 
 
-```{python}
-presidents_list = HFM2['Presidents'].unique()
-def plot_in_grid(president, ax):
-    """Plot sentiment scores for a given president on a given axes."""
-    president_df = HFM2[HFM2['Presidents'] == president]
-    president_df = president_df.sort_values(by='Unnamed: 0')
-    
-    # Normalize the scores for colormap
-    norm = plt.Normalize(-1, 1)
-    custom_cmap = LinearSegmentedColormap.from_list("custom", ["red", "gray", "blue"])
 
-    bars = ax.bar(np.arange(len(president_df)), president_df['Sentiment_Score'], 
-                  color=custom_cmap(norm(president_df['Sentiment_Score'])), width=1.0)
-    ax.set_title(f'{president}')
-    ax.axhline(0, color='white', linewidth=0.5)
-    ax.grid(axis='y', color='white', linestyle='--', linewidth=0.5)
-    ax.set_facecolor('black')
-
-# Creating a 2x3 grid plot for all presidents
-fig, axes = plt.subplots(2, 3)
-fig.suptitle('Sentiment Scores over time for each President', fontsize=16)
-
-for president, ax in zip(adjusted_presidents_order, axes.ravel()):
-    plot_in_grid(president, ax)
-
-# Adjust layout
-plt.tight_layout()
-plt.subplots_adjust(top=0.90)
-plt.show()
-```
 
 
 Looking to the distribution of sentiments by presidents in figure XXX. De Klerk's sentiment heavily leans towards the negative, with only a sparse presence of positive sentiment. Contrastingly, Mandela garners a majority of positive sentiments, although there's a consistent representation across all sentiment spectrums, indicating diverse opinions. Mbeki's sentiment profile is unique, spanning from negative through neutral to positive, with a pronounced peak in neutral sentiments. Motlanthe enjoys overwhelmingly positive feedback, with minimal divergences towards neutrality or negativity. In Zuma's case, a dominant concentration of neutral sentiments emerges, bracketed by almost equal measures of positive and negative sentiments. Ramaphosa's sentiment distribution is inclined towards positivity, but it doesn't lack a substantial count of neutral mentions and a minor portion of negative sentiments. 
 ```{python}
+#| echo: false
 pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
 
 def plot_histogram(president, color, ax):
@@ -574,6 +483,7 @@ plt.show()
 
 # Topic Modelling 
 ```{python,}
+#| echo: false
 a2tokens = pd.read_csv("finalTokens.csv")
 tokens = [text.split() for text in a2tokens["Tokens"]]
 
@@ -609,7 +519,7 @@ vis5 = gensimvis.prepare(m_lda_5, corpus, dct)
 
 
 ```{python}
-
+#| echo: false
 m_lda_3 = LdaModel.load("m_lda_3")
 m_lda_4 = LdaModel.load("m_lda_4")
 m_lda_5 = LdaModel.load("m_lda")
