@@ -921,3 +921,50 @@ plt.show()
 
 Using the NRC emotion lexicon we see that all presidents have their most common sentiment being positive, while the particular emotions in there sentences differ. A common emotion amongst all presidents is trust. Anticipation is a frequently evoked emotion from the presidents, besides for deKlerk. Other relatively common emotions include fear and joy.
 
+
+
+```{python}
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from gensim.models import LdaModel, LsiModel
+from gensim import corpora
+
+
+m_pLSA_4 = LsiModel.load("topics_models/m_pLSA_4")
+
+num_words=20
+
+topics = m_pLSA_4.print_topics(num_topics=4, num_words=num_words)
+df4=pd.DataFrame({})
+for topic in topics:
+    content = topic[1]
+    words=[]
+    scores=[]
+    scorewords = content.split(' + ')
+    for item in scorewords:
+        spl=item.split('*')
+        scores.append(spl[0])
+        words.append(spl[1].replace('"',''))
+    topic_df=pd.DataFrame({f'T{topic[0]+1} Words': words, f'T{topic[0]+1} Scores': scores})
+    df4 = pd.concat([df4, topic_df], axis=1)
+
+
+# Create a 2x2 grid of subplots
+fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+for i in [0,1]:
+    for j in [0,1]:
+        t=2*i+j+1
+        axs[i, j].barh(df4[f'T{t} Words'], df4[f'T{t} Scores'])
+        axs[i, j].set_xlabel('Words')
+        axs[i, j].set_ylabel('Weight')
+        axs[i, j].set_title(f'M4: Topic {t}')
+        axs[i, j].tick_params(axis='x', rotation=90, labelsize=10)
+        axs[i, j].tick_params(axis='y', rotation=0, labelsize=9)
+plt.tight_layout()
+plt.show()
+```
+
+
+
