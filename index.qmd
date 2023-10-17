@@ -13,12 +13,6 @@ The following proceeds XXX first sections. Firstly a literature review will be c
 
 # Literature Review
 
-## Topic Modelling
-
-In the 1980s, topic modelling emerged as a means to enhance the accuracy of information retrieval systems. Deerwester et al (1990) founded one of the earliest topic models known as Latent Semantic Analysis (LSA). LSA groups documents based on latent semantic formations, and makes the assumption that words with similar semantic meanings tend to co-occur. This innovation greatly advanced the capabilities of document retrieval systems because users were no longer required to employ the exact words found in related documents - similarity could be determined through a broader semantic context.
-
-Blei et al. (2003) advanced the techniques implemented in LSA by developing a related modelling algorithm called Latent Dirichlet Allocation (LDA). In LDA, a document is seen as a collection of words drawn from unobserved topics. LDA subsequently assesses the likelihood distribution of a specific word across a range of topics and then the distribution of a specific topic across a collection of documents.
-
 ## Sentiment Analysis
 
 Sentiment Analysis is a prominent field within the broader scope of NLP techniques, and it has gained significant attention in scientific research in recent years. Sentiment classification, specifically polarity estimation, is amongst the most extensively studied tasks of sentiment analysis. Polarity is often categorized as either positive or negative, but a third category labeled as "neutral" can be introduced (Wang et al., 2014). This is what our sentiment analysis will focus on. 
@@ -35,6 +29,12 @@ Machine learning approaches for sentiment analysis tasks are divided into three 
 According to (Yadav and Vishwakarma, 2019) who reviewed over 100 papers which used deep learning (subset of machine learning) techniques to perform sentiment analysis, the most common deep learning models are RNNs, CNNs, and LSTMs, with the latter providing the best performance. They also said that utilizing machine learning approaches to conduct sentiment analysis was a promising field, while noting that the dataset needs to be large enough for a respectable analysis to take place, which is a challenge.
 
 Furthermore, (Loureiro et al., 2022) showed the importance of Time language models, which are a set of language models which undergo continual learning on, in this case, tweets. (Loureiro et al., 2022) shows that this approach enhances the models ability to deal with out-of-distribution inputs, as well enhances competitiveness with standard benchmark tests. They’re also seen to deal well with the problem of concept drift. Since our data is over a long period of time, we will be using these time language models too.
+
+## Topic Modelling
+
+In the 1980s, topic modelling emerged as a means to enhance the accuracy of information retrieval systems. Deerwester et al (1990) founded one of the earliest topic models known as Latent Semantic Analysis (LSA). LSA groups documents based on latent semantic formations, and makes the assumption that words with similar semantic meanings tend to co-occur. This innovation greatly advanced the capabilities of document retrieval systems because users were no longer required to employ the exact words found in related documents - similarity could be determined through a broader semantic context.
+
+Blei et al. (2003) advanced the techniques implemented in LSA by developing a related modelling algorithm called Latent Dirichlet Allocation (LDA). In LDA, a document is seen as a collection of words drawn from unobserved topics. LDA subsequently assesses the likelihood distribution of a specific word across a range of topics and then the distribution of a specific topic across a collection of documents.
 
 ```{python}
 #| include: false
