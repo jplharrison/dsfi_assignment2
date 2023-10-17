@@ -534,7 +534,7 @@ vis5 = gensimvis.prepare(m_lda_5, corpus, dct)
 
 
 ```{python}
-#| echo: false
+#| include: true
 m_lda_3 = LdaModel.load("topic_models/m_lda_3")
 m_lda_4 = LdaModel.load("topic_models/m_lda_4")
 m_lda_5 = LdaModel.load("topic_models/m_lda")
@@ -914,6 +914,8 @@ LDA-All:
     + Examples: "people," "work," "service"
 Topic 3 - Time and government - the words in this topic are related to time, government, and national affairs, indicating a focus on governance and the passage of time across all Presidential terms.
     + Examples: "year," "african," "government"
+
+
 
 ### Probablistic Latent Semantic Analysis
 
