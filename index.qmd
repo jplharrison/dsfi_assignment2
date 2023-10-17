@@ -244,6 +244,9 @@ data.head()
 
 ```
 
+Figure XXX plots the mean sentiment score(-1 to 1, where -1 is perfectly negative, 0 is neutral and 1 is positive) across all presidents where presidents have been ordered by time. Beginning with de Klerk, there is a noticeable negative sentiment. However, as we transition to Mandela's era, a significant shift occurs, with sentiment becoming predominantly positive. This positive trend not only continues but also amplifies during Mbeki's tenure. 
+
+Following Mbeki, Motlanthe's sentiment score experiences a slight dip but remains firmly in the positive territory, suggesting his rhetoric, likely inifluenced by the poor economic conditions during this temulruous time in south africas politcs, was less positive than Mbeki's. The highest peak in positive sentiment is observed during Zuma's term, which is interesting considering the slide of economic performance during his tenure().This may point to a juxtoposition in his presentation of the stte of the nation and the reality of the peroid both regarding corruption and economic stability() However, it's noteworthy that Ramaphosa's sentiment, while still being robustly positive, sees a decline from the high set by Zuma, potentially indicating the effects of rhetoric regarding the COVID-19 pandemic.
 
 
 ```{python}
@@ -264,9 +267,6 @@ plt.tight_layout()
 plt.show()
 ```
 
-Figure XXX plots the mean sentiment score(-1 to 1, where -1 is perfectly negative, 0 is neutral and 1 is positive) across all presidents where presidents have been ordered by time. Beginning with de Klerk, there is a noticeable negative sentiment. However, as we transition to Mandela's era, a significant shift occurs, with sentiment becoming predominantly positive. This positive trend not only continues but also amplifies during Mbeki's tenure. 
-
-Following Mbeki, Motlanthe's sentiment score experiences a slight dip but remains firmly in the positive territory, suggesting his rhetoric, likely inifluenced by the poor economic conditions during this temulruous time in south africas politcs, was less positive than Mbeki's. The highest peak in positive sentiment is observed during Zuma's term, which is interesting considering the slide of economic performance during his tenure().This may point to a juxtoposition in his presentation of the stte of the nation and the reality of the peroid both regarding corruption and economic stability() However, it's noteworthy that Ramaphosa's sentiment, while still being robustly positive, sees a decline from the high set by Zuma, potentially indicating the effects of rhetoric regarding the COVID-19 pandemic.
 
 
 ```{python}
@@ -351,7 +351,9 @@ plt.subplots_adjust(top=0.90)
 plt.show()
 ```
 
-Figure XXX plots the 
+Figure XXX plots the distribution of sentiment scores for each president.
+For de Klerk, there's a noticeable tilt towards neutral to negative sentiments, suggesting that discussions about him might often carry a more critical tone. On the other hand, Mandela's mentions are predominantly positive, indicating a narrative rich in appreciation or admiration. Mbeki's sentiment profile reveals an overwhelmingly positive tone, with many statements leaning towards commendation. Motlanthe's mentions also predominantly exhibit positivity, especially between the 0.50 to 1.00 range, highlighting a general positive narrative about him. Zuma presents a diverse sentiment spectrum; while there's a substantial representation in the positive range, especially towards the higher end, there's also a notable amount of negative sentiment. This suggests a mixture of both commendatory and critical views about Zuma. Lastly, discussions about Ramaphosa are mostly tinted with positivity, particularly around the 0.50 to 0.75 range, although some neutral and negative sentiments are present. Overall, while Mandela, Mbeki, Motlanthe, Zuma, and Ramaphosa's mentions lean more towards positivity, de Klerk's profile hints at a more neutral with a tilt towards negativity. It's imperative to remember that these sentiment scores represent the tone of the sentences and not necessarily the public's perception.
+
 ```{python}
 pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
 
