@@ -580,6 +580,37 @@ vis5 = gensimvis.prepare(m_lda_5, corpus, dct)
 
 ```{python}
 #| echo: false
+#| eval: false
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from gensim.models import LdaModel, LsiModel
+from gensim import corpora
+import pyLDAvis.gensim_models as gensimvis
+import pyLDAvis
+
+a2tokens = pd.read_csv("dsfi_assignment2/finalTokens.csv")
+tokens = [text.split() for text in a2tokens["Tokens"]]
+
+# Create a dictionary and corpus
+dct = corpora.Dictionary(tokens)
+corpus = [dct.doc2bow(t) for t in tokens]
+
+## 4 topics
+m_pLSA_4 = LsiModel(corpus=corpus, num_topics=4, id2word=dct)
+m_pLSA_4.save("m_pLSA_4")
+## 6 topics
+m_pLSA_6 = LsiModel(corpus=corpus, num_topics=6, id2word=dct)
+m_pLSA_6.save("m_pLSA_6")
+## 9 topics
+m_pLSA_9 = LsiModel(corpus=corpus, num_topics=9, id2word=dct)
+m_pLSA_9.save("m_pLSA_9")
+```
+
+
+```{python}
+#| echo: false
 m_lda_3 = LdaModel.load("topic_models/m_lda_3")
 m_lda_4 = LdaModel.load("topic_models/m_lda_4")
 m_lda_5 = LdaModel.load("topic_models/m_lda")
