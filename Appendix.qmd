@@ -3,12 +3,19 @@ title: "Appendix"
 ---
 
 ```{python}
-HFM1 = pd.read_csv("HFM1_SentimentData.csv")
 #| echo: false
 import pandas as pd
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib import cm
 from matplotlib import cm
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+
+HFM1 = pd.read_csv("HFM1_SentimentData.csv")
+presidents_order = ['Mandela', 'deKlerk', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
+adjusted_presidents_order = ['deKlerk'] + [president for president in presidents_order if president != 'deKlerk']
+
 
 def plot_for_president_gradient(president, df):
     # Filter dataframe for the selected president
