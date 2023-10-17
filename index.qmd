@@ -30,8 +30,15 @@ According to (Yadav and Vishwakarma, 2019) who reviewed over 100 papers which us
 
 Furthermore, (Loureiro et al., 2022) showed the importance of Time language models, which are a set of language models which undergo continual learning on, in this case, tweets. (Loureiro et al., 2022) shows that this approach enhances the models ability to deal with out-of-distribution inputs, as well enhances competitiveness with standard benchmark tests. They’re also seen to deal well with the problem of concept drift. Since our data is over a long period of time, we will be using these time language models too.
 
+```{python}
+#| include: false
+pip install nrclex
+```
+```{python}
+#| include: false
 
-
+pip install tabulate
+```
 ```{python}
 #| include: false
 pip install transformers
@@ -213,7 +220,7 @@ Key to its training process is  RoBERTa's utilization of masked language modelli
 
 Differentiating from its predecessor, BERT, RoBERTa's pretraining process has been further optimized. It undergoes training on a more expansive dataset of 10 years of Twitter data. Another differentiating factor from BERT is how RoBERTa dispenses with the next sentence prediction task, a staple in BERT, and recalibrates the masking strategy to elevate its efficiency. The RoBERTa model for a given body of text returns a class probability value of -1 for negative sentiment, 0 for neutral and 1 for positive the highest probability over the three classes is the assigned sentiment. We multiply the class values by their probabilities and sum them to gain a sentiment score between -1 and 1 and use this coupled with the assigned sentiment class for our model evaluation. 
 
-<<<<<<< HEAD
+
 link: https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest?text=ayo
 
 
@@ -298,8 +305,7 @@ Topic 3 - Time and government - the words in this topic are related to time, gov
 
 pLSA models are very sensitive to data sparsity, the document-term matrix has only around a third of its cells populated. The model struggles to capture meaningful relationships through its dimensionality reduction techniques in the sparse data.
 
-=======
->>>>>>> 54c82e7157927868be2053c1c5a6409f469da510
+
 
 ```{python}
 #| include: false
@@ -563,16 +569,12 @@ plt.subplots_adjust(top=0.90)
 plt.show()
 ```
 
-<<<<<<< HEAD
-```{python, eval=F}
-=======
-
 
 
 # Topic Modelling 
-```{python,}
+```{python}
 #| echo: false
->>>>>>> 54c82e7157927868be2053c1c5a6409f469da510
+#| eval: false
 a2tokens = pd.read_csv("finalTokens.csv")
 tokens = [text.split() for text in a2tokens["Tokens"]]
 
@@ -608,17 +610,11 @@ vis5 = gensimvis.prepare(m_lda_5, corpus, dct)
 
 
 ```{python}
-<<<<<<< HEAD
-
+#| echo: false
 m_lda_3 = LdaModel.load("topic_models/m_lda_3")
 m_lda_4 = LdaModel.load("topic_models/m_lda_4")
 m_lda_5 = LdaModel.load("topic_models/m_lda")
-=======
-#| echo: false
-m_lda_3 = LdaModel.load("m_lda_3")
-m_lda_4 = LdaModel.load("m_lda_4")
-m_lda_5 = LdaModel.load("m_lda")
->>>>>>> 54c82e7157927868be2053c1c5a6409f469da510
+
 
 def extract_topics(lda_model, m):
     df=pd.DataFrame({})
@@ -708,7 +704,6 @@ plt.show()
 
 ```{python}
 #| echo: false
-#| eval: false
 #| include: false
 colors = {'negative': '#FF9999', 'neutral': '#99CCFF', 'positive': '#99FF99'}
 sentiment_counts = afn_df.groupby('Presidents')['sentiments'].value_counts(normalize=True).unstack().fillna(0)
@@ -737,7 +732,6 @@ Figure Ax in the appendix shows the sentiments of each president over time. Howe
 
 ```{python}
 #| eval: true
-
 
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib import cm
