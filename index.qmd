@@ -11,12 +11,16 @@ In the era of data science, where Natural Language Processing(NLP) has become a 
 The following proceeds XXX first sections. Firstly a literature review will be conducted on the existing sentiment analysis and topic modelling methods available and used in academia and industry. Thereafter a preliminary exploration of the data occurs to understand the structure and potential trends in the data prior to modelling applications. The Methods section will then detail the sentiment analysis, topic modelling and metrics used in these models. The results of the paper are briefly presented and interpreted before we discuss the overall trends and findings of the paper. We conclude by surmising the findings of the paper, highlighting limitations and presenting avenues for future research into SONA NLP work. 
 
 
-
-
-
 ```{python}
+#| include: false
 pip install transformers
 ```
+
+```{python}
+#| include: false
+pip install pyLDAvis
+```
+
 
 ```{python}
 #| include: false
@@ -176,8 +180,6 @@ link: https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest?te
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, AutoConfig
 import numpy as np
 from scipy.special import softmax
-
-
 ```
 
 
@@ -262,6 +264,10 @@ plt.tight_layout()
 plt.show()
 ```
 
+Figure XXX plots the mean sentiment score(-1 to 1, where -1 is perfectly negative, 0 is neutral and 1 is positive) across all presidents where presidents have been ordered by time. Beginning with de Klerk, there is a noticeable negative sentiment. However, as we transition to Mandela's era, a significant shift occurs, with sentiment becoming predominantly positive. This positive trend not only continues but also amplifies during Mbeki's tenure. 
+
+Following Mbeki, Motlanthe's sentiment score experiences a slight dip but remains firmly in the positive territory, suggesting his rhetoric, likely inifluenced by the poor economic conditions during this temulruous time in south africas politcs, was less positive than Mbeki's. The highest peak in positive sentiment is observed during Zuma's term, which is interesting considering the slide of economic performance during his tenure().This may point to a juxtoposition in his presentation of the stte of the nation and the reality of the peroid both regarding corruption and economic stability() However, it's noteworthy that Ramaphosa's sentiment, while still being robustly positive, sees a decline from the high set by Zuma, potentially indicating the effects of rhetoric regarding the COVID-19 pandemic.
+
 
 ```{python}
 colors = {'negative': '#FF9999', 'neutral': '#99CCFF', 'positive': '#99FF99'}
@@ -276,6 +282,7 @@ plt.tight_layout()
 plt.show()
 ```
 
+To gain a depper understading of the change in sentiment over timie for each given president and their speeches we can look to figure XXX in the appendix. While the plot dos provide a granular insight into the overall sentiment behaviour of each sentence for president's the volume and lack of discernable trend makes the plot difficult to interpret without segnmenting the speeches into larger periods. 
 
 ```{python}
 from matplotlib.colors import LinearSegmentedColormap
@@ -344,8 +351,7 @@ plt.subplots_adjust(top=0.90)
 plt.show()
 ```
 
-
-
+Figure XXX plots the 
 ```{python}
 pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
 
@@ -371,11 +377,11 @@ plt.subplots_adjust(top=0.90)
 plt.show()
 ```
 
-<<<<<<< HEAD
 ### Hugging Face 2
 
-
 ```{python}
+#| eval: false
+#| include: false
 # Assuming a2data is loaded
 data = a2data
 
@@ -426,8 +432,104 @@ data.to_csv("HFM2_SentimentData.csv")
 
 data.head()
 ```
-=======
-```{python, eval=F}
+
+```{python}
+HFM2 = pd.read_csv("HFM2_SentimentData.csv")
+presidents_order = ['Mandela', 'deKlerk', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
+mean_scores_per_president = HFM2.groupby('Presidents')['Sentiment_Score'].mean()
+adjusted_presidents_order = ['deKlerk'] + [president for president in presidents_order if president != 'deKlerk']
+mean_scores_reordered = mean_scores_per_president.reindex(adjusted_presidents_order)
+
+# Plotting the reordered mean sentiment scores
+#plt.figure(figsize=(12, 7))
+mean_scores_reordered.plot(kind='bar', color='skyblue')
+plt.title('Mean Sentiment Scores per President')
+plt.xlabel('President')
+plt.ylabel('Mean Sentiment Score')
+plt.axhline(0, color='red', linestyle='--')  #line at y=0 for reference
+plt.tight_layout()
+plt.show()
+```
+
+
+```{python}
+colors = {'Negative': '#FF9999', 'Neutral': '#99CCFF', 'Positive': '#99FF99'}
+sentiment_counts = HFM2.groupby('Presidents')['Predicted_Label'].value_counts(normalize=True).unstack().fillna(0)
+
+sentiment_counts.reindex(adjusted_presidents_order).plot(kind='bar', stacked=True, color=[colors[col] for col in sentiment_counts.columns])
+plt.title('Sentiment Distribution per President')
+plt.ylabel('Percentage')
+plt.xlabel('President')
+plt.legend(title='Sentiment')
+plt.tight_layout()
+plt.show()
+```
+
+
+
+
+```{python}
+presidents_list = HFM2['Presidents'].unique()
+def plot_in_grid(president, ax):
+    """Plot sentiment scores for a given president on a given axes."""
+    president_df = HFM2[HFM2['Presidents'] == president]
+    president_df = president_df.sort_values(by='Unnamed: 0')
+    
+    # Normalize the scores for colormap
+    norm = plt.Normalize(-1, 1)
+    custom_cmap = LinearSegmentedColormap.from_list("custom", ["red", "gray", "blue"])
+
+    bars = ax.bar(np.arange(len(president_df)), president_df['Sentiment_Score'], 
+                  color=custom_cmap(norm(president_df['Sentiment_Score'])), width=1.0)
+    ax.set_title(f'{president}')
+    ax.axhline(0, color='white', linewidth=0.5)
+    ax.grid(axis='y', color='white', linestyle='--', linewidth=0.5)
+    ax.set_facecolor('black')
+
+# Creating a 2x3 grid plot for all presidents
+fig, axes = plt.subplots(2, 3)
+fig.suptitle('Sentiment Scores over time for each President', fontsize=16)
+
+for president, ax in zip(adjusted_presidents_order, axes.ravel()):
+    plot_in_grid(president, ax)
+
+# Adjust layout
+plt.tight_layout()
+plt.subplots_adjust(top=0.90)
+plt.show()
+```
+
+
+```{python}
+pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
+
+def plot_histogram(president, color, ax):
+    """Plot histogram of sentiment scores for a given president on a given axes."""
+    president_df = HFM2[HFM2['Presidents'] == president]
+    ax.hist(president_df['Sentiment_Score'], bins=30, color=color, edgecolor='white')
+    ax.set_title(f'{president}')
+    ax.set_xlabel('Sentiment Score')
+    ax.set_ylabel('Frequency')
+    ax.grid(axis='y', linestyle='--', linewidth=0.5)
+
+# Creating a 2x3 grid plot for histograms of all presidents
+fig, axes = plt.subplots(2, 3)
+fig.suptitle('Distribution of Sentiment Scores for each President', fontsize=16)
+
+for president, color, ax in zip(adjusted_presidents_order, pastel_colors, axes.ravel()):
+    plot_histogram(president, color, ax)
+
+# Adjust layout
+plt.tight_layout()
+plt.subplots_adjust(top=0.90)
+plt.show()
+```
+
+
+
+
+# Topic Modelling 
+```{python,}
 a2tokens = pd.read_csv("dsfi_assignment2/finalTokens.csv")
 tokens = [text.split() for text in a2tokens["Tokens"]]
 
@@ -485,4 +587,4 @@ md_tbl = topics_df.to_markdown(index=False)
 md_tbl
 
 ```
->>>>>>> 00f4f43a946c8792968a1d42838db7c1e0087281
+
