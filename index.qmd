@@ -212,14 +212,14 @@ Key to its training process is  RoBERTa's utilization of masked language modelli
 
 Differentiating from its predecessor, BERT, RoBERTa's pretraining process has been further optimized. It undergoes training on a more expansive dataset of 10 years of Twitter data. Another differentiating factor from BERT is how RoBERTa dispenses with the next sentence prediction task, a staple in BERT, and recalibrates the masking strategy to elevate its efficiency. The RoBERTa model for a given body of text returns a class probability value of -1 for negative sentiment, 0 for neutral and 1 for positive the highest probability over the three classes is the assigned sentiment. We multiply the class values by their probabilities and sum them to gain a sentiment score between -1 and 1 and use this coupled with the assigned sentiment class for our model evaluation. 
 
-link: https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest?text=ayo
+
 ```{python}
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, AutoConfig
 import numpy as np
 from scipy.special import softmax
 ```
 
-
+# Results
 ```{python}
 #| echo: false
 #| eval: false
@@ -632,9 +632,6 @@ md_tbl
 
 ```
 
->>>>>>> 00f4f43a946c8792968a1d42838db7c1e0087281
-
-# Results
 
 ```{python}
 #| echo: false
