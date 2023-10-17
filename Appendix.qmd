@@ -107,3 +107,105 @@ plt.tight_layout()
 plt.subplots_adjust(top=0.90)
 plt.show()
 ```
+
+```{python}
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from gensim.models import LdaModel, LsiModel
+from gensim import corpora
+
+
+m_pLSA_4 = LsiModel.load("topics_models/m_pLSA_4")
+m_pLSA_6 = LsiModel.load("topics_models/m_pLSA_6")
+m_pLSA_9 = LsiModel.load("topics_models/m_pLSA_9")
+
+# Number of words to display in the bar plot
+num_words = 20
+topics = m_pLSA_4.print_topics(num_topics=4, num_words=num_words)
+df4=pd.DataFrame({})
+for topic in topics:
+    content = topic[1]
+    words=[]
+    scores=[]
+    scorewords = content.split(' + ')
+    for item in scorewords:
+        spl=item.split('*')
+        scores.append(spl[0])
+        words.append(spl[1].replace('"',''))
+    topic_df=pd.DataFrame({f'T{topic[0]+1} Words': words, f'T{topic[0]+1} Scores': scores})
+    df4 = pd.concat([df4, topic_df], axis=1)
+
+topics = m_pLSA_6.print_topics(num_topics=6, num_words=num_words)
+df6=pd.DataFrame({})
+for topic in topics:
+    t=topic[0]+1
+    content = topic[1]
+    words=[]
+    scores=[]
+    scorewords = content.split(' + ')
+    for item in scorewords:
+        spl=item.split('*')
+        scores.append(spl[0])
+        words.append(spl[1].replace('"',''))
+    topic_df=pd.DataFrame({f'T{t} Words': words, f'T{t} Scores': scores})
+    df6 = pd.concat([df6, topic_df], axis=1)
+
+topics = m_pLSA_9.print_topics(num_topics=9, num_words=num_words)
+df9=pd.DataFrame({})
+for topic in topics:
+    content = topic[1]
+    words=[]
+    scores=[]
+    scorewords = content.split(' + ')
+    for item in scorewords:
+        spl=item.split('*')
+        scores.append(spl[0])
+        words.append(spl[1].replace('"',''))
+    topic_df=pd.DataFrame({f'T{topic[0]+1} Words': words, f'T{topic[0]+1} Scores': scores})
+    df9 = pd.concat([df9, topic_df], axis=1)
+
+# Create a 2x2 grid of subplots
+fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+for i in [0,1]:
+    for j in [0,1]:
+        t=2*i+j+1
+        axs[i, j].barh(df4[f'T{t} Words'], df4[f'T{t} Scores'])
+        axs[i, j].set_xlabel('Words')
+        axs[i, j].set_ylabel('Weight')
+        axs[i, j].set_title(f'M4: Topic {t}')
+        axs[i, j].tick_params(axis='x', rotation=90, labelsize=10)
+        axs[i, j].tick_params(axis='y', rotation=0, labelsize=9)
+plt.tight_layout()
+plt.show()
+
+# Create a 3x2 grid of subplots
+fig, axs = plt.subplots(3, 2, figsize=(12, 8))
+for i in [0,1,2]:
+    for j in [0,1]:
+        t=2*i+j+1
+        axs[i, j].barh(df6[f'T{t} Words'], df6[f'T{t} Scores'])
+        axs[i, j].set_xlabel('Words')
+        axs[i, j].set_ylabel('Weight')
+        axs[i, j].set_title(f'M6: Topic {t}')
+        axs[i, j].tick_params(axis='x', rotation=90, labelsize=10)
+        axs[i, j].tick_params(axis='y', rotation=0, labelsize=6)
+plt.tight_layout()
+plt.show()
+
+# Create a 3x3 grid of subplots
+fig, axs = plt.subplots(3, 3, figsize=(12, 8))
+for i in [0,1,2]:
+    for j in [0,1,2]:
+        t=3*i+j+1
+        axs[i, j].barh(df9[f'T{t} Words'], df9[f'T{t} Scores'])
+        axs[i, j].set_xlabel('Words')
+        axs[i, j].set_ylabel('Weight')
+        axs[i, j].set_title(f'M9: Topic {t}')
+        axs[i, j].tick_params(axis='x', rotation=90, labelsize=10)
+        axs[i, j].tick_params(axis='y', rotation=0, labelsize=6)
+plt.tight_layout()
+plt.show()
+
+```
