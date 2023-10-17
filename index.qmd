@@ -4,14 +4,21 @@ title: "DSFI_A2"
 
 # Introduction
 
-The State of the Nation Address (SONA) serves as an annual narrative roadmap of South Africa, highlighting its triumphs, challenges, and future trajectories. Delivered by the President, this address not only provides a summary of the nation's current status but also sets the tone for governmental strategies, policies, and priorities for the coming year. The addresses serve as a snapshot into South Africa's challenges, successes and socioeconomic state at a given time. Hence analysis of the sentiment and topics of the speeches can provide a framework for a deeper understanding of trends and topics from presidents' rhetoric less clouded by the bias of political analysts. 
+The State of the Nation Address (SONA) serves as an annual narrative roadmap of South Africa, highlighting its triumphs, challenges, and future trajectories. Delivered by the President, this address not only provides a summary of the nation's current status but also sets the tone for governmental strategies, policies, and priorities for the coming year. The addresses serve as a snapshot into South Africa's challenges, successes and socioeconomic state at a given time. Hence analysis of the sentiment and topics of the speeches can provide a framework for a deeper understanding of trends and topics from presidents' rhetoric less clouded by the bias of political analysts.
 
-In the era of data science, where Natural Language Processing(NLP) has become a potent tool to extract meaningful patterns from large volumes of textual data, it is of profound interest to apply such methods to SONA speeches. By employing advanced techniques such as sentiment analysis and topic modelling, one can unearth the latent themes dominating these addresses over three decades and gauge the sentiment fluctuations accompanying them. This presents a data-driven perspective on South Africa's political discourse,
+In the era of data science, where Natural Language Processing(NLP) has become a potent tool to extract meaningful patterns from large volumes of textual data, it is of profound interest to apply such methods to SONA speeches. By employing advanced techniques such as sentiment analysis and topic modelling, one can unearth the latent themes dominating these addresses over three decades and gauge the sentiment fluctuations accompanying them. This presents a data-driven perspective on South Africa's political discourse.
 
-The following proceeds XXX first sections. Firstly a literature review will be conducted on the existing sentiment analysis and topic modelling methods available and used in academia and industry. Thereafter a preliminary exploration of the data occurs to understand the structure and potential trends in the data prior to modelling applications. The Methods section will then detail the sentiment analysis, topic modelling and metrics used in these models. The results of the paper are briefly presented and interpreted before we discuss the overall trends and findings of the paper. We conclude by surmising the findings of the paper, highlighting limitations and presenting avenues for future research into SONA NLP work. 
+The following proceeds XXX first sections. Firstly a literature review will be conducted on the existing sentiment analysis and topic modelling methods available and used in academia as well as in industry. Thereafter a preliminary exploration of the data occurs to understand the structure and potential trends in the data prior to modelling applications. The Methods section will then detail the sentiment analysis, topic modelling and metrics used in these models. The results of the paper are then briefly presented and interpreted before we discuss the overall trends and findings of the paper. We conclude by summarising the findings of the paper, highlighting limitations and presenting avenues for future research into SONA NLP work. 
 
 
 # Literature Review
+
+## Topic Modelling
+
+In the 1980s Topic modelling emerged as a means to enhance the accuracy of information retrieval systems. (Deerwester et al. in 1990) founded one of the earliest topic models known as Latent Semantic Analysis (LSA). LSA groups documents based on latent semantic formations, and makes the assumption that words with similar semantic meanings tend to co-occur. This innovation greatly advanced the capabilities of document retrieval systems because users were no longer required to employ the exact words found in related documents; similarity could be determined through a broader semantic context.
+
+(Blei et al., 2003) advanced techniques implemented in LSA by developing a related modeling algorithm called Latent Dirichlet Allocation (LDA). In LDA, a document is seen as a collection of words drawn from unobserved topics. LDA subsequently assesses the likelihood distribution of a specific word across a range of topics and then the distribution of a specific topic across a collection of documents.
+
 
 ## Sentiment Analysis
 
@@ -240,6 +247,8 @@ from scipy.special import softmax
 
 # Results
 
+## RoBERTa 
+
 ```{python}
 #| echo: false
 #| eval: false
@@ -296,8 +305,6 @@ data['Predicted_Label'] = [s[1] for s in sentiment_data]
 
 # Save the results
 data.to_csv("HFM1_SentimentData.csv")
-
-
 ```
 
 Figure XXX plots the mean sentiment score(-1 to 1, where -1 is perfectly negative, 0 is neutral and 1 is positive) across all presidents where presidents have been ordered by time. Beginning with de Klerk, there is a noticeable negative sentiment. However, as we transition to Mandela's era, a significant shift occurs, with sentiment becoming predominantly positive. This positive trend not only continues but also amplifies during Mbeki's tenure. 
@@ -343,8 +350,8 @@ plt.show()
 To gain a depper understading of the change in sentiment over timie for each given president, and their speeches, we can look to figure XXX in the appendix. While the plot dos provide a granular insight into the variety of sentiment across sentences in presidents' speaches the lack of discernable trend makes the plot difficult to interpret. Furthermore the sentiment aggregatioin plots at an overall president level provides sufficient insiight.  Figure XXX plots the distribution of sentiment scores for each president. For de Klerk, there's a noticeable tilt towards neutral to negative sentiments. On the other hand, Mandela's mentions are predominantly positive. Mbeki's sentiment profile reveals an overwhelmingly positive tone, with more neutrality in tone than Mandela. Motlanthe's mentions also predominantly exhibit positivity, especially between the 0.50 to 1.00 range. Zuma presents a diverse sentiment spectrum; while there's a substantial representation in the positive range, especially towards the higher end, there's also a notable amount neutral sentiment and almost no negative rhetoric. Lastly, discussions about Ramaphosa are mostly tinted with positivity, particularly around the 0.50 to 0.75 range, although some neutral and negative sentiments are present. Overall, while Mandela, Mbeki, Motlanthe, Zuma, and Ramaphosa's mentions lean more towards positivity, de Klerk's profile hints at a more neutral with a  greater tilt towards negativity. 
 
 ```{python}
-#| include: false
 #| fig-cap: "Figure X: RoBERTa 1 Distribution of Sentiment Scores for each President"
+#| echo: false
 pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
 
 def plot_histogram(president, color, ax):
@@ -368,7 +375,7 @@ plt.subplots_adjust(top=0.90)
 plt.show()
 ```
 
-### Hugging Face 2
+## RoBERTa: Domain Specific
 
 ```{python}
 #| eval: false
@@ -495,7 +502,6 @@ plt.show()
 
 
 
-# Topic Modelling 
 ```{python}
 #| echo: false
 #| eval: false
