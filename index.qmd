@@ -248,6 +248,8 @@ from scipy.special import softmax
 
 ## Data Exploration 
 
+In analyzing the word clouds of various South African presidents in Figure X, there's a discernible emphasis on governance, nation-building, and the welfare of the South African people. Motlanthe and Mbeki highlighted governmental programs and assured development, while Mandela accentuated societal unity and nation-building. Ramaphosa's emphasis leaned towards economic investment and support, Zuma prioritized governmental initiatives and societal support, and deKlerk focused on constitutional and governance reforms. Across all presidents, the persistent themes underscore a dedication to governance, the progress of South Africa, and the betterment of its citizens.
+
 ```{python}
 #| echo: false
 #| fig-cap: "Figure X: Wordcloud per president"

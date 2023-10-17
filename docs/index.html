@@ -169,6 +169,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#literature-review" id="toc-literature-review" class="nav-link" data-scroll-target="#literature-review">Literature Review</a>
   <ul class="collapse">
   <li><a href="#sentiment-analysis" id="toc-sentiment-analysis" class="nav-link" data-scroll-target="#sentiment-analysis">Sentiment Analysis</a></li>
+  <li><a href="#topic-modelling" id="toc-topic-modelling" class="nav-link" data-scroll-target="#topic-modelling">Topic Modelling</a></li>
   </ul></li>
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
   <ul class="collapse">
@@ -178,7 +179,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#nrc-lexicon" id="toc-nrc-lexicon" class="nav-link" data-scroll-target="#nrc-lexicon">NRC lexicon</a></li>
   <li><a href="#roberta-transfer-learning" id="toc-roberta-transfer-learning" class="nav-link" data-scroll-target="#roberta-transfer-learning">RoBERTa Transfer Learning</a></li>
   </ul></li>
-  <li><a href="#topic-modelling" id="toc-topic-modelling" class="nav-link" data-scroll-target="#topic-modelling">Topic Modelling</a>
+  <li><a href="#topic-modelling-1" id="toc-topic-modelling-1" class="nav-link" data-scroll-target="#topic-modelling-1">Topic Modelling</a>
   <ul class="collapse">
   <li><a href="#latent-dirichlet-allocation" id="toc-latent-dirichlet-allocation" class="nav-link" data-scroll-target="#latent-dirichlet-allocation">Latent Dirichlet Allocation</a></li>
   <li><a href="#probablistic-latent-semantic-analysis" id="toc-probablistic-latent-semantic-analysis" class="nav-link" data-scroll-target="#probablistic-latent-semantic-analysis">Probablistic Latent Semantic Analysis</a></li>
@@ -186,11 +187,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </ul></li>
   <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
   <ul class="collapse">
-  <li><a href="#hugging-face-2" id="toc-hugging-face-2" class="nav-link" data-scroll-target="#hugging-face-2">Hugging Face 2</a></li>
-  </ul></li>
-  <li><a href="#topic-modelling-1" id="toc-topic-modelling-1" class="nav-link" data-scroll-target="#topic-modelling-1">Topic Modelling</a>
+  <li><a href="#data-exploration" id="toc-data-exploration" class="nav-link" data-scroll-target="#data-exploration">Data Exploration</a></li>
+  <li><a href="#roberta" id="toc-roberta" class="nav-link" data-scroll-target="#roberta">RoBERTa</a></li>
+  <li><a href="#roberta-domain-specific" id="toc-roberta-domain-specific" class="nav-link" data-scroll-target="#roberta-domain-specific">RoBERTa: Domain Specific</a>
   <ul class="collapse">
   <li><a href="#nrc" id="toc-nrc" class="nav-link" data-scroll-target="#nrc">NRC</a></li>
+  </ul></li>
   <li><a href="#latent-dirichlet-allocation-1" id="toc-latent-dirichlet-allocation-1" class="nav-link" data-scroll-target="#latent-dirichlet-allocation-1">Latent Dirichlet Allocation</a>
   <ul class="collapse">
   <li><a href="#probablistic-latent-semantic-analysis-1" id="toc-probablistic-latent-semantic-analysis-1" class="nav-link" data-scroll-target="#probablistic-latent-semantic-analysis-1">Probablistic Latent Semantic Analysis</a></li>
@@ -237,6 +239,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>According to (Yadav and Vishwakarma, 2019) who reviewed over 100 papers which used deep learning (subset of machine learning) techniques to perform sentiment analysis, the most common deep learning models are RNNs, CNNs, and LSTMs, with the latter providing the best performance. They also said that utilizing machine learning approaches to conduct sentiment analysis was a promising field, while noting that the dataset needs to be large enough for a respectable analysis to take place, which is a challenge.</p>
 <p>Furthermore, (Loureiro et al., 2022) showed the importance of Time language models, which are a set of language models which undergo continual learning on, in this case, tweets. (Loureiro et al., 2022) shows that this approach enhances the models ability to deal with out-of-distribution inputs, as well enhances competitiveness with standard benchmark tests. They’re also seen to deal well with the problem of concept drift. Since our data is over a long period of time, we will be using these time language models too.</p>
 </section>
+<section id="topic-modelling" class="level2">
+<h2 class="anchored" data-anchor-id="topic-modelling">Topic Modelling</h2>
+<p>In the 1980s, topic modelling emerged as a means to enhance the accuracy of information retrieval systems. Deerwester et al (1990) founded one of the earliest topic models known as Latent Semantic Analysis (LSA). LSA groups documents based on latent semantic formations, and makes the assumption that words with similar semantic meanings tend to co-occur. This innovation greatly advanced the capabilities of document retrieval systems because users were no longer required to employ the exact words found in related documents - similarity could be determined through a broader semantic context.</p>
+<p>Blei et al.&nbsp;(2003) advanced the techniques implemented in LSA by developing a related modelling algorithm called Latent Dirichlet Allocation (LDA). In LDA, a document is seen as a collection of words drawn from unobserved topics. LDA subsequently assesses the likelihood distribution of a specific word across a range of topics and then the distribution of a specific topic across a collection of documents.</p>
+</section>
 </section>
 <section id="methods" class="level1">
 <h1>Methods</h1>
@@ -261,8 +268,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Differentiating from its predecessor, BERT, RoBERTa’s pretraining process has been further optimized. It undergoes training on a more expansive dataset of 10 years of Twitter data. Another differentiating factor from BERT is how RoBERTa dispenses with the next sentence prediction task, a staple in BERT, and recalibrates the masking strategy to elevate its efficiency. The RoBERTa model for a given body of text returns a class probability value of -1 for negative sentiment, 0 for neutral and 1 for positive the highest probability over the three classes is the assigned sentiment. We multiply the class values by their probabilities and sum them to gain a sentiment score between -1 and 1 and use this coupled with the assigned sentiment class for our model evaluation.</p>
 </section>
 </section>
-<section id="topic-modelling" class="level2">
-<h2 class="anchored" data-anchor-id="topic-modelling">Topic Modelling</h2>
+<section id="topic-modelling-1" class="level2">
+<h2 class="anchored" data-anchor-id="topic-modelling-1">Topic Modelling</h2>
 <section id="latent-dirichlet-allocation" class="level3">
 <h3 class="anchored" data-anchor-id="latent-dirichlet-allocation">Latent Dirichlet Allocation</h3>
 <p>Latent Dirichlet Allocation (LDA) is a probabilitistic model which was implemented as a topic modelling technique to extract meaningful latent topics from the SONA corpus. The SONA speeches are pre-processed to remove stop words, punctuation, and other textual debris. The documents are then lemmatised and tokenised into word-tokens. These tokens are used to create a document-term matrix that contains the frequency of words in each document. The Gensim library was used to enable the training of LDA models on the preprocessed data, and facilitated the extraction of topics associated with their respective word distributions. The resulting topics were then visualized using the pyLDAvis package, to create a interpretable overview of the extracted topics. This process was first performed using a corpus containing all thirty-six speeches. The initial model had five topics, and the number of topics was iteratively decreased until the topics differentiated nicely across the latent variables. This number of topics (3) was then used to train a model for each president’s individual corpus of speeches.</p>
@@ -275,185 +282,245 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="results" class="level1">
 <h1>Results</h1>
-<p>Figure XXX plots the mean sentiment score(-1 to 1, where -1 is perfectly negative, 0 is neutral and 1 is positive) across all presidents where presidents have been ordered by time. Beginning with de Klerk, there is a noticeable negative sentiment. However, as we transition to Mandela’s era, a significant shift occurs, with sentiment becoming predominantly positive. This positive trend not only continues but also amplifies during Mbeki’s tenure.</p>
-<p>Following Mbeki, Motlanthe’s sentiment score experiences a slight dip but remains firmly in the positive territory, suggesting his rhetoric, likely inifluenced by the poor economic conditions during this temulruous time in south africas politcs, was less positive than Mbeki’s. The highest peak in positive sentiment is observed during Zuma’s term, which is interesting considering the slide of economic performance during his tenure().This may point to a juxtoposition in his presentation of the stte of the nation and the reality of the peroid both regarding corruption and economic stability() However, it’s noteworthy that Ramaphosa’s sentiment, while still being robustly positive, sees a decline from the high set by Zuma, potentially indicating the effects of rhetoric regarding the COVID-19 pandemic.</p>
-<div class="cell" data-execution_count="11">
+<section id="data-exploration" class="level2">
+<h2 class="anchored" data-anchor-id="data-exploration">Data Exploration</h2>
+<p>In analyzing the word clouds of various South African presidents in Figure X, there’s a discernible emphasis on governance, nation-building, and the welfare of the South African people. Motlanthe and Mbeki highlighted governmental programs and assured development, while Mandela accentuated societal unity and nation-building. Ramaphosa’s emphasis leaned towards economic investment and support, Zuma prioritized governmental initiatives and societal support, and deKlerk focused on constitutional and governance reforms. Across all presidents, the persistent themes underscore a dedication to governance, the progress of South Africa, and the betterment of its citizens.</p>
+<div class="cell" data-execution_count="10">
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages/wordcloud/wordcloud.py:106: MatplotlibDeprecationWarning:
+
+The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
+</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages/wordcloud/wordcloud.py:106: MatplotlibDeprecationWarning:
+
+The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
+</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages/wordcloud/wordcloud.py:106: MatplotlibDeprecationWarning:
+
+The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
+</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages/wordcloud/wordcloud.py:106: MatplotlibDeprecationWarning:
+
+The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
+</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages/wordcloud/wordcloud.py:106: MatplotlibDeprecationWarning:
+
+The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
+</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/anaconda3/envs/firstEnv/lib/python3.10/site-packages/wordcloud/wordcloud.py:106: MatplotlibDeprecationWarning:
+
+The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
+</code></pre>
+</div>
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-12-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="index_files/figure-html/cell-11-output-7.png" width="1054" height="764" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure X: Wordcloud per president</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="roberta" class="level2">
+<h2 class="anchored" data-anchor-id="roberta">RoBERTa</h2>
+<p>Figure XXX plots the mean sentiment score(-1 to 1, where -1 is perfectly negative, 0 is neutral and 1 is positive) across all presidents where presidents have been ordered by time. Beginning with de Klerk, there is a noticeable negative sentiment. However, as we transition to Mandela’s era, a significant shift occurs, with sentiment becoming predominantly positive. This positive trend not only continues but also amplifies during Mbeki’s tenure.</p>
+<p>Following Mbeki, Motlanthe’s sentiment score experiences a slight dip but remains firmly in the positive territory, suggesting his rhetoric, likely inifluenced by the poor economic conditions during this temulruous time in south africas politcs, was less positive than Mbeki’s. The highest peak in positive sentiment is observed during Zuma’s term, which is interesting considering the slide of economic performance during his tenure().This may point to a juxtoposition in his presentation of the stte of the nation and the reality of the peroid both regarding corruption and economic stability() However, it’s noteworthy that Ramaphosa’s sentiment, while still being robustly positive, sees a decline from the high set by Zuma, potentially indicating the effects of rhetoric regarding the COVID-19 pandemic.</p>
+<div class="cell" data-execution_count="12">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-13-output-1.png" width="662" height="470" class="figure-img"></p>
 <p></p><figcaption class="figure-caption">Figure X: RoBERTa 1 Mean Sentiment Scores per President</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 <p>In Figure XXX we plot the proportion of each sentiment class across all sentences per president.Mandela and Ramaphosa primarily have positive and neutral sentiments, with Mandela possessing a slightly broader share of positive mentions. De Klerk presents an interesting case; while he has the least proportion of positive sentiments among all the presidents, he also claims the highest negative sentiment. Mbeki and Zuma display an almost balanced distribution between positive and neutral sentiments, with Mbeki tipping slightly more towards the positive end. Motlanthe distinctly stands out, characterized by an overwhelming positive sentiment that far surpasses both the neutral and negative sentiments.</p>
-<div class="cell" data-execution_count="12">
+<div class="cell" data-execution_count="13">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-13-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="index_files/figure-html/cell-14-output-1.png" width="662" height="470" class="figure-img"></p>
 <p></p><figcaption class="figure-caption">Figure X: RoBERTa 1 Sentiment Distribution per President</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 <p>To gain a depper understading of the change in sentiment over timie for each given president, and their speeches, we can look to figure XXX in the appendix. While the plot dos provide a granular insight into the variety of sentiment across sentences in presidents’ speaches the lack of discernable trend makes the plot difficult to interpret. Furthermore the sentiment aggregatioin plots at an overall president level provides sufficient insiight. Figure XXX plots the distribution of sentiment scores for each president. For de Klerk, there’s a noticeable tilt towards neutral to negative sentiments. On the other hand, Mandela’s mentions are predominantly positive. Mbeki’s sentiment profile reveals an overwhelmingly positive tone, with more neutrality in tone than Mandela. Motlanthe’s mentions also predominantly exhibit positivity, especially between the 0.50 to 1.00 range. Zuma presents a diverse sentiment spectrum; while there’s a substantial representation in the positive range, especially towards the higher end, there’s also a notable amount neutral sentiment and almost no negative rhetoric. Lastly, discussions about Ramaphosa are mostly tinted with positivity, particularly around the 0.50 to 0.75 range, although some neutral and negative sentiments are present. Overall, while Mandela, Mbeki, Motlanthe, Zuma, and Ramaphosa’s mentions lean more towards positivity, de Klerk’s profile hints at a more neutral with a greater tilt towards negativity.</p>
-<section id="hugging-face-2" class="level3">
-<h3 class="anchored" data-anchor-id="hugging-face-2">Hugging Face 2</h3>
-<p>In Figure XXX we look at the mean sentiment scorees for each president. The resuls are largely similar as the prior model. De Klerk remains the president with the lowest mean sentiment score while Zuma retainis the highest value. The other preseidents scores while slighly altered still behave similar relative to eachother.</p>
-<div class="cell" data-execution_count="15">
+<div class="cell" data-execution_count="14">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-16-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="index_files/figure-html/cell-15-output-1.png" width="675" height="457" class="figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure X: RoBERTa 1 Distribution of Sentiment Scores for each President</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="roberta-domain-specific" class="level2">
+<h2 class="anchored" data-anchor-id="roberta-domain-specific">RoBERTa: Domain Specific</h2>
+<p>In Figure XXX we look at the mean sentiment scorees for each president. The resuls are largely similar as the prior model. De Klerk remains the president with the lowest mean sentiment score while Zuma retainis the highest value. The other preseidents scores while slighly altered still behave similar relative to eachother.</p>
+<div class="cell" data-execution_count="16">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-17-output-1.png" width="662" height="470" class="figure-img"></p>
 <p></p><figcaption class="figure-caption">Figure X: RoBERTa 2 Mean Sentiment Scores per President</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Now looking to the proportion of sentiment classes per president in Figure XXX. We note that de Klerk’s mean sentiment score became more positve we find that the proportioin of negative sentences has remained largely the same rather neutral sentencees in the previous model have now been classified as positve. While the results do look similar there is a clear trend of lesser neutral sentences, possibly speaking to the more domaini specific model’s ability to better discern sentiment of political rhetoric.</p>
-<div class="cell" data-execution_count="16">
+<div class="cell" data-execution_count="17">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-17-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="index_files/figure-html/cell-18-output-1.png" width="662" height="470" class="figure-img"></p>
 <p></p><figcaption class="figure-caption">Figure X: RoBERTa 2 Sentiment Distribution per President</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Looking to the distribution of sentiments by presidents in figure XXX. De Klerk’s sentiment heavily leans towards the negative, with only a sparse presence of positive sentiment. Contrastingly, Mandela garners a majority of positive sentiments, although there’s a consistent representation across all sentiment spectrums, indicating diverse opinions. Mbeki’s sentiment profile is unique, spanning from negative through neutral to positive, with a pronounced peak in neutral sentiments. Motlanthe enjoys overwhelmingly positive feedback, with minimal divergences towards neutrality or negativity. In Zuma’s case, a dominant concentration of neutral sentiments emerges, bracketed by almost equal measures of positive and negative sentiments. Ramaphosa’s sentiment distribution is inclined towards positivity, but it doesn’t lack a substantial count of neutral mentions and a minor portion of negative sentiments.</p>
-<div class="cell" data-execution_count="17">
+<div class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-18-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="index_files/figure-html/cell-19-output-1.png" width="662" height="457" class="figure-img"></p>
 <p></p><figcaption class="figure-caption">Figure X: RoBERTa 2 Distribution of Sentiment Scores for each President</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="topic-modelling-1" class="level1">
-<h1>Topic Modelling</h1>
-<div class="cell" data-execution_count="19">
-<div class="cell-output cell-output-display" data-execution_count="15">
+<div class="cell" data-execution_count="20">
+<div class="cell-output cell-output-display" data-execution_count="40">
 <pre><code>'| M3 Topic 1          | M3 Topic 2          | M3 Topic 3         | M4 Topic 1         | M4 Topic 2             | M4 Topic 3       | M4 Topic 4          | M5 Topic 1         | M5 Topic 2         | M5 Topic 3             | M5 Topic 4          | M5 Topic 5          |\n|:--------------------|:--------------------|:-------------------|:-------------------|:-----------------------|:-----------------|:--------------------|:-------------------|:-------------------|:-----------------------|:--------------------|:--------------------|\n| 0.031 | south       | 0.020 | people      | 0.034 | year       | 0.045 | year       | 0.021 | new            | 0.029 | african  | 0.025 | work        | 0.057 | year       | 0.036 | people     | 0.032 | work           | 0.031 | country     | 0.055 | south       |\n| 0.016 | africa      | 0.018 | work        | 0.022 | african    | 0.041 | south      | 0.015 | also           | 0.027 | people   | 0.022 | national    | 0.037 | african    | 0.034 | government | 0.028 | africa         | 0.027 | new         | 0.022 | service     |\n| 0.015 | new         | 0.018 | country     | 0.020 | government | 0.026 | government | 0.014 | infrastructure | 0.024 | country  | 0.017 | public      | 0.024 | state      | 0.028 | national   | 0.022 | public         | 0.023 | business    | 0.020 | sector      |\n| 0.011 | also        | 0.014 | state       | 0.016 | national   | 0.017 | investment | 0.011 | ensure         | 0.022 | africa   | 0.016 | service     | 0.022 | economy    | 0.016 | nation     | 0.021 | last           | 0.021 | development | 0.016 | plan        |\n| 0.009 | together    | 0.012 | investment  | 0.013 | business   | 0.015 | economic   | 0.011 | million        | 0.019 | state    | 0.016 | development | 0.021 | investment | 0.014 | one        | 0.019 | economic       | 0.019 | need        | 0.014 | billion     |\n| 0.009 | must        | 0.012 | service     | 0.013 | economy    | 0.015 | need       | 0.011 | one            | 0.017 | business | 0.016 | last        | 0.018 | also       | 0.012 | project    | 0.017 | infrastructure | 0.018 | support     | 0.013 | water       |\n| 0.008 | billion     | 0.012 | development | 0.013 | public     | 0.014 | social     | 0.009 | many           | 0.017 | economy  | 0.013 | programme   | 0.018 | social     | 0.012 | community  | 0.015 | job            | 0.017 | together    | 0.011 | crisis      |\n| 0.008 | opportunity | 0.011 | sector      | 0.012 | last       | 0.014 | support    | 0.009 | life           | 0.015 | sector   | 0.011 | energy      | 0.016 | programme  | 0.011 | local      | 0.014 | ensure         | 0.013 | opportunity | 0.010 | employment  |\n| 0.007 | time        | 0.011 | economic    | 0.010 | social     | 0.013 | together   | 0.008 | local          | 0.012 | nation   | 0.011 | growth      | 0.014 | must       | 0.010 | provide    | 0.014 | energy         | 0.013 | time        | 0.009 | electricity |\n| 0.007 | community   | 0.011 | need        | 0.010 | support    | 0.012 | job        | 0.008 | first          | 0.011 | must     | 0.011 | billion     | 0.013 | growth     | 0.009 | action     | 0.014 | million        | 0.012 | many        | 0.009 | reform      |'</code></pre>
 </div>
 </div>
 <p>The mean sentiment scores per president show President Mbeki exhibiting the highest mean sentiment score at approximately 1.65, suggesting a generally positive sentiment in his speeches. President Motlanthe followed closely with a mean sentiment score of approximately 1.44, indicating a similar trend of positively oriented speeches. In contrast, President de Klerk presented the lowest mean sentiment score, around 0.67, while Presidents Ramaphosa and Zuma demonstrated mean sentiment scores around 0.95 and 0.92, respectively.</p>
-<div class="cell" data-execution_count="21">
+<div class="cell" data-execution_count="22">
 <div class="cell-output cell-output-display">
-<p><img src="index_files/figure-html/cell-22-output-1.png" class="img-fluid"></p>
+<p><img src="index_files/figure-html/cell-23-output-1.png" width="662" height="471"></p>
 </div>
 </div>
 <p>Figure X below shows that deKlerk is once again seen to possess less positive sentiments in his speeches than most of the other presidents, apart from Zuma, who has a very similar amount of positivity. Motlanthe and Mbeki are seen to have the greatest proportion of positive sentiments, while Zuma is seen to have the largest amount of neutral sentiments compared to the other presidents. As well as having the smallest proportion of positivity, deKlerk also has a large proportion of his sentences carrying negative sentiments.</p>
-<div class="cell" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save object</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># sentiment_counts.reindex(adjusted_presidents_order).to_csv('wes_appendix/sentiment_counts.csv')</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>sentiment_counts <span class="op">=</span> pd.read_csv(<span class="st">"wes_appendix/sentiment_counts.csv"</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>sentiment_counts.plot(kind<span class="op">=</span><span class="st">'bar'</span>, stacked<span class="op">=</span><span class="va">True</span>, color<span class="op">=</span>[colors[col] <span class="cf">for</span> col <span class="kw">in</span> sentiment_counts.columns <span class="cf">if</span> col <span class="op">!=</span> <span class="st">'Presidents'</span>])</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Sentiment Distribution per President'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Percentage'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'President'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>plt.legend(title<span class="op">=</span><span class="st">'Sentiment'</span>, fontsize<span class="op">=</span><span class="dv">20</span>, title_fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">16</span>) </span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save object</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># sentiment_counts.reindex(adjusted_presidents_order).to_csv('wes_appendix/sentiment_counts.csv')</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>sentiment_counts <span class="op">=</span> pd.read_csv(<span class="st">"wes_appendix/sentiment_counts.csv"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>sentiment_counts.plot(kind<span class="op">=</span><span class="st">'bar'</span>, stacked<span class="op">=</span><span class="va">True</span>, color<span class="op">=</span>[colors[col] <span class="cf">for</span> col <span class="kw">in</span> sentiment_counts.columns <span class="cf">if</span> col <span class="op">!=</span> <span class="st">'Presidents'</span>])</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Sentiment Distribution per President'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Percentage'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'President'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>plt.legend(title<span class="op">=</span><span class="st">'Sentiment'</span>, fontsize<span class="op">=</span><span class="dv">20</span>, title_fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">16</span>) </span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="index_files/figure-html/cell-24-output-1.png" class="img-fluid"></p>
+<p><img src="index_files/figure-html/cell-25-output-1.png" width="675" height="487"></p>
 </div>
 </div>
 <p>Figure Ax in the appendix shows the sentiments of each president over time. However, once again the extreme granularity of the plots makes it difficult to extract any useful information. Noticeably however, deKlerk’s strong negative sentiments are apparent from such a broad scoped view.</p>
-<div class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.colors <span class="im">import</span> LinearSegmentedColormap</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> cm</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> cm</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_for_president_gradient(president, df):</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Filter dataframe for the selected president</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    president_df <span class="op">=</span> df[df[<span class="st">'Presidents'</span>] <span class="op">==</span> president]</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sorting data by order (using the 'Unnamed: 0' column as the order)</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    president_df <span class="op">=</span> president_df.sort_values(by<span class="op">=</span><span class="st">'Unnamed: 0'</span>)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Normalize the scores to [0,1] for colormap</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    norm <span class="op">=</span> plt.Normalize(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Custom colormap: Red -&gt; Gray -&gt; Blue</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    custom_cmap <span class="op">=</span> LinearSegmentedColormap.from_list(<span class="st">"custom"</span>, [<span class="st">"red"</span>, <span class="st">"gray"</span>, <span class="st">"blue"</span>])</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting with a black background and custom colormap</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    bars <span class="op">=</span> ax.bar(np.arange(<span class="bu">len</span>(president_df)), president_df[<span class="st">'Sentiment_Score'</span>], </span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>                  color<span class="op">=</span>custom_cmap(norm(president_df[<span class="st">'Sentiment_Score'</span>])), width<span class="op">=</span><span class="fl">1.0</span>)</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f'Sentiment Score over time for President </span><span class="sc">{</span>president<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">'Order of Sentences'</span>)</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="st">'Sentiment Intensity'</span>)</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'white'</span>,linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    ax.grid(axis<span class="op">=</span><span class="st">'y'</span>, color<span class="op">=</span><span class="st">'white'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    ax.set_facecolor(<span class="st">'black'</span>)</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    fig.colorbar(cm.ScalarMappable(norm<span class="op">=</span>norm, cmap<span class="op">=</span>custom_cmap), ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">'Sentiment Score'</span>)</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>presidents_list <span class="op">=</span> afn_df[<span class="st">'Presidents'</span>].unique()</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_in_grid(president, ax):</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Plot sentiment scores for a given president on a given axes."""</span></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    president_df <span class="op">=</span> afn_df[afn_df[<span class="st">'Presidents'</span>] <span class="op">==</span> president]</span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    <span class="co">#president_df = president_df.sort_values(by='Unnamed: 0')</span></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Normalize the scores for colormap</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    norm <span class="op">=</span> plt.Normalize(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    custom_cmap <span class="op">=</span> LinearSegmentedColormap.from_list(<span class="st">"custom"</span>, [<span class="st">"red"</span>, <span class="st">"gray"</span>, <span class="st">"blue"</span>])</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    bars <span class="op">=</span> ax.bar(np.arange(<span class="bu">len</span>(president_df)), president_df[<span class="st">'scores'</span>], </span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>                  color<span class="op">=</span>custom_cmap(norm(president_df[<span class="st">'scores'</span>])), width<span class="op">=</span><span class="fl">1.0</span>)</span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f'</span><span class="sc">{</span>president<span class="sc">}</span><span class="ss">'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>    ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'white'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>    ax.grid(axis<span class="op">=</span><span class="st">'y'</span>, color<span class="op">=</span><span class="st">'white'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>    ax.set_facecolor(<span class="st">'black'</span>)</span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a 2x3 grid plot for all presidents</span></span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">3</span>)</span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">'Sentiment Scores over time for each President'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> president, ax <span class="kw">in</span> <span class="bu">zip</span>(adjusted_presidents_order, axes.ravel()):</span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>    plot_in_grid(president, ax)</span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust layout</span></span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>plt.subplots_adjust(top<span class="op">=</span><span class="fl">0.90</span>)</span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> axes.ravel():</span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>    ax.tick_params(axis<span class="op">=</span><span class="st">'x'</span>, labelrotation<span class="op">=</span><span class="dv">45</span>, labelsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>    ax.tick_params(axis<span class="op">=</span><span class="st">'y'</span>, labelsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="co"># Set x and y labels fontsize</span></span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> axes[<span class="dv">1</span>, :]:</span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">'Sentences'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> axes[:, <span class="dv">0</span>]:</span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="st">'Scores'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.colors <span class="im">import</span> LinearSegmentedColormap</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> cm</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> cm</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_for_president_gradient(president, df):</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Filter dataframe for the selected president</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    president_df <span class="op">=</span> df[df[<span class="st">'Presidents'</span>] <span class="op">==</span> president]</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sorting data by order (using the 'Unnamed: 0' column as the order)</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    president_df <span class="op">=</span> president_df.sort_values(by<span class="op">=</span><span class="st">'Unnamed: 0'</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Normalize the scores to [0,1] for colormap</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    norm <span class="op">=</span> plt.Normalize(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Custom colormap: Red -&gt; Gray -&gt; Blue</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    custom_cmap <span class="op">=</span> LinearSegmentedColormap.from_list(<span class="st">"custom"</span>, [<span class="st">"red"</span>, <span class="st">"gray"</span>, <span class="st">"blue"</span>])</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting with a black background and custom colormap</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    bars <span class="op">=</span> ax.bar(np.arange(<span class="bu">len</span>(president_df)), president_df[<span class="st">'Sentiment_Score'</span>], </span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>                  color<span class="op">=</span>custom_cmap(norm(president_df[<span class="st">'Sentiment_Score'</span>])), width<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f'Sentiment Score over time for President </span><span class="sc">{</span>president<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">'Order of Sentences'</span>)</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="st">'Sentiment Intensity'</span>)</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'white'</span>,linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    ax.grid(axis<span class="op">=</span><span class="st">'y'</span>, color<span class="op">=</span><span class="st">'white'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    ax.set_facecolor(<span class="st">'black'</span>)</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    fig.colorbar(cm.ScalarMappable(norm<span class="op">=</span>norm, cmap<span class="op">=</span>custom_cmap), ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">'Sentiment Score'</span>)</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>presidents_list <span class="op">=</span> afn_df[<span class="st">'Presidents'</span>].unique()</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_in_grid(president, ax):</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Plot sentiment scores for a given president on a given axes."""</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>    president_df <span class="op">=</span> afn_df[afn_df[<span class="st">'Presidents'</span>] <span class="op">==</span> president]</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>    <span class="co">#president_df = president_df.sort_values(by='Unnamed: 0')</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Normalize the scores for colormap</span></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>    norm <span class="op">=</span> plt.Normalize(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>    custom_cmap <span class="op">=</span> LinearSegmentedColormap.from_list(<span class="st">"custom"</span>, [<span class="st">"red"</span>, <span class="st">"gray"</span>, <span class="st">"blue"</span>])</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>    bars <span class="op">=</span> ax.bar(np.arange(<span class="bu">len</span>(president_df)), president_df[<span class="st">'scores'</span>], </span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>                  color<span class="op">=</span>custom_cmap(norm(president_df[<span class="st">'scores'</span>])), width<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f'</span><span class="sc">{</span>president<span class="sc">}</span><span class="ss">'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>    ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'white'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>    ax.grid(axis<span class="op">=</span><span class="st">'y'</span>, color<span class="op">=</span><span class="st">'white'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>    ax.set_facecolor(<span class="st">'black'</span>)</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a 2x3 grid plot for all presidents</span></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">'Sentiment Scores over time for each President'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> president, ax <span class="kw">in</span> <span class="bu">zip</span>(adjusted_presidents_order, axes.ravel()):</span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>    plot_in_grid(president, ax)</span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust layout</span></span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>plt.subplots_adjust(top<span class="op">=</span><span class="fl">0.90</span>)</span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> axes.ravel():</span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a>    ax.tick_params(axis<span class="op">=</span><span class="st">'x'</span>, labelrotation<span class="op">=</span><span class="dv">45</span>, labelsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>    ax.tick_params(axis<span class="op">=</span><span class="st">'y'</span>, labelsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a><span class="co"># Set x and y labels fontsize</span></span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> axes[<span class="dv">1</span>, :]:</span>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">'Sentences'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> axes[:, <span class="dv">0</span>]:</span>
+<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="st">'Scores'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="index_files/figure-html/cell-25-output-1.png" class="img-fluid"></p>
+<p><img src="index_files/figure-html/cell-26-output-1.png" width="712" height="547"></p>
 </div>
 </div>
 <p>The histograms below show the sentiment score distribution for the presidents. All histograms appear to be slightly skewed to the left, indicating a high frequency of positive sentiment. Mandela appears to have the most evenly spread sentiment distribution, with the fewest number of protruding bars, while de Klerk mainly has a uniform sentiment distribution, with a notable deviation from that occuring in the neutral sentiment territory. Ramaphosa’s, Mbeki’s and Zuma’s sentiment distributions are both centered on the positive side of zero, indicating a generally positive sentiment, while Motlanthe’s most common sentiment is actually slightly negative, however that is offset by the high frequency of positive sentiments.</p>
-<div class="cell" data-execution_count="25">
+<div class="cell" data-execution_count="26">
 <div class="cell-output cell-output-display">
-<p><img src="index_files/figure-html/cell-26-output-1.png" class="img-fluid"></p>
+<p><img src="index_files/figure-html/cell-27-output-1.png" width="704" height="476"></p>
 </div>
 </div>
 <section id="nrc" class="level3">
 <h3 class="anchored" data-anchor-id="nrc">NRC</h3>
 <p>Using the NRC emotion lexicon we see that all presidents have their most common sentiment being positive, while the particular emotions in there sentences differ. A common emotion amongst all presidents is trust. Anticipation is a frequently evoked emotion from the presidents, besides for deKlerk. Other relatively common emotions include fear and joy.</p>
+</section>
 </section>
 <section id="latent-dirichlet-allocation-1" class="level2">
 <h2 class="anchored" data-anchor-id="latent-dirichlet-allocation-1">Latent Dirichlet Allocation</h2>
@@ -549,48 +616,48 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="probablistic-latent-semantic-analysis-1" class="level3">
 <h3 class="anchored" data-anchor-id="probablistic-latent-semantic-analysis-1">Probablistic Latent Semantic Analysis</h3>
 <p>pLSA models are very sensitive to data sparsity, the document-term matrix has only around a third of its cells populated. The model struggles to capture meaningful relationships through its dimensionality reduction techniques in the sparse data.</p>
-<div class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gensim.models <span class="im">import</span> LdaModel, LsiModel</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gensim <span class="im">import</span> corpora</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>m_pLSA_4 <span class="op">=</span> LsiModel.load(<span class="st">"topic_models/m_pLSA_4"</span>)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>num_words<span class="op">=</span><span class="dv">20</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>topics <span class="op">=</span> m_pLSA_4.print_topics(num_topics<span class="op">=</span><span class="dv">4</span>, num_words<span class="op">=</span>num_words)</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>df4<span class="op">=</span>pd.DataFrame({})</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> topic <span class="kw">in</span> topics:</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    content <span class="op">=</span> topic[<span class="dv">1</span>]</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    words<span class="op">=</span>[]</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    scores<span class="op">=</span>[]</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    scorewords <span class="op">=</span> content.split(<span class="st">' + '</span>)</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> item <span class="kw">in</span> scorewords:</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        spl<span class="op">=</span>item.split(<span class="st">'*'</span>)</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        scores.append(spl[<span class="dv">0</span>])</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        words.append(spl[<span class="dv">1</span>].replace(<span class="st">'"'</span>,<span class="st">''</span>))</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    topic_df<span class="op">=</span>pd.DataFrame({<span class="ss">f'T</span><span class="sc">{</span>topic[<span class="dv">0</span>]<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> Words'</span>: words, <span class="ss">f'T</span><span class="sc">{</span>topic[<span class="dv">0</span>]<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> Scores'</span>: scores})</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    df4 <span class="op">=</span> pd.concat([df4, topic_df], axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a 2x2 grid of subplots</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>)</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> [<span class="dv">0</span>,<span class="dv">1</span>]:</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> [<span class="dv">0</span>,<span class="dv">1</span>]:</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>        t<span class="op">=</span><span class="dv">2</span><span class="op">*</span>i<span class="op">+</span>j<span class="op">+</span><span class="dv">1</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>        axs[i, j].barh(df4[<span class="ss">f'T</span><span class="sc">{</span>t<span class="sc">}</span><span class="ss"> Words'</span>], df4[<span class="ss">f'T</span><span class="sc">{</span>t<span class="sc">}</span><span class="ss"> Scores'</span>])</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>        axs[i, j].set_xlabel(<span class="st">'Words'</span>)</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>        axs[i, j].set_ylabel(<span class="st">'Weight'</span>)</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>        axs[i, j].set_title(<span class="ss">f'M4: Topic </span><span class="sc">{</span>t<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>        axs[i, j].tick_params(axis<span class="op">=</span><span class="st">'x'</span>, rotation<span class="op">=</span><span class="dv">90</span>, labelsize<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>        axs[i, j].tick_params(axis<span class="op">=</span><span class="st">'y'</span>, rotation<span class="op">=</span><span class="dv">0</span>, labelsize<span class="op">=</span><span class="dv">9</span>)</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gensim.models <span class="im">import</span> LdaModel, LsiModel</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gensim <span class="im">import</span> corpora</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>m_pLSA_4 <span class="op">=</span> LsiModel.load(<span class="st">"topic_models/m_pLSA_4"</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>num_words<span class="op">=</span><span class="dv">20</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>topics <span class="op">=</span> m_pLSA_4.print_topics(num_topics<span class="op">=</span><span class="dv">4</span>, num_words<span class="op">=</span>num_words)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>df4<span class="op">=</span>pd.DataFrame({})</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> topic <span class="kw">in</span> topics:</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    content <span class="op">=</span> topic[<span class="dv">1</span>]</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    words<span class="op">=</span>[]</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    scores<span class="op">=</span>[]</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    scorewords <span class="op">=</span> content.split(<span class="st">' + '</span>)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> item <span class="kw">in</span> scorewords:</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>        spl<span class="op">=</span>item.split(<span class="st">'*'</span>)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>        scores.append(spl[<span class="dv">0</span>])</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>        words.append(spl[<span class="dv">1</span>].replace(<span class="st">'"'</span>,<span class="st">''</span>))</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    topic_df<span class="op">=</span>pd.DataFrame({<span class="ss">f'T</span><span class="sc">{</span>topic[<span class="dv">0</span>]<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> Words'</span>: words, <span class="ss">f'T</span><span class="sc">{</span>topic[<span class="dv">0</span>]<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> Scores'</span>: scores})</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    df4 <span class="op">=</span> pd.concat([df4, topic_df], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a 2x2 grid of subplots</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> [<span class="dv">0</span>,<span class="dv">1</span>]:</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> [<span class="dv">0</span>,<span class="dv">1</span>]:</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>        t<span class="op">=</span><span class="dv">2</span><span class="op">*</span>i<span class="op">+</span>j<span class="op">+</span><span class="dv">1</span></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>        axs[i, j].barh(df4[<span class="ss">f'T</span><span class="sc">{</span>t<span class="sc">}</span><span class="ss"> Words'</span>], df4[<span class="ss">f'T</span><span class="sc">{</span>t<span class="sc">}</span><span class="ss"> Scores'</span>])</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>        axs[i, j].set_xlabel(<span class="st">'Words'</span>)</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>        axs[i, j].set_ylabel(<span class="st">'Weight'</span>)</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>        axs[i, j].set_title(<span class="ss">f'M4: Topic </span><span class="sc">{</span>t<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>        axs[i, j].tick_params(axis<span class="op">=</span><span class="st">'x'</span>, rotation<span class="op">=</span><span class="dv">90</span>, labelsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>        axs[i, j].tick_params(axis<span class="op">=</span><span class="st">'y'</span>, rotation<span class="op">=</span><span class="dv">0</span>, labelsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="index_files/figure-html/cell-28-output-1.png" class="img-fluid"></p>
+<p><img src="index_files/figure-html/cell-29-output-1.png" width="662" height="470"></p>
 </div>
 </div>
 
