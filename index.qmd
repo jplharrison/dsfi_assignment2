@@ -955,7 +955,7 @@ Using the NRC emotion lexicon we see that all presidents have their most common 
 
 ## Latent Dirichlet Allocation
 
-The ALL models were trained on the corpus of all thirty-six speeches, iteratively decreasing the number of topics from five until three. At five topics, two of the topics are almost overlaid - indicating that they are closely linked and probably contain a single topic. At four topics, one of the topics sits almost on the origin of the latent variables. This suggests that this 'topic' does not have differentiating features and likely consists of neutral words, for example it contains 'new', 'also', and a set of numbers, 'one', 'two', 'million'. The third model, with three topics, has three clearly differentiated topics sitting at the extremes of the latent variables axes. Three-topics models were then trained for each of the presidents, using only their respective speeches as the corpus. We gave the top ten words from each topic for each presidents' model and for the three-topic ALL model to ChatGPT to see if it could discern the nature of the topics identified by the LDA models. The output is as follows:  
+The ALL models were trained on the corpus of all thirty-six speeches, iteratively decreasing the number of topics from five until three. At five topics, two of the topics are almost overlaid - indicating that they are closely linked and probably contain a single topic. At four topics, one of the topics sits almost on the origin of the latent variables. This suggests that this 'topic' does not have differentiating features and likely consists of neutral words, for example it contains 'new', 'also', and a set of numbers, 'one', 'two', 'million'. The third model, with three topics, has three clearly differentiated topics sitting at the extremes of the latent variables axes. Three-topics models were then trained for each of the presidents, using only their respective speeches as the corpus. We gave the top ten words from each topic for each presidents' model and for the three-topic ALL model to ChatGPT to see if it could discern the nature of the topics identified by the LDA models. ChatGPT does a good job of drawing topic titles from the model output, but the further descriptions are hit and miss. The output from ChatGPT is as follows:  
 
 LDA-Ramaphosa:
 
@@ -1003,6 +1003,7 @@ LDA-Mbeki:
     + Examples: "sector," "effort," "government"
 
 LDA-Motlanthe:
+
 + Topic 1 - South Africa and African development - this topic includes words related to South Africa and African development, reflecting a focus on regional and national development.
     + Examples: "south," "african," "development"
 + Topic 2: Government work and public sector - this topic likely represents the emphasis on government work and the public sector during President Motlanthe's leadership.
@@ -1016,7 +1017,7 @@ LDA-All:
     + Examples: "south," "africa," "new"
 + Topic 2: People, work, and service - this topic encompasses words related to the people, their work, and the services provided, reflecting the importance of public service and commitment.
     + Examples: "people," "work," "service"
-Topic 3 - Time and government - the words in this topic are related to time, government, and national affairs, indicating a focus on governance and the passage of time across all Presidential terms.
++ Topic 3 - Time and government - the words in this topic are related to time, government, and national affairs, indicating a focus on governance and the passage of time across all Presidential terms.
     + Examples: "year," "african," "government"
 
 ### Probablistic Latent Semantic Analysis
