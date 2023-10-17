@@ -283,6 +283,216 @@ plt.show()
 
 
 
+## AFINN lexicon
+
+```{python}
+#| echo: false
+#| eval: true
+#| include: false
+
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import nltk
+from sklearn.preprocessing import StandardScaler
+from afinn import Afinn
+ 
+#instantiate afinn
+afn = Afinn()
+data = pd.read_csv("finalSentences2.csv")
+
+# compute scores (polarity) and labels
+scores = [afn.score(sentence) for sentence in data["Sentences"]]
+sentiment = ['positive' if score > 0
+						else 'negative' if score < 0
+							else 'neutral'
+								for score in scores]
+	
+# dataframe creation
+afn_df = pd.DataFrame()
+afn_df['Presidents'] = data['Presidents']
+afn_df['Sentences'] = data['Sentences']
+afn_df['scores'] = scores
+afn_df['sentiments'] = sentiment
+
+# scaler = StandardScaler()
+# scaled_data = scaler.fit_transform(afn_df['scores'].values.reshape(-1,1))
+# afn_df['scores'] = scaled_data.squeeze()
+
+presidents_order = ['Mandela', 'deKlerk', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
+mean_scores_per_president = afn_df.groupby('Presidents')['scores'].mean()
+adjusted_presidents_order = ['deKlerk'] + [president for president in presidents_order if president != 'deKlerk']
+mean_scores_reordered = mean_scores_per_president.reindex(adjusted_presidents_order)
+
+# save object
+# mean_scores_reordered.to_csv('wes_appendix/mean_scores_reordered.csv')
+```
+
+The mean sentiment scores per president show President Mbeki exhibiting the highest mean sentiment score at approximately 1.65, suggesting a generally positive sentiment in his speeches. President Motlanthe followed closely with a mean sentiment score of approximately 1.44, indicating a similar trend of positively oriented speeches. In contrast, President de Klerk presented the lowest mean sentiment score, around 0.67, while Presidents Ramaphosa and Zuma demonstrated mean sentiment scores around 0.95 and 0.92, respectively.
+
+
+```{python}
+#| echo: False
+mean_scores_reordered = pd.read_csv('wes_appendix/mean_scores_reordered.csv')
+# Plotting the reordered mean sentiment scores
+plt.figure()
+#mean_scores_reordered.plot(kind='bar', color='skyblue')
+plt.bar(mean_scores_reordered['Presidents'], mean_scores_reordered['scores'], color='skyblue')
+
+plt.title('Mean Sentiment Scores per President')
+plt.xlabel('President')
+plt.axhline(0, color='red', linestyle='--')  #line at y=0 for reference
+plt.ylabel('Mean Sentiment Score')
+plt.xticks(rotation=90)
+#plt.yticks(fontsize=16)  # Set the font size for y-axis tick labels
+plt.tight_layout()
+plt.show()
+```
+
+```{python}
+#| echo: false
+#| include: false
+colors = {'negative': '#FF9999', 'neutral': '#99CCFF', 'positive': '#99FF99'}
+sentiment_counts = afn_df.groupby('Presidents')['sentiments'].value_counts(normalize=True).unstack().fillna(0)
+```
+
+
+Figure X below shows that deKlerk is once again seen to possess less positive sentiments in his speeches than most of the other presidents, apart from Zuma, who has a very similar amount of positivity. Motlanthe and Mbeki are seen to have the greatest proportion of positive sentiments, while Zuma is seen to have the largest amount of neutral sentiments compared to the other presidents. As well as having the smallest proportion of positivity, deKlerk also has a large proportion of his sentences carrying negative sentiments.
+
+```{python}
+# save object
+# sentiment_counts.reindex(adjusted_presidents_order).to_csv('wes_appendix/sentiment_counts.csv')
+sentiment_counts = pd.read_csv("wes_appendix/sentiment_counts.csv")
+sentiment_counts.plot(kind='bar', stacked=True, color=[colors[col] for col in sentiment_counts.columns if col != 'Presidents'])
+plt.title('Sentiment Distribution per President', fontsize=20)
+plt.ylabel('Percentage')
+plt.xlabel('President')
+plt.legend(title='Sentiment')#, fontsize=20, title_fontsize=20)
+plt.tight_layout()
+plt.xticks(rotation=0)
+#plt.yticks(fontsize=16) 
+plt.show()
+```
+
+
+Figure Ax in the appendix shows the sentiments of each president over time. However, once again the extreme granularity of the plots makes it difficult to extract any useful information. Noticeably however, deKlerk's strong negative sentiments are apparent from such a broad scoped view.
+
+The histograms below show the sentiment score distribution for the presidents. All histograms appear to be slightly skewed to the left, indicating a high frequency of positive sentiment. Mandela appears to have the most evenly spread sentiment distribution, with the fewest number of protruding bars, while de Klerk mainly has a uniform sentiment distribution, with a notable deviation from that occuring in the neutral sentiment territory. Ramaphosa's, Mbeki's and Zuma's sentiment distributions are both centered on the positive side of zero, indicating a generally positive sentiment, while Motlanthe's most common sentiment is actually slightly negative, however that is offset by the high frequency of positive sentiments.
+
+```{python}
+#| echo: false
+#| eval: true
+
+pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
+
+def plot_histogram(president, color, ax):
+    """Plot histogram of sentiment scores for a given president on a given axes."""
+    president_df = afn_df[afn_df['Presidents'] == president]
+    
+    x_range = max(president_df['scores']) - min(president_df['scores'])
+    half_x_range = x_range / 2
+    
+    # Set the x-axis limits to center the histogram around 0
+    ax.set_xlim(-10, 10)
+
+    ax.hist(president_df['scores'], bins=30, color=color, edgecolor='white')
+    ax.set_title(f'{president}', fontsize=20)
+    ax.set_xlabel('Sentiment Score', fontsize=20)
+    ax.set_ylabel('Frequency', fontsize=20)
+    ax.tick_params(axis='x', labelsize=16)
+    ax.tick_params(axis='y', labelsize=16)
+    ax.grid(axis='y', linestyle='--', linewidth=0.5)
+
+# Creating a 2x3 grid plot for histograms of all presidents
+fig, axes = plt.subplots(2, 3)
+fig.suptitle('Distribution of Sentiment Scores for each President', fontsize=20)
+
+for president, color, ax in zip(adjusted_presidents_order, pastel_colors, axes.ravel()):
+    plot_histogram(president, color, ax)
+
+# Adjust layout
+plt.tight_layout()
+plt.subplots_adjust(top=0.90)
+plt.show()
+
+```
+
+
+
+## NRC
+
+```{python}
+#| echo: false
+#| eval: true
+#| include: false
+import pandas as pd
+from nrclex import NRCLex
+
+# Function to find the top emotions for a text
+def find_top_emotions(text):
+    emotion = NRCLex(text)
+    return emotion.top_emotions
+
+# Apply the function to each row in the DataFrame
+data['Top_Emotions'] = data['Sentences'].apply(find_top_emotions)
+
+unique_emotion_columns = ['fear', 'anger', 'anticipation','anticip', 'trust', 'surprise', 'positive', 'negative', 'sadness', 'disgust', 'joy']
+presidents = data['Presidents'].unique()
+
+president_dataframes = {president: pd.DataFrame(0, columns=unique_emotion_columns, index=[0]) for president in presidents}
+
+for index, row in data.iterrows():
+    president = row['Presidents']
+    emotions = dict(row['Top_Emotions'])
+    #president_df = president_dataframes[president]
+    
+    # Iterate through unique_emotion_columns
+    for emotion_column in emotions.keys():
+        if emotion_column in emotions:
+            value = emotions[emotion_column]
+            president_dataframes[president][emotion_column] += value
+
+president_dataframes['Mandela']
+
+for pres in presidents:
+    president_dataframes[pres] = president_dataframes[pres].div(president_dataframes[pres].sum(axis=1), axis=0)
+
+for president, df in president_dataframes.items():
+    if 'anticipation' in df.columns and 'anticip' in df.columns:
+        df['anticipation'] += df['anticip']  # Add 'anticip' to 'anticipation'
+        df.drop(columns=['anticip'], inplace=True)  # Remove 'anticip' column
+
+pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
+fig, axes = plt.subplots(2, 3, figsize=(18, 10))
+fig.suptitle('Distribution of Sentiment Scores for each President', fontsize=20)
+
+order = ['deKlerk','Mandela', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
+
+for president, ax, colour in zip(order, axes.ravel(), pastel_colors):
+    data = president_dataframes[president]
+    x = list(data.keys())
+    x.remove('positive')
+    x.remove('negative')
+    y = data[x].values.squeeze()
+    ax.set_ylim(0, 0.25)
+    ax.bar(x, y, color=colour)
+    ax.set_title(president, fontsize=20)
+    # ax.set_xlabel('Sentiment Category', fontsize=16)
+    ax.set_ylabel('Sentiment Score', fontsize=16)
+    ax.tick_params(axis='x', labelrotation=45, labelsize=16)
+    ax.tick_params(axis='y', labelsize=16)
+
+# Adjust layout
+plt.tight_layout()
+plt.subplots_adjust(top=0.90)
+plt.show()
+```
+
+Using the NRC emotion lexicon we see that all presidents have their most common sentiment being positive, while the particular emotions in there sentences differ. A common emotion amongst all presidents is trust. Anticipation is a frequently evoked emotion from the presidents, besides for deKlerk. Other relatively common emotions include fear and joy.
+
+
 
 ## RoBERTa 
 
@@ -599,215 +809,6 @@ md_tbl = topics_df.to_markdown(index=False)
 md_tbl
 
 ```
-
-
-```{python}
-#| echo: false
-#| eval: true
-#| include: false
-
-
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-import nltk
-from sklearn.preprocessing import StandardScaler
-from afinn import Afinn
- 
-#instantiate afinn
-afn = Afinn()
-data = pd.read_csv("finalSentences2.csv")
-
-# compute scores (polarity) and labels
-scores = [afn.score(sentence) for sentence in data["Sentences"]]
-sentiment = ['positive' if score > 0
-						else 'negative' if score < 0
-							else 'neutral'
-								for score in scores]
-	
-# dataframe creation
-afn_df = pd.DataFrame()
-afn_df['Presidents'] = data['Presidents']
-afn_df['Sentences'] = data['Sentences']
-afn_df['scores'] = scores
-afn_df['sentiments'] = sentiment
-
-# scaler = StandardScaler()
-# scaled_data = scaler.fit_transform(afn_df['scores'].values.reshape(-1,1))
-# afn_df['scores'] = scaled_data.squeeze()
-
-presidents_order = ['Mandela', 'deKlerk', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
-mean_scores_per_president = afn_df.groupby('Presidents')['scores'].mean()
-adjusted_presidents_order = ['deKlerk'] + [president for president in presidents_order if president != 'deKlerk']
-mean_scores_reordered = mean_scores_per_president.reindex(adjusted_presidents_order)
-
-# save object
-# mean_scores_reordered.to_csv('wes_appendix/mean_scores_reordered.csv')
-```
-
-The mean sentiment scores per president show President Mbeki exhibiting the highest mean sentiment score at approximately 1.65, suggesting a generally positive sentiment in his speeches. President Motlanthe followed closely with a mean sentiment score of approximately 1.44, indicating a similar trend of positively oriented speeches. In contrast, President de Klerk presented the lowest mean sentiment score, around 0.67, while Presidents Ramaphosa and Zuma demonstrated mean sentiment scores around 0.95 and 0.92, respectively.
-
-
-```{python}
-#| echo: False
-mean_scores_reordered = pd.read_csv('wes_appendix/mean_scores_reordered.csv')
-# Plotting the reordered mean sentiment scores
-plt.figure()
-#mean_scores_reordered.plot(kind='bar', color='skyblue')
-plt.bar(mean_scores_reordered['Presidents'], mean_scores_reordered['scores'], color='skyblue')
-
-plt.title('Mean Sentiment Scores per President')
-
-plt.title("Mean Sentiment Scores per President", fontsize=20)
-plt.xlabel('President', fontsize=20)
-plt.ylabel('Mean Sentiment Score', fontsize=20)
-plt.xticks(rotation=45, fontsize=16)
-plt.yticks(fontsize=16)  # Set the font size for y-axis tick labels
-plt.tight_layout()
-plt.show()
-```
-
-```{python}
-#| echo: false
-#| include: false
-colors = {'negative': '#FF9999', 'neutral': '#99CCFF', 'positive': '#99FF99'}
-sentiment_counts = afn_df.groupby('Presidents')['sentiments'].value_counts(normalize=True).unstack().fillna(0)
-```
-
-
-Figure X below shows that deKlerk is once again seen to possess less positive sentiments in his speeches than most of the other presidents, apart from Zuma, who has a very similar amount of positivity. Motlanthe and Mbeki are seen to have the greatest proportion of positive sentiments, while Zuma is seen to have the largest amount of neutral sentiments compared to the other presidents. As well as having the smallest proportion of positivity, deKlerk also has a large proportion of his sentences carrying negative sentiments.
-
-```{python}
-# save object
-# sentiment_counts.reindex(adjusted_presidents_order).to_csv('wes_appendix/sentiment_counts.csv')
-sentiment_counts = pd.read_csv("wes_appendix/sentiment_counts.csv")
-sentiment_counts.plot(kind='bar', stacked=True, color=[colors[col] for col in sentiment_counts.columns if col != 'Presidents'])
-plt.title('Sentiment Distribution per President', fontsize=20)
-plt.ylabel('Percentage', fontsize=20)
-plt.xlabel('President', fontsize=20)
-plt.legend(title='Sentiment', fontsize=20, title_fontsize=20)
-plt.tight_layout()
-plt.xticks(rotation=45, fontsize=16)
-plt.yticks(fontsize=16) 
-plt.show()
-```
-
-
-Figure Ax in the appendix shows the sentiments of each president over time. However, once again the extreme granularity of the plots makes it difficult to extract any useful information. Noticeably however, deKlerk's strong negative sentiments are apparent from such a broad scoped view.
-
-The histograms below show the sentiment score distribution for the presidents. All histograms appear to be slightly skewed to the left, indicating a high frequency of positive sentiment. Mandela appears to have the most evenly spread sentiment distribution, with the fewest number of protruding bars, while de Klerk mainly has a uniform sentiment distribution, with a notable deviation from that occuring in the neutral sentiment territory. Ramaphosa's, Mbeki's and Zuma's sentiment distributions are both centered on the positive side of zero, indicating a generally positive sentiment, while Motlanthe's most common sentiment is actually slightly negative, however that is offset by the high frequency of positive sentiments.
-
-```{python}
-#| echo: false
-#| eval: true
-
-pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
-
-def plot_histogram(president, color, ax):
-    """Plot histogram of sentiment scores for a given president on a given axes."""
-    president_df = afn_df[afn_df['Presidents'] == president]
-    
-    x_range = max(president_df['scores']) - min(president_df['scores'])
-    half_x_range = x_range / 2
-    
-    # Set the x-axis limits to center the histogram around 0
-    ax.set_xlim(-10, 10)
-
-    ax.hist(president_df['scores'], bins=30, color=color, edgecolor='white')
-    ax.set_title(f'{president}', fontsize=20)
-    ax.set_xlabel('Sentiment Score', fontsize=20)
-    ax.set_ylabel('Frequency', fontsize=20)
-    ax.tick_params(axis='x', labelsize=16)
-    ax.tick_params(axis='y', labelsize=16)
-    ax.grid(axis='y', linestyle='--', linewidth=0.5)
-
-# Creating a 2x3 grid plot for histograms of all presidents
-fig, axes = plt.subplots(2, 3)
-fig.suptitle('Distribution of Sentiment Scores for each President', fontsize=20)
-
-for president, color, ax in zip(adjusted_presidents_order, pastel_colors, axes.ravel()):
-    plot_histogram(president, color, ax)
-
-# Adjust layout
-plt.tight_layout()
-plt.subplots_adjust(top=0.90)
-plt.show()
-
-```
-
-
-
-### NRC
-
-```{python}
-#| echo: false
-#| eval: true
-#| include: false
-import pandas as pd
-from nrclex import NRCLex
-
-# Function to find the top emotions for a text
-def find_top_emotions(text):
-    emotion = NRCLex(text)
-    return emotion.top_emotions
-
-# Apply the function to each row in the DataFrame
-data['Top_Emotions'] = data['Sentences'].apply(find_top_emotions)
-
-unique_emotion_columns = ['fear', 'anger', 'anticipation','anticip', 'trust', 'surprise', 'positive', 'negative', 'sadness', 'disgust', 'joy']
-presidents = data['Presidents'].unique()
-
-president_dataframes = {president: pd.DataFrame(0, columns=unique_emotion_columns, index=[0]) for president in presidents}
-
-for index, row in data.iterrows():
-    president = row['Presidents']
-    emotions = dict(row['Top_Emotions'])
-    #president_df = president_dataframes[president]
-    
-    # Iterate through unique_emotion_columns
-    for emotion_column in emotions.keys():
-        if emotion_column in emotions:
-            value = emotions[emotion_column]
-            president_dataframes[president][emotion_column] += value
-
-president_dataframes['Mandela']
-
-for pres in presidents:
-    president_dataframes[pres] = president_dataframes[pres].div(president_dataframes[pres].sum(axis=1), axis=0)
-
-for president, df in president_dataframes.items():
-    if 'anticipation' in df.columns and 'anticip' in df.columns:
-        df['anticipation'] += df['anticip']  # Add 'anticip' to 'anticipation'
-        df.drop(columns=['anticip'], inplace=True)  # Remove 'anticip' column
-
-pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
-fig, axes = plt.subplots(2, 3, figsize=(18, 10))
-fig.suptitle('Distribution of Sentiment Scores for each President', fontsize=20)
-
-order = ['deKlerk','Mandela', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
-
-for president, ax, colour in zip(order, axes.ravel(), pastel_colors):
-    data = president_dataframes[president]
-    x = list(data.keys())
-    x.remove('positive')
-    x.remove('negative')
-    y = data[x].values.squeeze()
-    ax.set_ylim(0, 0.25)
-    ax.bar(x, y, color=colour)
-    ax.set_title(president, fontsize=20)
-    # ax.set_xlabel('Sentiment Category', fontsize=16)
-    ax.set_ylabel('Sentiment Score', fontsize=16)
-    ax.tick_params(axis='x', labelrotation=45, labelsize=16)
-    ax.tick_params(axis='y', labelsize=16)
-
-# Adjust layout
-plt.tight_layout()
-plt.subplots_adjust(top=0.90)
-plt.show()
-```
-
-Using the NRC emotion lexicon we see that all presidents have their most common sentiment being positive, while the particular emotions in there sentences differ. A common emotion amongst all presidents is trust. Anticipation is a frequently evoked emotion from the presidents, besides for deKlerk. Other relatively common emotions include fear and joy.
 
 
 ## Latent Dirichlet Allocation
