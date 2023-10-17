@@ -231,80 +231,6 @@ Latent Dirichlet Allocation (LDA) is a probabilitistic model which was implement
 
 Probablistic Latent Semantic Analysis (pLSA) is the second topic modelling technique used to extract latent topics from the corpus of documents. The text data is preprocessed similarly to LDA; removing stop words, punctuation, and debris, followed by lemmatisation and tokenisation, and then the creation of a document-term matrix. After the pre-processing is complete, pLSA begins by initialising random probabilities for topics and words within topics. The topic and word probabilties are then iteratively updated using the Expectation Maximisation (EM) algorithm. Once the algorithm reaches convergence, there is a resulting set of topics, each containing a set of words. The Gensim package was used to implement the training of the pLSA models, and the matplotlib package was used to visualise the results.
 
-## Results and Discussion
-
-### Latent Dirichlet Allocation
-
-The ALL models were trained on the corpus of all thirty-six speeches, iteratively decreasing the number of topics from five until three. At five topics, two of the topics are almost overlaid - indicating that they are closely linked and probably contain a single topic. At four topics, one of the topics sits almost on the origin of the latent variables. This suggests that this 'topic' does not have differentiating features and likely consists of neutral words, for example it contains 'new', 'also', and a set of numbers, 'one', 'two', 'million'. The third model, with three topics, has three clearly differentiated topics sitting at the extremes of the latent variables axes. Three-topics models were then trained for each of the presidents, using only their respective speeches as the corpus. We gave the top ten words from each topic for each presidents' model and for the three-topic ALL model to ChatGPT to see if it could discern the nature of the topics identified by the LDA models. The output is as follows:  
-
-LDA-Ramaphosa:
-
-+ Topic 1: People and societal needs - this topic includes words related to the needs of the people and society. This could be associated with President Ramaphosa's focus on addressing the needs of the South African population, which could include policies related to social welfare and community development. 
-    + Examples: "people," "need," "african".
-+ Topic 2: Economic development and business - President Ramaphosa is known for promoting economic development and business growth in South Africa. This topic contains words related to business and economic sectors. 
-    + Examples: "business," "government," "economic".
-+ Topic 3: Time and work commitment - this topic contains words related to time and work commitment, possibly reflecting President Ramaphosa's commitment to his role and responsibilities as a leader. 
-    + Examples: "year," "work," "must".
-
-LDA-Zuma:
-
-+ Topic 1: South Africa and government - this topic includes words related to South Africa and government. President Zuma's tenure was marked by various political and governmental issues, making this a prominent topic.
-    + Examples: "south," "government," "africa"
-+ Topic 2: Economic sectors and development - President Zuma's administration likely involved policies and discussions related to economic sectors and development, as indicated by the words in this topic.
-    + Examples: "sector," "new," "economic"
-+ Topic 3: Time and population - this topic may be associated with President Zuma's time in office and concerns related to the South African population.
-    + Examples: "year," "country," "million"
-
-LDA-Mandela:
-
-+ Topic 1: Public affairs and the country - this topic encompasses words associated with public affairs and the country. Given Nelson Mandela's role as South Africa's first post-apartheid president, it's likely that topics related to the nation were significant.
-    + Examples: "public," "country," "african"
-+ Topic 2: Government work and public service - President Mandela's government focused on public service and the work required to build a new South Africa.
-    + Examples: "government," "work," "service"
-+ Topic 3: Time and commitment - Words related to time and commitment reflect Mandela's dedication to the country and his work.
-    + Example: "year," "must," "national"
-
-LDA-deKlerk:
-
-+ Topic 1: Political alliance and elections - this topic includes words related to political alliances and elections. President de Klerk played a crucial role in the transition from apartheid to democracy.
-    + Examples: "alliance," "election," "african"
-+ Topic 2: Constitution and political parties - given his role in the negotiation of South Africa's new constitution, this topic reflects words related to the constitution and political parties.
-    + Examples: "constitution," "party," "power"
-+ Topic 3: South African provinces and constitutional concerns - the words in this topic may relate to the various provinces in South Africa and constitutional concerns that were addressed during his leadership.
-    + Examples: "south," "province," "constitutional"
-
-LDA-Mbeki:
-
-+ Topic 1: Time and government programs - this topic could be associated with President Mbeki's focus on time-bound government programs and initiatives.
-    + Examples: "year," "programme," "government"
-+ Topic 2: National issues and the country - this topic encompasses words related to national issues and the country, reflecting his leadership during a period of significant national importance.
-    + Examples: "country," "national," "work"
-+ Topic 3: Economic sectors and government efforts - President Mbeki's administration focused on economic sectors and government efforts, as indicated by the words in this topic.
-    + Examples: "sector," "effort," "government"
-
-LDA-Motlanthe:
-+ Topic 1 - South Africa and African development - this topic includes words related to South Africa and African development, reflecting a focus on regional and national development.
-    + Examples: "south," "african," "development"
-+ Topic 2: Government work and public sector - this topic likely represents the emphasis on government work and the public sector during President Motlanthe's leadership.
-    + Examples: "government," "sector," "regard"
-+ Topic 3: Economic development and work - words related to economic development and work suggest a focus on economic policies and employment during his tenure.
-    + Examples: "economic," "work," "growth"
-
-LDA-All:
-
-+ Topic 1: South Africa and African development - this topic emphasizes South Africa and its development, which is a broad, overarching theme applicable to all six Presidents.
-    + Examples: "south," "africa," "new"
-+ Topic 2: People, work, and service - this topic encompasses words related to the people, their work, and the services provided, reflecting the importance of public service and commitment.
-    + Examples: "people," "work," "service"
-Topic 3 - Time and government - the words in this topic are related to time, government, and national affairs, indicating a focus on governance and the passage of time across all Presidential terms.
-    + Examples: "year," "african," "government"
-
-### Probablistic Latent Semantic Analysis
-
-pLSA models are very sensitive to data sparsity, the document-term matrix has only around a third of its cells populated. The model struggles to capture meaningful relationships through its dimensionality reduction techniques in the sparse data.
-
-
-
 ```{python}
 #| include: false
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, AutoConfig
@@ -685,7 +611,7 @@ The mean sentiment scores per president show President Mbeki exhibiting the high
 #| echo: False
 mean_scores_reordered = pd.read_csv('wes_appendix/mean_scores_reordered.csv')
 # Plotting the reordered mean sentiment scores
-plt.figure(figsize=(12, 7))
+plt.figure()
 #mean_scores_reordered.plot(kind='bar', color='skyblue')
 plt.bar(mean_scores_reordered['Presidents'], mean_scores_reordered['scores'], color='skyblue')
 
@@ -714,7 +640,7 @@ Figure X below shows that deKlerk is once again seen to possess less positive se
 # save object
 # sentiment_counts.reindex(adjusted_presidents_order).to_csv('wes_appendix/sentiment_counts.csv')
 sentiment_counts = pd.read_csv("wes_appendix/sentiment_counts.csv")
-sentiment_counts.plot(kind='bar', stacked=True, figsize=(12,7), color=[colors[col] for col in sentiment_counts.columns if col != 'Presidents'])
+sentiment_counts.plot(kind='bar', stacked=True, color=[colors[col] for col in sentiment_counts.columns if col != 'Presidents'])
 plt.title('Sentiment Distribution per President', fontsize=20)
 plt.ylabel('Percentage', fontsize=20)
 plt.xlabel('President', fontsize=20)
@@ -749,7 +675,7 @@ def plot_for_president_gradient(president, df):
     custom_cmap = LinearSegmentedColormap.from_list("custom", ["red", "gray", "blue"])
     
     # Plotting with a black background and custom colormap
-    fig, ax = plt.subplots(figsize=(10, 5))
+    fig, ax = plt.subplots()
     bars = ax.bar(np.arange(len(president_df)), president_df['Sentiment_Score'], 
                   color=custom_cmap(norm(president_df['Sentiment_Score'])), width=1.0)
     
@@ -782,7 +708,7 @@ def plot_in_grid(president, ax):
     ax.set_facecolor('black')
 
 # Creating a 2x3 grid plot for all presidents
-fig, axes = plt.subplots(2, 3, figsize=(18, 10))
+fig, axes = plt.subplots(2, 3)
 fig.suptitle('Sentiment Scores over time for each President', fontsize=20)
 
 for president, ax in zip(adjusted_presidents_order, axes.ravel()):
@@ -833,7 +759,7 @@ def plot_histogram(president, color, ax):
     ax.grid(axis='y', linestyle='--', linewidth=0.5)
 
 # Creating a 2x3 grid plot for histograms of all presidents
-fig, axes = plt.subplots(2, 3, figsize=(18, 10))
+fig, axes = plt.subplots(2, 3)
 fig.suptitle('Distribution of Sentiment Scores for each President', fontsize=20)
 
 for president, color, ax in zip(adjusted_presidents_order, pastel_colors, axes.ravel()):
@@ -921,6 +847,79 @@ Using the NRC emotion lexicon we see that all presidents have their most common 
 
 
 
+
+
+## Latent Dirichlet Allocation
+
+The ALL models were trained on the corpus of all thirty-six speeches, iteratively decreasing the number of topics from five until three. At five topics, two of the topics are almost overlaid - indicating that they are closely linked and probably contain a single topic. At four topics, one of the topics sits almost on the origin of the latent variables. This suggests that this 'topic' does not have differentiating features and likely consists of neutral words, for example it contains 'new', 'also', and a set of numbers, 'one', 'two', 'million'. The third model, with three topics, has three clearly differentiated topics sitting at the extremes of the latent variables axes. Three-topics models were then trained for each of the presidents, using only their respective speeches as the corpus. We gave the top ten words from each topic for each presidents' model and for the three-topic ALL model to ChatGPT to see if it could discern the nature of the topics identified by the LDA models. The output is as follows:  
+
+LDA-Ramaphosa:
+
++ Topic 1: People and societal needs - this topic includes words related to the needs of the people and society. This could be associated with President Ramaphosa's focus on addressing the needs of the South African population, which could include policies related to social welfare and community development. 
+    + Examples: "people," "need," "african".
++ Topic 2: Economic development and business - President Ramaphosa is known for promoting economic development and business growth in South Africa. This topic contains words related to business and economic sectors. 
+    + Examples: "business," "government," "economic".
++ Topic 3: Time and work commitment - this topic contains words related to time and work commitment, possibly reflecting President Ramaphosa's commitment to his role and responsibilities as a leader. 
+    + Examples: "year," "work," "must".
+
+LDA-Zuma:
+
++ Topic 1: South Africa and government - this topic includes words related to South Africa and government. President Zuma's tenure was marked by various political and governmental issues, making this a prominent topic.
+    + Examples: "south," "government," "africa"
++ Topic 2: Economic sectors and development - President Zuma's administration likely involved policies and discussions related to economic sectors and development, as indicated by the words in this topic.
+    + Examples: "sector," "new," "economic"
++ Topic 3: Time and population - this topic may be associated with President Zuma's time in office and concerns related to the South African population.
+    + Examples: "year," "country," "million"
+
+LDA-Mandela:
+
++ Topic 1: Public affairs and the country - this topic encompasses words associated with public affairs and the country. Given Nelson Mandela's role as South Africa's first post-apartheid president, it's likely that topics related to the nation were significant.
+    + Examples: "public," "country," "african"
++ Topic 2: Government work and public service - President Mandela's government focused on public service and the work required to build a new South Africa.
+    + Examples: "government," "work," "service"
++ Topic 3: Time and commitment - Words related to time and commitment reflect Mandela's dedication to the country and his work.
+    + Example: "year," "must," "national"
+
+LDA-deKlerk:
+
++ Topic 1: Political alliance and elections - this topic includes words related to political alliances and elections. President de Klerk played a crucial role in the transition from apartheid to democracy.
+    + Examples: "alliance," "election," "african"
++ Topic 2: Constitution and political parties - given his role in the negotiation of South Africa's new constitution, this topic reflects words related to the constitution and political parties.
+    + Examples: "constitution," "party," "power"
++ Topic 3: South African provinces and constitutional concerns - the words in this topic may relate to the various provinces in South Africa and constitutional concerns that were addressed during his leadership.
+    + Examples: "south," "province," "constitutional"
+
+LDA-Mbeki:
+
++ Topic 1: Time and government programs - this topic could be associated with President Mbeki's focus on time-bound government programs and initiatives.
+    + Examples: "year," "programme," "government"
++ Topic 2: National issues and the country - this topic encompasses words related to national issues and the country, reflecting his leadership during a period of significant national importance.
+    + Examples: "country," "national," "work"
++ Topic 3: Economic sectors and government efforts - President Mbeki's administration focused on economic sectors and government efforts, as indicated by the words in this topic.
+    + Examples: "sector," "effort," "government"
+
+LDA-Motlanthe:
++ Topic 1 - South Africa and African development - this topic includes words related to South Africa and African development, reflecting a focus on regional and national development.
+    + Examples: "south," "african," "development"
++ Topic 2: Government work and public sector - this topic likely represents the emphasis on government work and the public sector during President Motlanthe's leadership.
+    + Examples: "government," "sector," "regard"
++ Topic 3: Economic development and work - words related to economic development and work suggest a focus on economic policies and employment during his tenure.
+    + Examples: "economic," "work," "growth"
+
+LDA-All:
+
++ Topic 1: South Africa and African development - this topic emphasizes South Africa and its development, which is a broad, overarching theme applicable to all six Presidents.
+    + Examples: "south," "africa," "new"
++ Topic 2: People, work, and service - this topic encompasses words related to the people, their work, and the services provided, reflecting the importance of public service and commitment.
+    + Examples: "people," "work," "service"
+Topic 3 - Time and government - the words in this topic are related to time, government, and national affairs, indicating a focus on governance and the passage of time across all Presidential terms.
+    + Examples: "year," "african," "government"
+
+### Probablistic Latent Semantic Analysis
+
+pLSA models are very sensitive to data sparsity, the document-term matrix has only around a third of its cells populated. The model struggles to capture meaningful relationships through its dimensionality reduction techniques in the sparse data.
+
+
 ```{python}
 
 import matplotlib.pyplot as plt
@@ -950,7 +949,7 @@ for topic in topics:
 
 
 # Create a 2x2 grid of subplots
-fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+fig, axs = plt.subplots(2, 2)
 for i in [0,1]:
     for j in [0,1]:
         t=2*i+j+1
@@ -963,6 +962,3 @@ for i in [0,1]:
 plt.tight_layout()
 plt.show()
 ```
-
-
-
