@@ -360,3 +360,58 @@ plt.tight_layout()
 plt.subplots_adjust(top=0.90)
 plt.show()
 ```
+
+### Hugging Face 2
+
+
+```{python}
+# Assuming a2data is loaded
+data = a2data
+
+# Define the preprocess function
+def preprocess(text):
+    new_text = []
+    for t in text.split(" "):
+        t = '@user' if t.startswith('@') and len(t) > 1 else t
+        t = 'http' if t.startswith('http') else t
+        new_text.append(t)
+    return " ".join(new_text)
+
+# Define the model details
+MODEL = "cardiffnlp/xlm-twitter-politics-sentiment"
+tokenizer = AutoTokenizer.from_pretrained(MODEL)
+config = AutoConfig.from_pretrained(MODEL)
+model = AutoModelForSequenceClassification.from_pretrained(MODEL)
+
+# Preprocess the sentences
+data['Preprocessed_Sentences'] = data['Sentences'].apply(preprocess)
+
+# Compute the weighted sentiment score and get the model's sentiment classification
+def compute_sentiment_data(text):
+    # Tokenize and get model output
+    encoded_input = tokenizer(text, return_tensors='pt', truncation=True, max_length=512)
+    output = model(**encoded_input)
+    scores = output[0][0].detach().numpy()
+    probabilities = softmax(scores)
+    
+    # Compute the weighted sentiment score
+    sentiment_values = np.array([-1, 0, 1])  # Corresponding to Negative, Neutral, and Positive
+    sentiment_score = np.dot(sentiment_values, probabilities)
+    
+    # Get the model's sentiment classification
+    ranking = np.argsort(scores)
+    ranking = ranking[::-1]
+    label = config.id2label[ranking[0]]
+    
+    return sentiment_score, label
+
+# Predict sentiment data for the preprocessed sentences
+sentiment_data = data['Preprocessed_Sentences'].apply(compute_sentiment_data)
+data['Sentiment_Score'] = [s[0] for s in sentiment_data]
+data['Predicted_Label'] = [s[1] for s in sentiment_data]
+
+# Save the results
+data.to_csv("HFM2_SentimentData.csv")
+
+data.head()
+```
