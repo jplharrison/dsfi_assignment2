@@ -30,6 +30,12 @@ According to (Yadav and Vishwakarma, 2019) who reviewed over 100 papers which us
 
 Furthermore, (Loureiro et al., 2022) showed the importance of Time language models, which are a set of language models which undergo continual learning on, in this case, tweets. (Loureiro et al., 2022) shows that this approach enhances the models ability to deal with out-of-distribution inputs, as well enhances competitiveness with standard benchmark tests. They’re also seen to deal well with the problem of concept drift. Since our data is over a long period of time, we will be using these time language models too.
 
+## Topic Modelling
+
+In the 1980s, topic modelling emerged as a means to enhance the accuracy of information retrieval systems. Deerwester et al (1990) founded one of the earliest topic models known as Latent Semantic Analysis (LSA). LSA groups documents based on latent semantic formations, and makes the assumption that words with similar semantic meanings tend to co-occur. This innovation greatly advanced the capabilities of document retrieval systems because users were no longer required to employ the exact words found in related documents - similarity could be determined through a broader semantic context.
+
+Blei et al. (2003) advanced the techniques implemented in LSA by developing a related modelling algorithm called Latent Dirichlet Allocation (LDA). In LDA, a document is seen as a collection of words drawn from unobserved topics. LDA subsequently assesses the likelihood distribution of a specific word across a range of topics and then the distribution of a specific topic across a collection of documents.
+
 ```{python}
 #| include: false
 pip install nrclex
