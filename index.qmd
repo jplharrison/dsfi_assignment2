@@ -741,6 +741,7 @@ sentiment_counts = afn_df.groupby('Presidents')['sentiments'].value_counts(norma
 Figure X below shows that deKlerk is once again seen to possess less positive sentiments in his speeches than most of the other presidents, apart from Zuma, who has a very similar amount of positivity. Motlanthe and Mbeki are seen to have the greatest proportion of positive sentiments, while Zuma is seen to have the largest amount of neutral sentiments compared to the other presidents. As well as having the smallest proportion of positivity, deKlerk also has a large proportion of his sentences carrying negative sentiments.
 
 ```{python}
+#| echo: false
 # save object
 # sentiment_counts.reindex(adjusted_presidents_order).to_csv('wes_appendix/sentiment_counts.csv')
 sentiment_counts = pd.read_csv("wes_appendix/sentiment_counts.csv")
@@ -760,6 +761,7 @@ Figure Ax in the appendix shows the sentiments of each president over time. Howe
 
 ```{python}
 #| eval: true
+#| include: false
 
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib import cm
