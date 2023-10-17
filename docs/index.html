@@ -176,7 +176,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#afinn" id="toc-afinn" class="nav-link" data-scroll-target="#afinn">AFINN</a></li>
   <li><a href="#nrc-lexicon" id="toc-nrc-lexicon" class="nav-link" data-scroll-target="#nrc-lexicon">NRC lexicon</a></li>
-  <li><a href="#hugging-face-1" id="toc-hugging-face-1" class="nav-link" data-scroll-target="#hugging-face-1">Hugging Face 1</a></li>
+  <li><a href="#roberta-transfer-learning" id="toc-roberta-transfer-learning" class="nav-link" data-scroll-target="#roberta-transfer-learning">RoBERTa Transfer Learning</a></li>
   </ul></li>
   <li><a href="#topic-modelling" id="toc-topic-modelling" class="nav-link" data-scroll-target="#topic-modelling">Topic Modelling</a>
   <ul class="collapse">
@@ -253,14 +253,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The NRC lexicon is a comprehensive linguistic resource that encompasses a substantial collection of English words. Each word in this lexicon is associated with specific emotional and sentiment categories, such as joy, sadness, anger, trust, and fear, among others. These categories offer a more detailed perspective on the emotions of South African presidents compared to other lexicons. Words are tagged with binary values indicating whether they evoke a particular emotion or sentiment, making it possible to identify not only the polarity of the sentiment (positive or negative) but also the specific emotional dimension.</p>
 <p>This is conducted by once again analysing each sentence in the dataset and selecting the emotion associated with each word within a sentence based on the NRC lexicon. By assigning these emotional labels to individual words, a more comprehensive and fine-grained understanding of sentiment and emotion within text is achieved. The collective emotional and sentiment labels for words in a sentence are then aggregated over all sentences to compute the overall sentiment and emotional composition of each president. This grouping by president allows for an in-depth exploration of the specific emotional and sentimental patterns and variations exhibited by each president in their speeches. This approach thus offers the positivity/negativity metric offered by the AFINN lexicon, but also decomposes these broad categories into specific emotions.</p>
 </section>
-<section id="hugging-face-1" class="level3">
-<h3 class="anchored" data-anchor-id="hugging-face-1">Hugging Face 1</h3>
+<section id="roberta-transfer-learning" class="level3">
+<h3 class="anchored" data-anchor-id="roberta-transfer-learning">RoBERTa Transfer Learning</h3>
 <p>For sentiment analysis, we also employed a model belonging to hugging face called “twitter-roberta-base-sentiment-latest” and ““. The architecture for these models is largely the same, but”” differs in that it was trained primarily on political tweets, which is lesser in the training data size but potentially more domain relevant to the task at hand.</p>
 <p>This is a transformer-based transfer learning approach. Essentially this means that the model has been pretrained on data to learn how to assign sentiment scores then the trained model is used to extract sentiment scores for our dataset. The model used is more specifically considered a time language model. The time Language Models (LM) foundation is anchored on the RoBERTa architecture, which is a refined variant of BERT (Bidirectional Encoder Representations from Transformers). One of the standout characteristics of RoBERTa is its bidirectional context processing. Unlike conventional models, RoBERTa reviews words in relation to their entire surrounding context, absorbing nuances from both the preceding and following parts of the text.</p>
 <p>Moreover, RoBERTa adopts a Transformer architecture, known for its self-attention mechanism. This mechanism empowers RoBERTa to assign varying importance levels to distinct words in a sentence, ensuring it recognizes and processes dependencies irrespective of their dispersion within the body of text.</p>
 <p>Key to its training process is RoBERTa’s utilization of masked language modelling. Here, select words in a sentence are intermittently substituted with a [MASK] token. The model is then tasked with deducing the original word, relying solely on the surrounding context. This method is important in refining RoBERTa’s grasp of language semantics.</p>
 <p>Differentiating from its predecessor, BERT, RoBERTa’s pretraining process has been further optimized. It undergoes training on a more expansive dataset of 10 years of Twitter data. Another differentiating factor from BERT is how RoBERTa dispenses with the next sentence prediction task, a staple in BERT, and recalibrates the masking strategy to elevate its efficiency. The RoBERTa model for a given body of text returns a class probability value of -1 for negative sentiment, 0 for neutral and 1 for positive the highest probability over the three classes is the assigned sentiment. We multiply the class values by their probabilities and sum them to gain a sentiment score between -1 and 1 and use this coupled with the assigned sentiment class for our model evaluation.</p>
-<p>link: https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest?text=ayo</p>
 </section>
 </section>
 <section id="topic-modelling" class="level2">
@@ -440,7 +439,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="topic-modelling-1" class="level1">
 <h1>Topic Modelling</h1>
 <div class="cell" data-execution_count="19">
-<div class="cell-output cell-output-display" data-execution_count="124">
+<div class="cell-output cell-output-display" data-execution_count="61">
 <pre><code>'| M3 Topic 1          | M3 Topic 2          | M3 Topic 3         | M4 Topic 1         | M4 Topic 2             | M4 Topic 3       | M4 Topic 4          | M5 Topic 1         | M5 Topic 2         | M5 Topic 3             | M5 Topic 4          | M5 Topic 5          |\n|:--------------------|:--------------------|:-------------------|:-------------------|:-----------------------|:-----------------|:--------------------|:-------------------|:-------------------|:-----------------------|:--------------------|:--------------------|\n| 0.031 | south       | 0.020 | people      | 0.034 | year       | 0.045 | year       | 0.021 | new            | 0.029 | african  | 0.025 | work        | 0.057 | year       | 0.036 | people     | 0.032 | work           | 0.031 | country     | 0.055 | south       |\n| 0.016 | africa      | 0.018 | work        | 0.022 | african    | 0.041 | south      | 0.015 | also           | 0.027 | people   | 0.022 | national    | 0.037 | african    | 0.034 | government | 0.028 | africa         | 0.027 | new         | 0.022 | service     |\n| 0.015 | new         | 0.018 | country     | 0.020 | government | 0.026 | government | 0.014 | infrastructure | 0.024 | country  | 0.017 | public      | 0.024 | state      | 0.028 | national   | 0.022 | public         | 0.023 | business    | 0.020 | sector      |\n| 0.011 | also        | 0.014 | state       | 0.016 | national   | 0.017 | investment | 0.011 | ensure         | 0.022 | africa   | 0.016 | service     | 0.022 | economy    | 0.016 | nation     | 0.021 | last           | 0.021 | development | 0.016 | plan        |\n| 0.009 | together    | 0.012 | investment  | 0.013 | business   | 0.015 | economic   | 0.011 | million        | 0.019 | state    | 0.016 | development | 0.021 | investment | 0.014 | one        | 0.019 | economic       | 0.019 | need        | 0.014 | billion     |\n| 0.009 | must        | 0.012 | service     | 0.013 | economy    | 0.015 | need       | 0.011 | one            | 0.017 | business | 0.016 | last        | 0.018 | also       | 0.012 | project    | 0.017 | infrastructure | 0.018 | support     | 0.013 | water       |\n| 0.008 | billion     | 0.012 | development | 0.013 | public     | 0.014 | social     | 0.009 | many           | 0.017 | economy  | 0.013 | programme   | 0.018 | social     | 0.012 | community  | 0.015 | job            | 0.017 | together    | 0.011 | crisis      |\n| 0.008 | opportunity | 0.011 | sector      | 0.012 | last       | 0.014 | support    | 0.009 | life           | 0.015 | sector   | 0.011 | energy      | 0.016 | programme  | 0.011 | local      | 0.014 | ensure         | 0.013 | opportunity | 0.010 | employment  |\n| 0.007 | time        | 0.011 | economic    | 0.010 | social     | 0.013 | together   | 0.008 | local          | 0.012 | nation   | 0.011 | growth      | 0.014 | must       | 0.010 | provide    | 0.014 | energy         | 0.013 | time        | 0.009 | electricity |\n| 0.007 | community   | 0.011 | need        | 0.010 | support    | 0.012 | job        | 0.008 | first          | 0.011 | must     | 0.011 | billion     | 0.013 | growth     | 0.009 | action     | 0.014 | million        | 0.012 | many        | 0.009 | reform      |'</code></pre>
 </div>
 </div>
@@ -555,6 +554,50 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="nrc" class="level3">
 <h3 class="anchored" data-anchor-id="nrc">NRC</h3>
 <p>Using the NRC emotion lexicon we see that all presidents have their most common sentiment being positive, while the particular emotions in there sentences differ. A common emotion amongst all presidents is trust. Anticipation is a frequently evoked emotion from the presidents, besides for deKlerk. Other relatively common emotions include fear and joy.</p>
+<div class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gensim.models <span class="im">import</span> LdaModel, LsiModel</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gensim <span class="im">import</span> corpora</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>m_pLSA_4 <span class="op">=</span> LsiModel.load(<span class="st">"topic_models/m_pLSA_4"</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>num_words<span class="op">=</span><span class="dv">20</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>topics <span class="op">=</span> m_pLSA_4.print_topics(num_topics<span class="op">=</span><span class="dv">4</span>, num_words<span class="op">=</span>num_words)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>df4<span class="op">=</span>pd.DataFrame({})</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> topic <span class="kw">in</span> topics:</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    content <span class="op">=</span> topic[<span class="dv">1</span>]</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    words<span class="op">=</span>[]</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    scores<span class="op">=</span>[]</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    scorewords <span class="op">=</span> content.split(<span class="st">' + '</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> item <span class="kw">in</span> scorewords:</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        spl<span class="op">=</span>item.split(<span class="st">'*'</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        scores.append(spl[<span class="dv">0</span>])</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        words.append(spl[<span class="dv">1</span>].replace(<span class="st">'"'</span>,<span class="st">''</span>))</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    topic_df<span class="op">=</span>pd.DataFrame({<span class="ss">f'T</span><span class="sc">{</span>topic[<span class="dv">0</span>]<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> Words'</span>: words, <span class="ss">f'T</span><span class="sc">{</span>topic[<span class="dv">0</span>]<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> Scores'</span>: scores})</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    df4 <span class="op">=</span> pd.concat([df4, topic_df], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a 2x2 grid of subplots</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> [<span class="dv">0</span>,<span class="dv">1</span>]:</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> [<span class="dv">0</span>,<span class="dv">1</span>]:</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>        t<span class="op">=</span><span class="dv">2</span><span class="op">*</span>i<span class="op">+</span>j<span class="op">+</span><span class="dv">1</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>        axs[i, j].barh(df4[<span class="ss">f'T</span><span class="sc">{</span>t<span class="sc">}</span><span class="ss"> Words'</span>], df4[<span class="ss">f'T</span><span class="sc">{</span>t<span class="sc">}</span><span class="ss"> Scores'</span>])</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>        axs[i, j].set_xlabel(<span class="st">'Words'</span>)</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>        axs[i, j].set_ylabel(<span class="st">'Weight'</span>)</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>        axs[i, j].set_title(<span class="ss">f'M4: Topic </span><span class="sc">{</span>t<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>        axs[i, j].tick_params(axis<span class="op">=</span><span class="st">'x'</span>, rotation<span class="op">=</span><span class="dv">90</span>, labelsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>        axs[i, j].tick_params(axis<span class="op">=</span><span class="st">'y'</span>, rotation<span class="op">=</span><span class="dv">0</span>, labelsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-28-output-1.png" width="1142" height="758"></p>
+</div>
+</div>
 
 
 </section>

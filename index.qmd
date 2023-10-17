@@ -930,7 +930,7 @@ from gensim.models import LdaModel, LsiModel
 from gensim import corpora
 
 
-m_pLSA_4 = LsiModel.load("topics_models/m_pLSA_4")
+m_pLSA_4 = LsiModel.load("topic_models/m_pLSA_4")
 
 num_words=20
 
