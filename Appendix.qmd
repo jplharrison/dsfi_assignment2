@@ -124,8 +124,8 @@ from gensim.models import LdaModel, LsiModel
 from gensim import corpora
 
 
-m_pLSA_6 = LsiModel.load("topic_models/m_pLSA_6")
-m_pLSA_9 = LsiModel.load("topic_models/m_pLSA_9")
+m_pLSA_6 = LsiModel.load("topics_model/m_pLSA_6")
+m_pLSA_9 = LsiModel.load("topics_model/m_pLSA_9")
 
 # Number of words to display in the bar plot
 num_words = 20

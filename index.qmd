@@ -15,10 +15,9 @@ The following proceeds XXX first sections. Firstly a literature review will be c
 
 ## Topic Modelling
 
-In the 1980s Topic modelling emerged as a means to enhance the accuracy of information retrieval systems. (Deerwester et al. in 1990) founded one of the earliest topic models known as Latent Semantic Analysis (LSA). LSA groups documents based on latent semantic formations, and makes the assumption that words with similar semantic meanings tend to co-occur. This innovation greatly advanced the capabilities of document retrieval systems because users were no longer required to employ the exact words found in related documents; similarity could be determined through a broader semantic context.
+In the 1980s, topic modelling emerged as a means to enhance the accuracy of information retrieval systems. Deerwester et al (1990) founded one of the earliest topic models known as Latent Semantic Analysis (LSA). LSA groups documents based on latent semantic formations, and makes the assumption that words with similar semantic meanings tend to co-occur. This innovation greatly advanced the capabilities of document retrieval systems because users were no longer required to employ the exact words found in related documents - similarity could be determined through a broader semantic context.
 
-(Blei et al., 2003) advanced techniques implemented in LSA by developing a related modeling algorithm called Latent Dirichlet Allocation (LDA). In LDA, a document is seen as a collection of words drawn from unobserved topics. LDA subsequently assesses the likelihood distribution of a specific word across a range of topics and then the distribution of a specific topic across a collection of documents.
-
+Blei et al. (2003) advanced the techniques implemented in LSA by developing a related modelling algorithm called Latent Dirichlet Allocation (LDA). In LDA, a document is seen as a collection of words drawn from unobserved topics. LDA subsequently assesses the likelihood distribution of a specific word across a range of topics and then the distribution of a specific topic across a collection of documents.
 
 ## Sentiment Analysis
 
@@ -246,6 +245,44 @@ from scipy.special import softmax
 ```
 
 # Results
+
+## Data Exploration 
+
+```{python}
+#| echo: false
+#| fig-cap: "Figure X: Wordcloud per president "
+data = a2data
+def remove_stopwords(sentence):
+    words = sentence.split()
+    cleaned_words = [word for word in words if word.lower() not in STOPWORDS]
+    return ' '.join(cleaned_words)
+
+# Apply the function to remove stop words from each sentence in the DataFrame
+data['Cleaned_Sentences'] = data['Sentences'].apply(remove_stopwords)
+
+# Group the cleaned sentences by president
+grouped = data.groupby('Presidents')['Cleaned_Sentences'].apply(' '.join).reset_index()
+
+# Initialize a dictionary to store word clouds for each president
+wordclouds = {}
+
+# Generate a word cloud for each president
+for index, row in grouped.iterrows():
+    wordcloud = WordCloud(width=800, height=400, background_color='white').generate(row['Cleaned_Sentences'])
+    wordclouds[row['Presidents']] = wordcloud
+
+# Display the word clouds
+plt.figure(figsize=(15, 10))
+for i, (president, wordcloud) in enumerate(wordclouds.items(), 1):
+    plt.subplot(3, 2, i)  
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.title(president)
+    plt.axis("off")
+plt.show()
+```
+
+
+
 
 ## RoBERTa 
 
@@ -539,7 +576,7 @@ vis5 = gensimvis.prepare(m_lda_5, corpus, dct)
 
 
 ```{python}
-#| echo: false
+#| include: true
 m_lda_3 = LdaModel.load("topic_models/m_lda_3")
 m_lda_4 = LdaModel.load("topic_models/m_lda_4")
 m_lda_5 = LdaModel.load("topic_models/m_lda")
@@ -838,6 +875,8 @@ LDA-All:
     + Examples: "people," "work," "service"
 Topic 3 - Time and government - the words in this topic are related to time, government, and national affairs, indicating a focus on governance and the passage of time across all Presidential terms.
     + Examples: "year," "african," "government"
+
+
 
 ### Probablistic Latent Semantic Analysis
 
