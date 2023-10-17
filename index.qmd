@@ -61,6 +61,12 @@ from catboost import Pool, cv, CatBoostClassifier
 # Word embedding imports
 from gensim.models import Word2Vec
 
+# LDA model imports
+from gensim.models import LdaModel
+from gensim import corpora
+import pyLDAvis.gensim_models as gensimvis
+import pyLDAvis
+
 # Metrics import
 from sklearn.metrics import classification_report, accuracy_score
 ```
@@ -103,6 +109,10 @@ def preprocess_speeches(speech):
     # Lemmatize tokens
     lemmatizer = WordNetLemmatizer()
     tokens = [lemmatizer.lemmatize(token) for token in tokens]
+    for i in range(len(tokens)):
+        clean_token = ''.join(char for char in tokens[i] if char.isalpha())
+        tokens[i] = clean_token
+    tokens = [token for token in tokens if len(token)>2]
     return tokens
 
 
@@ -359,4 +369,63 @@ for president, color, ax in zip(adjusted_presidents_order, pastel_colors, axes.r
 plt.tight_layout()
 plt.subplots_adjust(top=0.90)
 plt.show()
+```
+
+```{python, eval=F}
+a2tokens = pd.read_csv("dsfi_assignment2/finalTokens.csv")
+tokens = [text.split() for text in a2tokens["Tokens"]]
+
+# Create a dictionary and corpus
+dct = corpora.Dictionary(tokens)
+corpus = [dct.doc2bow(t) for t in tokens]
+
+# Train the LDA models
+ m_lda_3 = LdaModel(corpus=corpus, num_topics=3, id2word=dct, passes=20)
+ m_lda_4 = LdaModel(corpus=corpus, num_topics=4, id2word=dct, passes=20)
+ m_lda_5 = LdaModel(corpus=corpus, num_topics=5, id2word=dct, passes=20)
+
+
+# Print the topics and associated words
+ topics = m_lda.print_topics(num_words=10)
+ for topic in topics:
+     print(topic)
+
+# Prepare the visualization
+ vis3 = gensimvis.prepare(m_lda_3, corpus, dct)
+ vis4 = gensimvis.prepare(m_lda_4, corpus, dct)
+ vis5 = gensimvis.prepare(m_lda_5, corpus, dct)
+
+# Save model and visualisation objects
+# pyLDAvis.save_html(vis3, "lda_3topic_vis.html")
+# m_lda_3.save("m_lda_3")
+# pyLDAvis.save_html(vis4, "lda_4topic_vis.html")
+# m_lda_4.save("m_lda_4")
+# pyLDAvis.save_html(vis5, "lda_5topic_vis.html")
+# m_lda_5.save("m_lda")
+
+```
+
+
+```{python}
+
+m_lda_3 = LdaModel.load("m_lda_3")
+m_lda_4 = LdaModel.load("m_lda_4")
+m_lda_5 = LdaModel.load("m_lda")
+
+def extract_topics(lda_model, m):
+    df=pd.DataFrame({})
+    topics = lda_model.print_topics(num_words=10)
+    for i, topic in enumerate(topics):
+        heading = i+1
+        content = topic[1]
+        items = content.split(' + ')
+        tmp_df = pd.DataFrame({f'M{m} Topic {heading}': [item.strip().replace('"', '').replace('*', ' | ') for item in items]})
+        df = pd.concat([df,tmp_df],axis=1)
+    return df
+
+topics_df = pd.concat([extract_topics(m_lda_3, 3),extract_topics(m_lda_4, 4),extract_topics(m_lda_5, 5)], axis=1)
+
+md_tbl = topics_df.to_markdown(index=False)
+md_tbl
+
 ```
