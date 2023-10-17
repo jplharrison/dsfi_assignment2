@@ -1022,7 +1022,7 @@ LDA-All:
 
 ### Probablistic Latent Semantic Analysis
 
-pLSA models are very sensitive to data sparsity, the document-term matrix has only around a third of its cells populated. The model struggles to capture meaningful relationships through its dimensionality reduction techniques in the sparse data.
+The weights produced for each word in the topics of the pLSA models are not very evenly distributed. This suggests that there may have be numerical difficulties in the computation during model training. pLSA models are very sensitive to data sparsity, the document-term matrix has only around a third of its cells populated. The model struggles to capture meaningful relationships through its dimensionality reduction techniques in the sparse data.
 
 
 ```{python}
