@@ -4,11 +4,11 @@ title: "DSFI_A2"
 
 # Introduction
 
-The State of the Nation Address (SONA) serves as an annual narrative roadmap of South Africa, highlighting its triumphs, challenges, and future trajectories. Delivered by the President, this address not only provides a summary of the nation's current status but also sets the tone for governmental strategies, policies, and priorities for the coming year. The addresses serve as a snapshot into South Africa's challenges, successes and socioeconomic state at a given time. Hence analysis of the sentiment and topics of the speeches can provide a framework for a deeper understanding of trends and topics from presidents' rhetoric less clouded by the bias of political analysts.
+The State of the Nation Address (SONA) serves as an annual narrative roadmap of South Africa, highlighting its triumphs, challenges, and future trajectories. Delivered by the President, this address not only provides a summary of the nation's current status but also sets the tone for governmental strategies, policies, and priorities for the coming year. The addresses serve as a snapshot into South Africa's challenges, successes and socioeconomic state at a given time. Hence analysis of the sentiment and topics of the speeches can provide a framework for a deeper understanding of trends and topics from presidents' rhetoric less clouded by the bias of political analysts. 
 
-In the era of data science, where Natural Language Processing(NLP) has become a potent tool to extract meaningful patterns from large volumes of textual data, it is of profound interest to apply such methods to SONA speeches. By employing advanced techniques such as sentiment analysis and topic modelling, one can unearth the latent themes dominating these addresses over three decades and gauge the sentiment fluctuations accompanying them. This presents a data-driven perspective on South Africa's political discourse.
+In the era of data science, where Natural Language Processing(NLP) has become a potent tool to extract meaningful patterns from large volumes of textual data, it is of profound interest to apply such methods to SONA speeches. By employing advanced techniques such as sentiment analysis and topic modelling, one can unearth the latent themes dominating these addresses over three decades and gauge the sentiment fluctuations accompanying them. This presents a data-driven perspective on South Africa's political discourse,
 
-The following proceeds XXX first sections. Firstly a literature review will be conducted on the existing sentiment analysis and topic modelling methods available and used in academia as well as in industry. Thereafter a preliminary exploration of the data occurs to understand the structure and potential trends in the data prior to modelling applications. The Methods section will then detail the sentiment analysis, topic modelling and metrics used in these models. The results of the paper are then briefly presented and interpreted before we discuss the overall trends and findings of the paper. We conclude by summarising the findings of the paper, highlighting limitations and presenting avenues for future research into SONA NLP work. 
+The following proceeds XXX first sections. Firstly a literature review will be conducted on the existing sentiment analysis and topic modelling methods available and used in academia and industry. Thereafter a preliminary exploration of the data occurs to understand the structure and potential trends in the data prior to modelling applications. The Methods section will then detail the sentiment analysis, topic modelling and metrics used in these models. The results of the paper are briefly presented and interpreted before we discuss the overall trends and findings of the paper. We conclude by surmising the findings of the paper, highlighting limitations and presenting avenues for future research into SONA NLP work. 
 
 
 # Literature Review
@@ -248,9 +248,11 @@ from scipy.special import softmax
 
 ## Data Exploration 
 
+In analyzing the word clouds of various South African presidents in Figure X, there's a discernible emphasis on governance, nation-building, and the welfare of the South African people. Motlanthe and Mbeki highlighted governmental programs and assured development, while Mandela accentuated societal unity and nation-building. Ramaphosa's emphasis leaned towards economic investment and support, Zuma prioritized governmental initiatives and societal support, and deKlerk focused on constitutional and governance reforms. Across all presidents, the persistent themes underscore a dedication to governance, the progress of South Africa, and the betterment of its citizens.
+
 ```{python}
 #| echo: false
-#| fig-cap: "Figure X: Wordcloud per president "
+#| fig-cap: "Figure X: Wordcloud per president"
 data = a2data
 def remove_stopwords(sentence):
     words = sentence.split()
@@ -608,7 +610,7 @@ m_pLSA_9.save("m_pLSA_9")
 
 
 ```{python}
-#| include: true
+#| echo: false
 m_lda_3 = LdaModel.load("topic_models/m_lda_3")
 m_lda_4 = LdaModel.load("topic_models/m_lda_4")
 m_lda_5 = LdaModel.load("topic_models/m_lda")
@@ -627,11 +629,39 @@ def extract_topics(lda_model, m):
 
 topics_df = pd.concat([extract_topics(m_lda_3, 3),extract_topics(m_lda_4, 4),extract_topics(m_lda_5, 5)], axis=1)
 
-md_tbl = topics_df.to_markdown(index=False)
-md_tbl
-
 ```
 
+
+```{python}
+#| echo: false
+#| fig-cap: "Figure X: Topic Weights and Terms Table"
+data_display = []
+lda_df = pd.read_csv("lda_all_topics_df.csv")
+for i in range(lda_df.shape[0]):
+    row = []
+    for j in range(lda_df.shape[1]):
+        row.append(lda_df.iloc[i, j])
+    data_display.append(row)
+
+# Plotting the table with bold headers
+fig, ax = plt.subplots(figsize=(20, 10))
+ax.axis('off')
+ax.axis('tight')
+
+table = ax.table(cellText=data_display, colLabels=lda_df.columns, cellLoc='center', loc='center')
+table.auto_set_font_size(False)
+table.set_fontsize(10)
+table.auto_set_column_width(col=list(range(len(lda_df.columns))))
+table.scale(1.5, 1.5)
+
+# Bolding the headers
+table.auto_set_font_size(False)
+for (i, j), cell in table.get_celld().items():
+    if i == 0:
+        cell.set_text_props(fontweight='bold', color='w')
+        cell.set_facecolor('#40466e')  # setting a dark background for contrast
+plt.show()
+```
 
 ```{python}
 #| echo: false
@@ -988,8 +1018,6 @@ LDA-All:
     + Examples: "people," "work," "service"
 Topic 3 - Time and government - the words in this topic are related to time, government, and national affairs, indicating a focus on governance and the passage of time across all Presidential terms.
     + Examples: "year," "african," "government"
-
-
 
 ### Probablistic Latent Semantic Analysis
 
