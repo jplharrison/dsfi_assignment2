@@ -37,8 +37,15 @@ According to (Yadav and Vishwakarma, 2019) who reviewed over 100 papers which us
 
 Furthermore, (Loureiro et al., 2022) showed the importance of Time language models, which are a set of language models which undergo continual learning on, in this case, tweets. (Loureiro et al., 2022) shows that this approach enhances the models ability to deal with out-of-distribution inputs, as well enhances competitiveness with standard benchmark tests. They’re also seen to deal well with the problem of concept drift. Since our data is over a long period of time, we will be using these time language models too.
 
+```{python}
+#| include: false
+pip install nrclex
+```
+```{python}
+#| include: false
 
-
+pip install tabulate
+```
 ```{python}
 #| include: false
 pip install transformers
@@ -187,6 +194,7 @@ tokenised_speeches = tokenised_speeches[~tokenised_speeches['Tokens'].str.contai
 
 
 ```{python}
+#| include: false
 a2data = pd.read_csv("finalSentences2.csv")
 a2tokens = pd.read_csv("finalTokens.csv")
 ```
@@ -207,7 +215,7 @@ The NRC lexicon is a comprehensive linguistic resource that encompasses a substa
 
 This is conducted by once again analysing each sentence in the dataset and selecting the emotion associated with each word within a sentence based on the NRC lexicon. By assigning these emotional labels to individual words, a more comprehensive and fine-grained understanding of sentiment and emotion within text is achieved. The collective emotional and sentiment labels for words in a sentence are then aggregated over all sentences to compute the overall sentiment and emotional composition of each president. This grouping by president allows for an in-depth exploration of the specific emotional and sentimental patterns and variations exhibited by each president in their speeches. This approach thus offers the positivity/negativity metric offered by the AFINN lexicon, but also decomposes these broad categories into specific emotions.
 
-### Hugging Face 1 
+### RoBERTa Transfer Learning
 
 For sentiment analysis, we also employed a model belonging to hugging face called "twitter-roberta-base-sentiment-latest" and "". The architecture for these models is largely the same, but "" differs in that it was trained primarily on political tweets, which is lesser in the training data size but potentially more domain relevant to the task at hand. 
 
@@ -220,13 +228,27 @@ Key to its training process is  RoBERTa's utilization of masked language modelli
 Differentiating from its predecessor, BERT, RoBERTa's pretraining process has been further optimized. It undergoes training on a more expansive dataset of 10 years of Twitter data. Another differentiating factor from BERT is how RoBERTa dispenses with the next sentence prediction task, a staple in BERT, and recalibrates the masking strategy to elevate its efficiency. The RoBERTa model for a given body of text returns a class probability value of -1 for negative sentiment, 0 for neutral and 1 for positive the highest probability over the three classes is the assigned sentiment. We multiply the class values by their probabilities and sum them to gain a sentiment score between -1 and 1 and use this coupled with the assigned sentiment class for our model evaluation. 
 
 
+
+## Topic Modelling 
+### Latent Dirichlet Allocation
+
+Latent Dirichlet Allocation (LDA) is a probabilitistic model which was implemented as a topic modelling technique to extract meaningful latent topics from the SONA corpus. The SONA speeches are pre-processed to remove stop words, punctuation, and other textual debris. The documents are then lemmatised and tokenised into word-tokens. These tokens are used to create a document-term matrix that contains the frequency of words in each document. The Gensim library was used to enable the training of LDA models on the preprocessed data, and facilitated the extraction of topics associated with their respective word distributions. The resulting topics were then visualized using the pyLDAvis package, to create a interpretable overview of the extracted topics. This process was first performed using a corpus containing all thirty-six speeches. The initial model had five topics, and the number of topics was iteratively decreased until the topics differentiated nicely across the latent variables. This number of topics (3) was then used to train a model for each president's individual corpus of speeches. 
+
+### Probablistic Latent Semantic Analysis
+
+Probablistic Latent Semantic Analysis (pLSA) is the second topic modelling technique used to extract latent topics from the corpus of documents. The text data is preprocessed similarly to LDA; removing stop words, punctuation, and debris, followed by lemmatisation and tokenisation, and then the creation of a document-term matrix. After the pre-processing is complete, pLSA begins by initialising random probabilities for topics and words within topics. The topic and word probabilties are then iteratively updated using the Expectation Maximisation (EM) algorithm. Once the algorithm reaches convergence, there is a resulting set of topics, each containing a set of words. The Gensim package was used to implement the training of the pLSA models, and the matplotlib package was used to visualise the results.
+
 ```{python}
+#| include: false
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, AutoConfig
 import numpy as np
 from scipy.special import softmax
 ```
 
 # Results
+
+## RoBERTa 
+
 ```{python}
 #| echo: false
 #| eval: false
@@ -283,9 +305,6 @@ data['Predicted_Label'] = [s[1] for s in sentiment_data]
 
 # Save the results
 data.to_csv("HFM1_SentimentData.csv")
-
-data.head()
-
 ```
 
 Figure XXX plots the mean sentiment score(-1 to 1, where -1 is perfectly negative, 0 is neutral and 1 is positive) across all presidents where presidents have been ordered by time. Beginning with de Klerk, there is a noticeable negative sentiment. However, as we transition to Mandela's era, a significant shift occurs, with sentiment becoming predominantly positive. This positive trend not only continues but also amplifies during Mbeki's tenure. 
@@ -294,6 +313,8 @@ Following Mbeki, Motlanthe's sentiment score experiences a slight dip but remain
 
 
 ```{python}
+#| echo: false
+#| fig-cap: "Figure X: RoBERTa 1 Mean Sentiment Scores per President"
 HFM1 = pd.read_csv("HFM1_SentimentData.csv")
 presidents_order = ['Mandela', 'deKlerk', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
 mean_scores_per_president = HFM1.groupby('Presidents')['Sentiment_Score'].mean()
@@ -303,7 +324,6 @@ mean_scores_reordered = mean_scores_per_president.reindex(adjusted_presidents_or
 # Plotting the reordered mean sentiment scores
 #plt.figure(figsize=(12, 7))
 mean_scores_reordered.plot(kind='bar', color='skyblue')
-plt.title('Mean Sentiment Scores per President')
 plt.xlabel('President')
 plt.ylabel('Mean Sentiment Score')
 plt.axhline(0, color='red', linestyle='--')  #line at y=0 for reference
@@ -314,11 +334,12 @@ plt.show()
 In Figure XXX we plot the proportion of each sentiment class across all sentences per president.Mandela and Ramaphosa primarily have positive and neutral sentiments, with Mandela possessing a slightly broader share of positive mentions. De Klerk presents an interesting case; while he has the least proportion of positive sentiments among all the presidents, he also claims the highest negative sentiment. Mbeki and Zuma display an almost balanced distribution between positive and neutral sentiments, with Mbeki tipping slightly more towards the positive end. Motlanthe distinctly stands out, characterized by an overwhelming positive sentiment that far surpasses both the neutral and negative sentiments.
 
 ```{python}
+#| echo: false
+#| fig-cap: "Figure X: RoBERTa 1 Sentiment Distribution per President "
 colors = {'negative': '#FF9999', 'neutral': '#99CCFF', 'positive': '#99FF99'}
 sentiment_counts = HFM1.groupby('Presidents')['Predicted_Label'].value_counts(normalize=True).unstack().fillna(0)
 
 sentiment_counts.reindex(adjusted_presidents_order).plot(kind='bar', stacked=True, color=[colors[col] for col in sentiment_counts.columns])
-plt.title('Sentiment Distribution per President')
 plt.ylabel('Percentage')
 plt.xlabel('President')
 plt.legend(title='Sentiment')
@@ -326,79 +347,11 @@ plt.tight_layout()
 plt.show()
 ```
 
-To gain a depper understading of the change in sentiment over timie for each given president, and their speeches, we can look to figure XXX in the appendix. While the plot dos provide a granular insight into the variety of sentiment across sentences in presidents' speaches the lack of discernable trend makes the plot difficult to interpret. Furthermore the sentiment aggregatioin plots at an overall president level provides sufficient insiight.  
+To gain a depper understading of the change in sentiment over timie for each given president, and their speeches, we can look to figure XXX in the appendix. While the plot dos provide a granular insight into the variety of sentiment across sentences in presidents' speaches the lack of discernable trend makes the plot difficult to interpret. Furthermore the sentiment aggregatioin plots at an overall president level provides sufficient insiight.  Figure XXX plots the distribution of sentiment scores for each president. For de Klerk, there's a noticeable tilt towards neutral to negative sentiments. On the other hand, Mandela's mentions are predominantly positive. Mbeki's sentiment profile reveals an overwhelmingly positive tone, with more neutrality in tone than Mandela. Motlanthe's mentions also predominantly exhibit positivity, especially between the 0.50 to 1.00 range. Zuma presents a diverse sentiment spectrum; while there's a substantial representation in the positive range, especially towards the higher end, there's also a notable amount neutral sentiment and almost no negative rhetoric. Lastly, discussions about Ramaphosa are mostly tinted with positivity, particularly around the 0.50 to 0.75 range, although some neutral and negative sentiments are present. Overall, while Mandela, Mbeki, Motlanthe, Zuma, and Ramaphosa's mentions lean more towards positivity, de Klerk's profile hints at a more neutral with a  greater tilt towards negativity. 
 
 ```{python}
-from matplotlib.colors import LinearSegmentedColormap
-from matplotlib import cm
-from matplotlib import cm
-
-def plot_for_president_gradient(president, df):
-    # Filter dataframe for the selected president
-    president_df = df[df['Presidents'] == president]
-    
-    # Sorting data by order (using the 'Unnamed: 0' column as the order)
-    president_df = president_df.sort_values(by='Unnamed: 0')
-    
-    # Normalize the scores to [0,1] for colormap
-    norm = plt.Normalize(-1, 1)
-    
-    # Custom colormap: Red -> Gray -> Blue
-    custom_cmap = LinearSegmentedColormap.from_list("custom", ["red", "gray", "blue"])
-    
-    # Plotting with a black background and custom colormap
-    fig, ax = plt.subplots()
-    bars = ax.bar(np.arange(len(president_df)), president_df['Sentiment_Score'], 
-                  color=custom_cmap(norm(president_df['Sentiment_Score'])), width=1.0)
-    
-    ax.set_title(f'Sentiment Score over time for President {president}')
-    ax.set_xlabel('Order of Sentences')
-    ax.set_ylabel('Sentiment Intensity')
-    ax.axhline(0, color='white',linewidth=0.5)
-    ax.grid(axis='y', color='white', linestyle='--', linewidth=0.5)
-    ax.set_facecolor('black')
-    fig.colorbar(cm.ScalarMappable(norm=norm, cmap=custom_cmap), ax=ax, label='Sentiment Score')
-    
-    plt.show()
-
-```
-
-
-```{python}
-presidents_list = HFM1['Presidents'].unique()
-def plot_in_grid(president, ax):
-    """Plot sentiment scores for a given president on a given axes."""
-    president_df = HFM1[HFM1['Presidents'] == president]
-    president_df = president_df.sort_values(by='Unnamed: 0')
-    
-    # Normalize the scores for colormap
-    norm = plt.Normalize(-1, 1)
-    custom_cmap = LinearSegmentedColormap.from_list("custom", ["red", "gray", "blue"])
-
-    bars = ax.bar(np.arange(len(president_df)), president_df['Sentiment_Score'], 
-                  color=custom_cmap(norm(president_df['Sentiment_Score'])), width=1.0)
-    ax.set_title(f'{president}')
-    ax.axhline(0, color='white', linewidth=0.5)
-    ax.grid(axis='y', color='white', linestyle='--', linewidth=0.5)
-    ax.set_facecolor('black')
-
-# Creating a 2x3 grid plot for all presidents
-fig, axes = plt.subplots(2, 3)
-fig.suptitle('Sentiment Scores over time for each President', fontsize=16)
-
-for president, ax in zip(adjusted_presidents_order, axes.ravel()):
-    plot_in_grid(president, ax)
-
-# Adjust layout
-plt.tight_layout()
-plt.subplots_adjust(top=0.90)
-plt.show()
-```
-
-Figure XXX plots the distribution of sentiment scores for each president.
-For de Klerk, there's a noticeable tilt towards neutral to negative sentiments. On the other hand, Mandela's mentions are predominantly positive. Mbeki's sentiment profile reveals an overwhelmingly positive tone, with more neutrality in tone than Mandela. Motlanthe's mentions also predominantly exhibit positivity, especially between the 0.50 to 1.00 range. Zuma presents a diverse sentiment spectrum; while there's a substantial representation in the positive range, especially towards the higher end, there's also a notable amount neutral sentiment and almost no negative rhetoric. Lastly, discussions about Ramaphosa are mostly tinted with positivity, particularly around the 0.50 to 0.75 range, although some neutral and negative sentiments are present. Overall, while Mandela, Mbeki, Motlanthe, Zuma, and Ramaphosa's mentions lean more towards positivity, de Klerk's profile hints at a more neutral with a  greater tilt towards negativity. 
-
-```{python}
+#| fig-cap: "Figure X: RoBERTa 1 Distribution of Sentiment Scores for each President"
+#| echo: false
 pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
 
 def plot_histogram(president, color, ax):
@@ -412,7 +365,6 @@ def plot_histogram(president, color, ax):
 
 # Creating a 2x3 grid plot for histograms of all presidents
 fig, axes = plt.subplots(2, 3)
-fig.suptitle('Distribution of Sentiment Scores for each President', fontsize=16)
 
 for president, color, ax in zip(adjusted_presidents_order, pastel_colors, axes.ravel()):
     plot_histogram(president, color, ax)
@@ -423,7 +375,7 @@ plt.subplots_adjust(top=0.90)
 plt.show()
 ```
 
-### Hugging Face 2
+## RoBERTa: Domain Specific
 
 ```{python}
 #| eval: false
@@ -482,6 +434,8 @@ data.head()
 
 In Figure XXX we look at the mean sentiment scorees for each president. The resuls are largely similar as the prior model. De Klerk remains the president with the lowest mean sentiment score while Zuma retainis the highest value. The other preseidents scores while slighly altered still behave similar relative to eachother.
 ```{python}
+#| echo: false
+#| fig-cap: "Figure X: RoBERTa 2 Mean Sentiment Scores per President "
 HFM2 = pd.read_csv("HFM2_SentimentData.csv")
 presidents_order = ['Mandela', 'deKlerk', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
 mean_scores_per_president = HFM2.groupby('Presidents')['Sentiment_Score'].mean()
@@ -491,7 +445,6 @@ mean_scores_reordered = mean_scores_per_president.reindex(adjusted_presidents_or
 # Plotting the reordered mean sentiment scores
 #plt.figure(figsize=(12, 7))
 mean_scores_reordered.plot(kind='bar', color='skyblue')
-plt.title('Mean Sentiment Scores per President')
 plt.xlabel('President')
 plt.ylabel('Mean Sentiment Score')
 plt.axhline(0, color='red', linestyle='--')  #line at y=0 for reference
@@ -504,11 +457,12 @@ Now looking to the proportion of sentiment classes per president in Figure XXX. 
 
 
 ```{python}
+#| echo: false
+#| fig-cap: "Figure X: RoBERTa 2 Sentiment Distribution per President"
 colors = {'Negative': '#FF9999', 'Neutral': '#99CCFF', 'Positive': '#99FF99'}
 sentiment_counts = HFM2.groupby('Presidents')['Predicted_Label'].value_counts(normalize=True).unstack().fillna(0)
 
 sentiment_counts.reindex(adjusted_presidents_order).plot(kind='bar', stacked=True, color=[colors[col] for col in sentiment_counts.columns])
-plt.title('Sentiment Distribution per President')
 plt.ylabel('Percentage')
 plt.xlabel('President')
 plt.legend(title='Sentiment')
@@ -517,41 +471,12 @@ plt.show()
 ```
 
 
-
-```{python}
-presidents_list = HFM2['Presidents'].unique()
-def plot_in_grid(president, ax):
-    """Plot sentiment scores for a given president on a given axes."""
-    president_df = HFM2[HFM2['Presidents'] == president]
-    president_df = president_df.sort_values(by='Unnamed: 0')
-    
-    # Normalize the scores for colormap
-    norm = plt.Normalize(-1, 1)
-    custom_cmap = LinearSegmentedColormap.from_list("custom", ["red", "gray", "blue"])
-
-    bars = ax.bar(np.arange(len(president_df)), president_df['Sentiment_Score'], 
-                  color=custom_cmap(norm(president_df['Sentiment_Score'])), width=1.0)
-    ax.set_title(f'{president}')
-    ax.axhline(0, color='white', linewidth=0.5)
-    ax.grid(axis='y', color='white', linestyle='--', linewidth=0.5)
-    ax.set_facecolor('black')
-
-# Creating a 2x3 grid plot for all presidents
-fig, axes = plt.subplots(2, 3)
-fig.suptitle('Sentiment Scores over time for each President', fontsize=16)
-
-for president, ax in zip(adjusted_presidents_order, axes.ravel()):
-    plot_in_grid(president, ax)
-
-# Adjust layout
-plt.tight_layout()
-plt.subplots_adjust(top=0.90)
-plt.show()
-```
-
-
 Looking to the distribution of sentiments by presidents in figure XXX. De Klerk's sentiment heavily leans towards the negative, with only a sparse presence of positive sentiment. Contrastingly, Mandela garners a majority of positive sentiments, although there's a consistent representation across all sentiment spectrums, indicating diverse opinions. Mbeki's sentiment profile is unique, spanning from negative through neutral to positive, with a pronounced peak in neutral sentiments. Motlanthe enjoys overwhelmingly positive feedback, with minimal divergences towards neutrality or negativity. In Zuma's case, a dominant concentration of neutral sentiments emerges, bracketed by almost equal measures of positive and negative sentiments. Ramaphosa's sentiment distribution is inclined towards positivity, but it doesn't lack a substantial count of neutral mentions and a minor portion of negative sentiments. 
+
+
 ```{python}
+#| echo: false
+#| fig-cap: "Figure X: RoBERTa 2 Distribution of Sentiment Scores for each President"
 pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
 
 def plot_histogram(president, color, ax):
@@ -565,7 +490,6 @@ def plot_histogram(president, color, ax):
 
 # Creating a 2x3 grid plot for histograms of all presidents
 fig, axes = plt.subplots(2, 3)
-fig.suptitle('Distribution of Sentiment Scores for each President', fontsize=16)
 
 for president, color, ax in zip(adjusted_presidents_order, pastel_colors, axes.ravel()):
     plot_histogram(president, color, ax)
@@ -578,9 +502,9 @@ plt.show()
 
 
 
-
-# Topic Modelling 
-```{python,}
+```{python}
+#| echo: false
+#| eval: false
 a2tokens = pd.read_csv("finalTokens.csv")
 tokens = [text.split() for text in a2tokens["Tokens"]]
 
@@ -616,10 +540,11 @@ vis5 = gensimvis.prepare(m_lda_5, corpus, dct)
 
 
 ```{python}
+#| echo: false
+m_lda_3 = LdaModel.load("topic_models/m_lda_3")
+m_lda_4 = LdaModel.load("topic_models/m_lda_4")
+m_lda_5 = LdaModel.load("topic_models/m_lda")
 
-m_lda_3 = LdaModel.load("m_lda_3")
-m_lda_4 = LdaModel.load("m_lda_4")
-m_lda_5 = LdaModel.load("m_lda")
 
 def extract_topics(lda_model, m):
     df=pd.DataFrame({})
@@ -692,7 +617,7 @@ The mean sentiment scores per president show President Mbeki exhibiting the high
 #| echo: False
 mean_scores_reordered = pd.read_csv('wes_appendix/mean_scores_reordered.csv')
 # Plotting the reordered mean sentiment scores
-plt.figure(figsize=(12, 7))
+plt.figure()
 #mean_scores_reordered.plot(kind='bar', color='skyblue')
 plt.bar(mean_scores_reordered['Presidents'], mean_scores_reordered['scores'], color='skyblue')
 
@@ -709,7 +634,6 @@ plt.show()
 
 ```{python}
 #| echo: false
-#| eval: false
 #| include: false
 colors = {'negative': '#FF9999', 'neutral': '#99CCFF', 'positive': '#99FF99'}
 sentiment_counts = afn_df.groupby('Presidents')['sentiments'].value_counts(normalize=True).unstack().fillna(0)
@@ -722,7 +646,7 @@ Figure X below shows that deKlerk is once again seen to possess less positive se
 # save object
 # sentiment_counts.reindex(adjusted_presidents_order).to_csv('wes_appendix/sentiment_counts.csv')
 sentiment_counts = pd.read_csv("wes_appendix/sentiment_counts.csv")
-sentiment_counts.plot(kind='bar', stacked=True, figsize=(12,7), color=[colors[col] for col in sentiment_counts.columns if col != 'Presidents'])
+sentiment_counts.plot(kind='bar', stacked=True, color=[colors[col] for col in sentiment_counts.columns if col != 'Presidents'])
 plt.title('Sentiment Distribution per President', fontsize=20)
 plt.ylabel('Percentage', fontsize=20)
 plt.xlabel('President', fontsize=20)
@@ -738,7 +662,6 @@ Figure Ax in the appendix shows the sentiments of each president over time. Howe
 
 ```{python}
 #| eval: true
-
 
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib import cm
@@ -758,7 +681,7 @@ def plot_for_president_gradient(president, df):
     custom_cmap = LinearSegmentedColormap.from_list("custom", ["red", "gray", "blue"])
     
     # Plotting with a black background and custom colormap
-    fig, ax = plt.subplots(figsize=(10, 5))
+    fig, ax = plt.subplots()
     bars = ax.bar(np.arange(len(president_df)), president_df['Sentiment_Score'], 
                   color=custom_cmap(norm(president_df['Sentiment_Score'])), width=1.0)
     
@@ -791,7 +714,7 @@ def plot_in_grid(president, ax):
     ax.set_facecolor('black')
 
 # Creating a 2x3 grid plot for all presidents
-fig, axes = plt.subplots(2, 3, figsize=(18, 10))
+fig, axes = plt.subplots(2, 3)
 fig.suptitle('Sentiment Scores over time for each President', fontsize=20)
 
 for president, ax in zip(adjusted_presidents_order, axes.ravel()):
@@ -842,7 +765,7 @@ def plot_histogram(president, color, ax):
     ax.grid(axis='y', linestyle='--', linewidth=0.5)
 
 # Creating a 2x3 grid plot for histograms of all presidents
-fig, axes = plt.subplots(2, 3, figsize=(18, 10))
+fig, axes = plt.subplots(2, 3)
 fig.suptitle('Distribution of Sentiment Scores for each President', fontsize=20)
 
 for president, color, ax in zip(adjusted_presidents_order, pastel_colors, axes.ravel()):
@@ -928,3 +851,120 @@ plt.show()
 
 Using the NRC emotion lexicon we see that all presidents have their most common sentiment being positive, while the particular emotions in there sentences differ. A common emotion amongst all presidents is trust. Anticipation is a frequently evoked emotion from the presidents, besides for deKlerk. Other relatively common emotions include fear and joy.
 
+
+
+
+
+## Latent Dirichlet Allocation
+
+The ALL models were trained on the corpus of all thirty-six speeches, iteratively decreasing the number of topics from five until three. At five topics, two of the topics are almost overlaid - indicating that they are closely linked and probably contain a single topic. At four topics, one of the topics sits almost on the origin of the latent variables. This suggests that this 'topic' does not have differentiating features and likely consists of neutral words, for example it contains 'new', 'also', and a set of numbers, 'one', 'two', 'million'. The third model, with three topics, has three clearly differentiated topics sitting at the extremes of the latent variables axes. Three-topics models were then trained for each of the presidents, using only their respective speeches as the corpus. We gave the top ten words from each topic for each presidents' model and for the three-topic ALL model to ChatGPT to see if it could discern the nature of the topics identified by the LDA models. The output is as follows:  
+
+LDA-Ramaphosa:
+
++ Topic 1: People and societal needs - this topic includes words related to the needs of the people and society. This could be associated with President Ramaphosa's focus on addressing the needs of the South African population, which could include policies related to social welfare and community development. 
+    + Examples: "people," "need," "african".
++ Topic 2: Economic development and business - President Ramaphosa is known for promoting economic development and business growth in South Africa. This topic contains words related to business and economic sectors. 
+    + Examples: "business," "government," "economic".
++ Topic 3: Time and work commitment - this topic contains words related to time and work commitment, possibly reflecting President Ramaphosa's commitment to his role and responsibilities as a leader. 
+    + Examples: "year," "work," "must".
+
+LDA-Zuma:
+
++ Topic 1: South Africa and government - this topic includes words related to South Africa and government. President Zuma's tenure was marked by various political and governmental issues, making this a prominent topic.
+    + Examples: "south," "government," "africa"
++ Topic 2: Economic sectors and development - President Zuma's administration likely involved policies and discussions related to economic sectors and development, as indicated by the words in this topic.
+    + Examples: "sector," "new," "economic"
++ Topic 3: Time and population - this topic may be associated with President Zuma's time in office and concerns related to the South African population.
+    + Examples: "year," "country," "million"
+
+LDA-Mandela:
+
++ Topic 1: Public affairs and the country - this topic encompasses words associated with public affairs and the country. Given Nelson Mandela's role as South Africa's first post-apartheid president, it's likely that topics related to the nation were significant.
+    + Examples: "public," "country," "african"
++ Topic 2: Government work and public service - President Mandela's government focused on public service and the work required to build a new South Africa.
+    + Examples: "government," "work," "service"
++ Topic 3: Time and commitment - Words related to time and commitment reflect Mandela's dedication to the country and his work.
+    + Example: "year," "must," "national"
+
+LDA-deKlerk:
+
++ Topic 1: Political alliance and elections - this topic includes words related to political alliances and elections. President de Klerk played a crucial role in the transition from apartheid to democracy.
+    + Examples: "alliance," "election," "african"
++ Topic 2: Constitution and political parties - given his role in the negotiation of South Africa's new constitution, this topic reflects words related to the constitution and political parties.
+    + Examples: "constitution," "party," "power"
++ Topic 3: South African provinces and constitutional concerns - the words in this topic may relate to the various provinces in South Africa and constitutional concerns that were addressed during his leadership.
+    + Examples: "south," "province," "constitutional"
+
+LDA-Mbeki:
+
++ Topic 1: Time and government programs - this topic could be associated with President Mbeki's focus on time-bound government programs and initiatives.
+    + Examples: "year," "programme," "government"
++ Topic 2: National issues and the country - this topic encompasses words related to national issues and the country, reflecting his leadership during a period of significant national importance.
+    + Examples: "country," "national," "work"
++ Topic 3: Economic sectors and government efforts - President Mbeki's administration focused on economic sectors and government efforts, as indicated by the words in this topic.
+    + Examples: "sector," "effort," "government"
+
+LDA-Motlanthe:
++ Topic 1 - South Africa and African development - this topic includes words related to South Africa and African development, reflecting a focus on regional and national development.
+    + Examples: "south," "african," "development"
++ Topic 2: Government work and public sector - this topic likely represents the emphasis on government work and the public sector during President Motlanthe's leadership.
+    + Examples: "government," "sector," "regard"
++ Topic 3: Economic development and work - words related to economic development and work suggest a focus on economic policies and employment during his tenure.
+    + Examples: "economic," "work," "growth"
+
+LDA-All:
+
++ Topic 1: South Africa and African development - this topic emphasizes South Africa and its development, which is a broad, overarching theme applicable to all six Presidents.
+    + Examples: "south," "africa," "new"
++ Topic 2: People, work, and service - this topic encompasses words related to the people, their work, and the services provided, reflecting the importance of public service and commitment.
+    + Examples: "people," "work," "service"
+Topic 3 - Time and government - the words in this topic are related to time, government, and national affairs, indicating a focus on governance and the passage of time across all Presidential terms.
+    + Examples: "year," "african," "government"
+
+### Probablistic Latent Semantic Analysis
+
+pLSA models are very sensitive to data sparsity, the document-term matrix has only around a third of its cells populated. The model struggles to capture meaningful relationships through its dimensionality reduction techniques in the sparse data.
+
+
+```{python}
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from gensim.models import LdaModel, LsiModel
+from gensim import corpora
+
+
+m_pLSA_4 = LsiModel.load("topic_models/m_pLSA_4")
+
+num_words=20
+
+topics = m_pLSA_4.print_topics(num_topics=4, num_words=num_words)
+df4=pd.DataFrame({})
+for topic in topics:
+    content = topic[1]
+    words=[]
+    scores=[]
+    scorewords = content.split(' + ')
+    for item in scorewords:
+        spl=item.split('*')
+        scores.append(spl[0])
+        words.append(spl[1].replace('"',''))
+    topic_df=pd.DataFrame({f'T{topic[0]+1} Words': words, f'T{topic[0]+1} Scores': scores})
+    df4 = pd.concat([df4, topic_df], axis=1)
+
+
+# Create a 2x2 grid of subplots
+fig, axs = plt.subplots(2, 2)
+for i in [0,1]:
+    for j in [0,1]:
+        t=2*i+j+1
+        axs[i, j].barh(df4[f'T{t} Words'], df4[f'T{t} Scores'])
+        axs[i, j].set_xlabel('Words')
+        axs[i, j].set_ylabel('Weight')
+        axs[i, j].set_title(f'M4: Topic {t}')
+        axs[i, j].tick_params(axis='x', rotation=90, labelsize=10)
+        axs[i, j].tick_params(axis='y', rotation=0, labelsize=9)
+plt.tight_layout()
+plt.show()
+```

@@ -1,0 +1,191 @@
+---
+title: "Appendix"
+---
+
+```{python}
+#| echo: false
+import pandas as pd
+from matplotlib.colors import LinearSegmentedColormap
+from matplotlib import cm
+from matplotlib import cm
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+
+HFM1 = pd.read_csv("HFM1_SentimentData.csv")
+presidents_order = ['Mandela', 'deKlerk', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
+adjusted_presidents_order = ['deKlerk'] + [president for president in presidents_order if president != 'deKlerk']
+
+
+def plot_for_president_gradient(president, df):
+    # Filter dataframe for the selected president
+    president_df = df[df['Presidents'] == president]
+    
+    # Sorting data by order (using the 'Unnamed: 0' column as the order)
+    president_df = president_df.sort_values(by='Unnamed: 0')
+    
+    # Normalize the scores to [0,1] for colormap
+    norm = plt.Normalize(-1, 1)
+    
+    # Custom colormap: Red -> Gray -> Blue
+    custom_cmap = LinearSegmentedColormap.from_list("custom", ["red", "gray", "blue"])
+    
+    # Plotting with a black background and custom colormap
+    fig, ax = plt.subplots()
+    bars = ax.bar(np.arange(len(president_df)), president_df['Sentiment_Score'], 
+                  color=custom_cmap(norm(president_df['Sentiment_Score'])), width=1.0)
+    
+    ax.set_title(f'Sentiment Score over time for President {president}')
+    ax.set_xlabel('Order of Sentences')
+    ax.set_ylabel('Sentiment Intensity')
+    ax.axhline(0, color='white',linewidth=0.5)
+    ax.grid(axis='y', color='white', linestyle='--', linewidth=0.5)
+    ax.set_facecolor('black')
+    fig.colorbar(cm.ScalarMappable(norm=norm, cmap=custom_cmap), ax=ax, label='Sentiment Score')
+    
+    plt.show()
+
+```
+
+
+```{python}
+#| echo: false
+presidents_list = HFM1['Presidents'].unique()
+def plot_in_grid(president, ax):
+    """Plot sentiment scores for a given president on a given axes."""
+    president_df = HFM1[HFM1['Presidents'] == president]
+    president_df = president_df.sort_values(by='Unnamed: 0')
+    
+    # Normalize the scores for colormap
+    norm = plt.Normalize(-1, 1)
+    custom_cmap = LinearSegmentedColormap.from_list("custom", ["red", "gray", "blue"])
+
+    bars = ax.bar(np.arange(len(president_df)), president_df['Sentiment_Score'], 
+                  color=custom_cmap(norm(president_df['Sentiment_Score'])), width=1.0)
+    ax.set_title(f'{president}')
+    ax.axhline(0, color='white', linewidth=0.5)
+    ax.grid(axis='y', color='white', linestyle='--', linewidth=0.5)
+    ax.set_facecolor('black')
+
+# Creating a 2x3 grid plot for all presidents
+fig, axes = plt.subplots(2, 3)
+fig.suptitle('Sentiment Scores over time for each President', fontsize=16)
+
+for president, ax in zip(adjusted_presidents_order, axes.ravel()):
+    plot_in_grid(president, ax)
+
+# Adjust layout
+plt.tight_layout()
+plt.subplots_adjust(top=0.90)
+plt.show()
+```
+
+
+```{python}
+#| echo: false
+HFM2 = pd.read_csv("HFM2_SentimentData.csv")
+
+presidents_list = HFM2['Presidents'].unique()
+def plot_in_grid(president, ax):
+    """Plot sentiment scores for a given president on a given axes."""
+    president_df = HFM2[HFM2['Presidents'] == president]
+    president_df = president_df.sort_values(by='Unnamed: 0')
+    
+    # Normalize the scores for colormap
+    norm = plt.Normalize(-1, 1)
+    custom_cmap = LinearSegmentedColormap.from_list("custom", ["red", "gray", "blue"])
+
+    bars = ax.bar(np.arange(len(president_df)), president_df['Sentiment_Score'], 
+                  color=custom_cmap(norm(president_df['Sentiment_Score'])), width=1.0)
+    ax.set_title(f'{president}')
+    ax.axhline(0, color='white', linewidth=0.5)
+    ax.grid(axis='y', color='white', linestyle='--', linewidth=0.5)
+    ax.set_facecolor('black')
+
+# Creating a 2x3 grid plot for all presidents
+fig, axes = plt.subplots(2, 3)
+fig.suptitle('Sentiment Scores over time for each President', fontsize=16)
+
+for president, ax in zip(adjusted_presidents_order, axes.ravel()):
+    plot_in_grid(president, ax)
+
+# Adjust layout
+plt.tight_layout()
+plt.subplots_adjust(top=0.90)
+plt.show()
+```
+
+```{python}
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from gensim.models import LdaModel, LsiModel
+from gensim import corpora
+
+
+m_pLSA_6 = LsiModel.load("topic_models/m_pLSA_6")
+m_pLSA_9 = LsiModel.load("topic_models/m_pLSA_9")
+
+# Number of words to display in the bar plot
+num_words = 20
+
+topics = m_pLSA_6.print_topics(num_topics=6, num_words=num_words)
+df6=pd.DataFrame({})
+for topic in topics:
+    t=topic[0]+1
+    content = topic[1]
+    words=[]
+    scores=[]
+    scorewords = content.split(' + ')
+    for item in scorewords:
+        spl=item.split('*')
+        scores.append(spl[0])
+        words.append(spl[1].replace('"',''))
+    topic_df=pd.DataFrame({f'T{t} Words': words, f'T{t} Scores': scores})
+    df6 = pd.concat([df6, topic_df], axis=1)
+
+topics = m_pLSA_9.print_topics(num_topics=9, num_words=num_words)
+df9=pd.DataFrame({})
+for topic in topics:
+    content = topic[1]
+    words=[]
+    scores=[]
+    scorewords = content.split(' + ')
+    for item in scorewords:
+        spl=item.split('*')
+        scores.append(spl[0])
+        words.append(spl[1].replace('"',''))
+    topic_df=pd.DataFrame({f'T{topic[0]+1} Words': words, f'T{topic[0]+1} Scores': scores})
+    df9 = pd.concat([df9, topic_df], axis=1)
+
+
+# Create a 3x2 grid of subplots
+fig, axs = plt.subplots(3, 2, figsize=(12, 8))
+for i in [0,1,2]:
+    for j in [0,1]:
+        t=2*i+j+1
+        axs[i, j].barh(df6[f'T{t} Words'], df6[f'T{t} Scores'])
+        axs[i, j].set_xlabel('Words')
+        axs[i, j].set_ylabel('Weight')
+        axs[i, j].set_title(f'M6: Topic {t}')
+        axs[i, j].tick_params(axis='x', rotation=90, labelsize=10)
+        axs[i, j].tick_params(axis='y', rotation=0, labelsize=6)
+plt.tight_layout()
+plt.show()
+
+# Create a 3x3 grid of subplots
+fig, axs = plt.subplots(3, 3, figsize=(12, 8))
+for i in [0,1,2]:
+    for j in [0,1,2]:
+        t=3*i+j+1
+        axs[i, j].barh(df9[f'T{t} Words'], df9[f'T{t} Scores'])
+        axs[i, j].set_xlabel('Words')
+        axs[i, j].set_ylabel('Weight')
+        axs[i, j].set_title(f'M9: Topic {t}')
+        axs[i, j].tick_params(axis='x', rotation=90, labelsize=10)
+        axs[i, j].tick_params(axis='y', rotation=0, labelsize=6)
+plt.tight_layout()
+plt.show()
+
+```
