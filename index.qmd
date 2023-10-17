@@ -240,6 +240,44 @@ from scipy.special import softmax
 
 # Results
 
+## Data Exploration 
+
+```{python}
+#| echo: false
+#| fig-cap: "Figure X: Wordcloud per president "
+data = a2data
+def remove_stopwords(sentence):
+    words = sentence.split()
+    cleaned_words = [word for word in words if word.lower() not in STOPWORDS]
+    return ' '.join(cleaned_words)
+
+# Apply the function to remove stop words from each sentence in the DataFrame
+data['Cleaned_Sentences'] = data['Sentences'].apply(remove_stopwords)
+
+# Group the cleaned sentences by president
+grouped = data.groupby('Presidents')['Cleaned_Sentences'].apply(' '.join).reset_index()
+
+# Initialize a dictionary to store word clouds for each president
+wordclouds = {}
+
+# Generate a word cloud for each president
+for index, row in grouped.iterrows():
+    wordcloud = WordCloud(width=800, height=400, background_color='white').generate(row['Cleaned_Sentences'])
+    wordclouds[row['Presidents']] = wordcloud
+
+# Display the word clouds
+plt.figure(figsize=(15, 10))
+for i, (president, wordcloud) in enumerate(wordclouds.items(), 1):
+    plt.subplot(3, 2, i)  
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.title(president)
+    plt.axis("off")
+plt.show()
+```
+
+
+
+
 ## RoBERTa 
 
 ```{python}
