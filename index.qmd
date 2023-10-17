@@ -629,11 +629,39 @@ def extract_topics(lda_model, m):
 
 topics_df = pd.concat([extract_topics(m_lda_3, 3),extract_topics(m_lda_4, 4),extract_topics(m_lda_5, 5)], axis=1)
 
-md_tbl = topics_df.to_markdown(index=False)
-md_tbl
-
 ```
 
+
+```{python}
+#| echo: false
+#| fig-cap: "Figure X: Topic Weights and Terms Table"
+data_display = []
+lda_df = pd.read_csv("lda_all_topics_df.csv")
+for i in range(lda_df.shape[0]):
+    row = []
+    for j in range(lda_df.shape[1]):
+        row.append(lda_df.iloc[i, j])
+    data_display.append(row)
+
+# Plotting the table with bold headers
+fig, ax = plt.subplots(figsize=(20, 10))
+ax.axis('off')
+ax.axis('tight')
+
+table = ax.table(cellText=data_display, colLabels=lda_df.columns, cellLoc='center', loc='center')
+table.auto_set_font_size(False)
+table.set_fontsize(10)
+table.auto_set_column_width(col=list(range(len(lda_df.columns))))
+table.scale(1.5, 1.5)
+
+# Bolding the headers
+table.auto_set_font_size(False)
+for (i, j), cell in table.get_celld().items():
+    if i == 0:
+        cell.set_text_props(fontweight='bold', color='w')
+        cell.set_facecolor('#40466e')  # setting a dark background for contrast
+plt.show()
+```
 
 ```{python}
 #| echo: false
