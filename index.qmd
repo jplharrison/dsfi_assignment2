@@ -440,7 +440,7 @@ data.head()
 ```
 
 
-
+In Figure XXX we look at the mean sentiment scorees for each president. The resuls are largely similar as the prior model. De Klerk remains the president with the lowest mean sentiment score while Zuma retainis the highest value. The other preseidents scores while slighly altered still behave similar relative to eachother.
 ```{python}
 HFM2 = pd.read_csv("HFM2_SentimentData.csv")
 presidents_order = ['Mandela', 'deKlerk', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
@@ -460,6 +460,9 @@ plt.show()
 ```
 
 
+Now looking to the proportion of sentiment classes per president in Figure XXX. We note that de Klerk's mean sentiment score became more positve we find that the proportioin of negative sentences has remained largely the same rather neutral sentencees in the previous model have now been classified as positve. While the results do look similar there is a clear trend of lesser neutral sentences, possibly speaking to the more domaini specific model's ability to better discern sentiment of political rhetoric. 
+
+
 ```{python}
 colors = {'Negative': '#FF9999', 'Neutral': '#99CCFF', 'Positive': '#99FF99'}
 sentiment_counts = HFM2.groupby('Presidents')['Predicted_Label'].value_counts(normalize=True).unstack().fillna(0)
@@ -472,7 +475,6 @@ plt.legend(title='Sentiment')
 plt.tight_layout()
 plt.show()
 ```
-
 
 
 
@@ -508,6 +510,7 @@ plt.show()
 ```
 
 
+Looking to the distribution of sentiments by presidents in figure XXX. De Klerk's sentiment heavily leans towards the negative, with only a sparse presence of positive sentiment. Contrastingly, Mandela garners a majority of positive sentiments, although there's a consistent representation across all sentiment spectrums, indicating diverse opinions. Mbeki's sentiment profile is unique, spanning from negative through neutral to positive, with a pronounced peak in neutral sentiments. Motlanthe enjoys overwhelmingly positive feedback, with minimal divergences towards neutrality or negativity. In Zuma's case, a dominant concentration of neutral sentiments emerges, bracketed by almost equal measures of positive and negative sentiments. Ramaphosa's sentiment distribution is inclined towards positivity, but it doesn't lack a substantial count of neutral mentions and a minor portion of negative sentiments. 
 ```{python}
 pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
 
