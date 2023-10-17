@@ -1066,3 +1066,20 @@ for i in [0,1]:
 plt.tight_layout()
 plt.show()
 ```
+
+
+# Discussion
+
+The State of the Nation Address (SONA) gives an annual comprehensive overview of the nation’s progress, challenges, and future prospects. Through the application of Natural Language Processing (NLP), specifically sentiment analysis and topic modelling, this study has endeavoured to extract insights from these speeches to present a holistic, data-driven portrayal of the South African political landscape over three decades.
+
+Using the RoBERTa, NRC, and Afinn models, the analysis provides a layered perspective of the country's political sentiment. RoBERTa's findings indicate that most presidents, from Mandela to Ramaphosa, conveyed an overall positive sentiment. The NRC model captured a spectrum of emotions, from trust and anticipation during Mandela's tenure to fear and surprise in Zuma's era. Afinn results largely corroborated with RoBERTa, strengthening the overall sentiment conclusions. Mandela's emphasis on societal unity and nation-building post-apartheid possibly fueled the positive sentiments. This trend continued with Mbeki, with an undercurrent of hope and trust. Zuma's era, intriguingly, maintained a high positive sentiment despite palpable emotions of fear and surprise, indicating a divergence between optimistic rhetoric and grounded realities. Ramaphosa's sentiments, while positive, were more subdued, reflecting challenges like the COVID-19 pandemic. In stark contrast, de Klerk’s tenure, as seen particularly in the NRC results, showed heightened emotions of sadness and fear, mirroring the transitional period around apartheid's end.
+
+The LDA model effectively identified core themes across the terms. Mandela emphasized nation-building and unity. De Klerk, in contrast, focused on political alliances, reforms, and apartheid's complexities. Mbeki's speeches indicated shifts towards economic sectors and development. Motlanthe highlighted South Africa's broader African context, and Zuma balanced national and economic themes. However, Probabilistic Latent Semantic Analysis (pLSA) had challenges, emphasizing the importance of data quality and quantity for NLP projects.
+
+# Limitations and Recommendations
+
+While insightful, the study has limitations. Sentiment analysis can sometimes simplify complex rhetoric into basic sentiments, risking nuanced emotion loss. Relying on RoBERTa, while robust, could be complemented by other models for a rounded analysis. True class sentiment labels would allow rigorous model performance interrogation. Topic modelling, being interpretive, lacks quantifiable validation methods. Labelled data can facilitate model performance assessment.
+
+# Conclusion
+
+The NLP-based SONA speech analysis paints a multifaceted South African political journey narrative. As sentiments evolved and topics transitioned, they narrated a nation grappling with its past, shaping its present, and envisioning its future. With advancing NLP methodologies, such analyses will be pivotal in decoding global political and societal narratives.
