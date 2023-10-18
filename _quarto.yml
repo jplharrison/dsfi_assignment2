@@ -9,6 +9,7 @@ website:
       - href: index.qmd
         text: Home
       - Appendix.qmd
+      - ChatGPT.qmd
 
 format:
   html:
