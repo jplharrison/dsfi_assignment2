@@ -214,7 +214,7 @@ This is conducted by once again analysing each sentence in the dataset and selec
 
 ### RoBERTa Transfer Learning
 
-For sentiment analysis, we also employed a model belonging to hugging face called "twitter-roberta-base-sentiment-latest" and "". The architecture for these models is largely the same, but "" differs in that it was trained primarily on political tweets, which is lesser in the training data size but potentially more domain relevant to the task at hand. 
+For sentiment analysis, we also employed a model belonging to hugging face called "twitter-roberta-base-sentiment-latest" and "cardiffnlp/xlm-twitter-politics-sentiment". The architecture for these models is largely the same, but "cardiffnlp/xlm-twitter-politics-sentiment" differs in that it was trained primarily on political tweets, which is lesser in the training data size but potentially more domain relevant to the task at hand. 
 
  This is a transformer-based transfer learning approach. Essentially this means that the model has been pretrained on data to learn how to assign sentiment scores then the trained model is used to extract sentiment scores for our dataset. The model used is more specifically considered a time language model. The time Language Models (LM) foundation is anchored on the RoBERTa architecture, which is a refined variant of BERT (Bidirectional Encoder Representations from Transformers). One of the standout characteristics of RoBERTa is its bidirectional context processing. Unlike conventional models, RoBERTa reviews words in relation to their entire surrounding context, absorbing nuances from both the preceding and following parts of the text. 
 
@@ -1003,8 +1003,6 @@ While insightful, the study has limitations. Sentiment analysis can sometimes si
 # Conclusion
 
 The NLP-based SONA speech analysis paints a multifaceted South African political journey narrative. As sentiments evolved and topics transitioned, they narrated a nation grappling with its past, shaping its present, and envisioning its future. With advancing NLP methodologies, such analyses will be pivotal in decoding global political and societal narratives.
-
-
 
 
 # Bibliography
