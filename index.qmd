@@ -944,8 +944,8 @@ The weights produced for each word in the topics of the pLSA models are not very
 
 
 ```{python}
-#| include:false
-#| eval:true
+#| include : false
+#| eval : true
 
 import matplotlib.pyplot as plt
 import numpy as np
