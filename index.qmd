@@ -8,31 +8,28 @@ The State of the Nation Address (SONA) serves as an annual narrative roadmap of 
 
 In the era of data science, where Natural Language Processing(NLP) has become a potent tool to extract meaningful patterns from large volumes of textual data, it is of profound interest to apply such methods to SONA speeches. By employing advanced techniques such as sentiment analysis and topic modelling, one can unearth the latent themes dominating these addresses over three decades and gauge the sentiment fluctuations accompanying them. This presents a data-driven perspective on South Africa's political discourse,
 
-The following proceeds XXX first sections. Firstly a literature review will be conducted on the existing sentiment analysis and topic modelling methods available and used in academia and industry. Thereafter a preliminary exploration of the data occurs to understand the structure and potential trends in the data prior to modelling applications. The Methods section will then detail the sentiment analysis, topic modelling and metrics used in these models. The results of the paper are briefly presented and interpreted before we discuss the overall trends and findings of the paper. We conclude by surmising the findings of the paper, highlighting limitations and presenting avenues for future research into SONA NLP work. 
+The following proceeds follow this course. Firstly a literature review will be conducted on the existing sentiment analysis and topic modelling methods available and used in academia and industry. Thereafter a preliminary exploration of the data occurs to understand the structure and potential trends in the data prior to modelling applications. The Methods section will then detail the sentiment analysis, topic modelling and metrics used in these models. The results of the paper are briefly presented and interpreted before we discuss the overall trends and findings of the paper. We conclude by surmising the findings of the paper, highlighting limitations and presenting avenues for future research into SONA NLP work. 
 
 
 # Literature Review
 
 ## Sentiment Analysis
 
-Sentiment Analysis is a prominent field within the broader scope of NLP techniques, and it has gained significant attention in scientific research in recent years. Sentiment classification, specifically polarity estimation, is amongst the most extensively studied tasks of sentiment analysis. Polarity is often categorized as either positive or negative, but a third category labeled as "neutral" can be introduced (Wang et al., 2014). This is what our sentiment analysis will focus on. 
+Sentiment Analysis is a prominent field within the broader scope of NLP techniques, and it has gained significant attention in scientific research in recent years. Sentiment classification, specifically polarity estimation, is amongst the most extensively studied tasks of sentiment analysis. Polarity is often categorized as either positive or negative (Wang et al., 2014). This is what our sentiment analysis will focus on. 
 
-There are two primary approaches to sentiment analysis, the machine learning and lexicon-based approaches. 
+According to the wider literature, there are two primary approaches to sentiment analysis, the machine learning and lexicon-based approaches. The other primary approach to sentiment analysis is the lexicon-based approach. This approach analyzes each word in a document and gives it a score, on a scale where one side is completely negative, and the other is completely positive, with neutral in the middle. For example, words that would get a negative rating include, “ugly”,  while a positively rated word is “good”(Ligthart et al., 2021). (Vinodhini 2012) notes that lexicons are heavily reliant on the domain, due to the type of language used in different fields. This is why adjusting the lexicon to the target domain is needed, however can be very time consuming.
 
-The other primary approach to sentiment analysis is the lexicon-based approach. This approach analyzes each word in a document and gives it a score, on a scale where one side is completely negative, and the other is completely positive, with neutral in the middle. For example, words that would get a negative rating include, “ugly”,  while a positively rated word is “good”(Ligthart et al., 2021). (Vinodhini 2012) notes that lexicons are heavily reliant on the domain, due to the type of language used in different fields. This is why adjusting the lexicon to the target domain is needed, however can be very time consuming.
+Popular lexicons include the AFINN lexicon, which gives words a rating between -5 and 5, with -5 meaning a very negative word while 5 indicates that the word is very positive (Al-Shabi, 2020), and  the NRC Emotion Lexicon (Mohammad & Turney, 2010) which focuses on emotional words only. This provides a list of words that are classified as “negative”, “positive”, and then based on (Plutchik, 1980), words are given corresponding emotions, such as: “anger”, “disgust”, “joy”, etc. These are the two lexicons we will be using in this paper.
 
-Two popular lexicons are AFINN and NRC. 
-AFINN gives words a rating between -5 and 5, with -5 meaning a very negative word while 5 indicates that the word is very positive (Al-Shabi, 2020). The lexicon was created by Finn Arup Nielsen. The NRC Emotion Lexicon (Mohammad & Turney, 2010) on the other hand focuses on emotional words only, and provides a list of 13,872 terms in several categories. Specifically, the terms are classified as “negative”, “positive”, and then based on (Plutchik, 1980), words have corresponding can have associated emotions: “anger”, “disgust”, “fear”, “sadness”, “joy” , “anticipation”, “trust”, and “surprise”. These are the two lexicons we will be using in this paper.
+Machine learning approaches for sentiment analysis tasks are often divided into three categories: unsupervised learning, semi-supervised learning, and supervised learning. Unsupervised learning methods cluster unlabeled data into groups that exhibit similarity (Li and Liu 2014). Semi-supervised learning makes use of both labeled and unlabelled data in the training process (da Silva et al. 2016a, b),  while supervised learning, which is the most human-intensive, occurs when a model is trained on fully labeled data. This can often result in the optimal model performance, however due to the requirement of labeled data it can be inefficient to acquire (Hemmatian and Sohrabi 2017).
 
-Machine learning approaches for sentiment analysis tasks are divided into three categories: unsupervised learning, semi-supervised learning, and supervised learning. Unsupervised learning methods cluster unlabeled data into groups that exhibit similarity (Li and Liu 2014). Semi-supervised learning makes use of both labeled and unlabelled data in the training process (da Silva et al. 2016a, b), and can lead to good model performance while less human work is required compared to supervised learning. Supervised learning, which is the most human-intensive, occurs when a model is trained on fully labeled data. This can often result in the optimal model performance, however due to the requirement of labeled data it can lead to inefficiencies (Hemmatian and Sohrabi 2017).
-
-According to (Yadav and Vishwakarma, 2019) who reviewed over 100 papers which used deep learning (subset of machine learning) techniques to perform sentiment analysis, the most common deep learning models are RNNs, CNNs, and LSTMs, with the latter providing the best performance. They also said that utilizing machine learning approaches to conduct sentiment analysis was a promising field, while noting that the dataset needs to be large enough for a respectable analysis to take place, which is a challenge.
+(Yadav and Vishwakarma, 2019) reviewed over 100 papers which used deep learning (subset of machine learning) techniques to perform sentiment analysis, and found that the most common deep learning models are RNNs, CNNs, and LSTMs, with the latter providing the best performance. They also said that utilizing machine learning approaches to conduct sentiment analysis was a promising field, while noting that the dataset needs to be large enough for a respectable analysis to take place, which can be a challenge.
 
 Furthermore, (Loureiro et al., 2022) showed the importance of Time language models, which are a set of language models which undergo continual learning on, in this case, tweets. (Loureiro et al., 2022) shows that this approach enhances the models ability to deal with out-of-distribution inputs, as well enhances competitiveness with standard benchmark tests. They’re also seen to deal well with the problem of concept drift. Since our data is over a long period of time, we will be using these time language models too.
 
 ## Topic Modelling
 
-In the 1980s, topic modelling emerged as a means to enhance the accuracy of information retrieval systems. Deerwester et al (1990) founded one of the earliest topic models known as Latent Semantic Analysis (LSA). LSA groups documents based on latent semantic formations, and makes the assumption that words with similar semantic meanings tend to co-occur. This innovation greatly advanced the capabilities of document retrieval systems because users were no longer required to employ the exact words found in related documents - similarity could be determined through a broader semantic context.
+In the 1980s, topic modelling emerged as a means to enhance the accuracy of information retrieval systems. (Deerwester et al., 1990) founded one of the earliest topic models known as Latent Semantic Analysis (LSA). LSA groups documents based on latent semantic formations, and makes the assumption that words with similar semantic meanings tend to co-occur. This found great use in document retrieval systems because users were no longer required to employ the exact words found in the desired documents - similarity could be determined through a broader semantic context.
 
 Blei et al. (2003) advanced the techniques implemented in LSA by developing a related modelling algorithm called Latent Dirichlet Allocation (LDA). In LDA, a document is seen as a collection of words drawn from unobserved topics. LDA subsequently assesses the likelihood distribution of a specific word across a range of topics and then the distribution of a specific topic across a collection of documents.
 
@@ -368,7 +365,7 @@ Figure X below shows that deKlerk is once again seen to possess less positive se
 # sentiment_counts.reindex(adjusted_presidents_order).to_csv('wes_appendix/sentiment_counts.csv')
 sentiment_counts = pd.read_csv("wes_appendix/sentiment_counts.csv")
 sentiment_counts.plot(kind='bar', stacked=True, color=[colors[col] for col in sentiment_counts.columns if col != 'Presidents'])
-plt.title('Sentiment Distribution per President', fontsize=20)
+plt.title('Sentiment Distribution per President')
 plt.ylabel('Percentage')
 plt.xlabel('President')
 plt.legend(title='Sentiment')#, fontsize=20, title_fontsize=20)
@@ -400,16 +397,16 @@ def plot_histogram(president, color, ax):
     ax.set_xlim(-10, 10)
 
     ax.hist(president_df['scores'], bins=30, color=color, edgecolor='white')
-    ax.set_title(f'{president}', fontsize=20)
-    ax.set_xlabel('Sentiment Score', fontsize=20)
-    ax.set_ylabel('Frequency', fontsize=20)
-    ax.tick_params(axis='x', labelsize=16)
-    ax.tick_params(axis='y', labelsize=16)
+    ax.set_title(f'{president}')
+    ax.set_xlabel('Sentiment Score')
+    ax.set_ylabel('Frequency')
+    ax.tick_params(axis='x')
+    ax.tick_params(axis='y')
     ax.grid(axis='y', linestyle='--', linewidth=0.5)
 
 # Creating a 2x3 grid plot for histograms of all presidents
 fig, axes = plt.subplots(2, 3)
-fig.suptitle('Distribution of Sentiment Scores for each President', fontsize=20)
+fig.suptitle('Distribution of Sentiment Scores for each President')
 
 for president, color, ax in zip(adjusted_presidents_order, pastel_colors, axes.ravel()):
     plot_histogram(president, color, ax)
@@ -480,11 +477,11 @@ for president, ax, colour in zip(order, axes.ravel(), pastel_colors):
     y = data[x].values.squeeze()
     ax.set_ylim(0, 0.25)
     ax.bar(x, y, color=colour)
-    ax.set_title(president, fontsize=20)
+    ax.set_title(president)
     # ax.set_xlabel('Sentiment Category', fontsize=16)
-    ax.set_ylabel('Sentiment Score', fontsize=16)
-    ax.tick_params(axis='x', labelrotation=45, labelsize=16)
-    ax.tick_params(axis='y', labelsize=16)
+    ax.set_ylabel('Sentiment Score')#, fontsize=16)
+    # ax.tick_params(axis='x', labelrotation=45, labelsize=16)
+    # ax.tick_params(axis='y', labelsize=16)
 
 # Adjust layout
 plt.tight_layout()
@@ -493,8 +490,6 @@ plt.show()
 ```
 
 Using the NRC emotion lexicon we see that all presidents have their most common sentiment being positive, while the particular emotions in there sentences differ. A common emotion amongst all presidents is trust. Anticipation is a frequently evoked emotion from the presidents, besides for deKlerk. Other relatively common emotions include fear and joy.
-
-
 
 ## RoBERTa 
 
