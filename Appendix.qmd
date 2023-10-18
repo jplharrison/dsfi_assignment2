@@ -5,6 +5,8 @@ title: "Appendix"
 ```{python}
 #| eval: True
 #| echo: False
+#| fig-cap: "Figure A1: Sentiment Scores over time for each President using AFINN lexicon"
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -87,7 +89,6 @@ def plot_in_grid(president, ax):
 
 # Creating a 2x3 grid plot for all presidents
 fig, axes = plt.subplots(2, 3)
-fig.suptitle('Sentiment Scores over time for each President', fontsize=16)
 
 for president, ax in zip(adjusted_presidents_order, axes.ravel()):
     plot_in_grid(president, ax)
@@ -157,6 +158,8 @@ def plot_for_president_gradient(president, df):
 
 ```{python}
 #| echo: false
+#| fig-cap: "Figure A2: Sentiment Scores over time for each President using Roberta"
+
 presidents_list = HFM1['Presidents'].unique()
 def plot_in_grid(president, ax):
     """Plot sentiment scores for a given president on a given axes."""
@@ -176,7 +179,6 @@ def plot_in_grid(president, ax):
 
 # Creating a 2x3 grid plot for all presidents
 fig, axes = plt.subplots(2, 3)
-fig.suptitle('Sentiment Scores over time for each President', fontsize=16)
 
 for president, ax in zip(adjusted_presidents_order, axes.ravel()):
     plot_in_grid(president, ax)
@@ -190,6 +192,7 @@ plt.show()
 
 ```{python}
 #| echo: false
+#| fig-cap: "Figure A3: Sentiment Scores over time for each President using RoBERTa: domain specific"
 HFM2 = pd.read_csv("HFM2_SentimentData.csv")
 
 presidents_list = HFM2['Presidents'].unique()
@@ -211,7 +214,6 @@ def plot_in_grid(president, ax):
 
 # Creating a 2x3 grid plot for all presidents
 fig, axes = plt.subplots(2, 3)
-fig.suptitle('Sentiment Scores over time for each President', fontsize=16)
 
 for president, ax in zip(adjusted_presidents_order, axes.ravel()):
     plot_in_grid(president, ax)
@@ -223,6 +225,7 @@ plt.show()
 ```
 
 ```{python}
+#| fig-cap: "Figure A4: Sentiment Scores over time for each President using Roberta"
 
 import matplotlib.pyplot as plt
 import numpy as np
