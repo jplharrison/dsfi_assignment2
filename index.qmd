@@ -245,11 +245,11 @@ from scipy.special import softmax
 
 ## Data Exploration 
 
-In analyzing the word clouds of various South African presidents in Figure X, there's a discernible emphasis on governance, nation-building, and the welfare of the South African people. Motlanthe and Mbeki highlighted governmental programs and assured development, while Mandela accentuated societal unity and nation-building. Ramaphosa's emphasis leaned towards economic investment and support, Zuma prioritized governmental initiatives and societal support, and deKlerk focused on constitutional and governance reforms. Across all presidents, the persistent themes underscore a dedication to governance, the progress of South Africa, and the betterment of its citizens.
+In analyzing the word clouds of various South African presidents in Figure 1, there's a discernible emphasis on governance, nation-building, and the welfare of the South African people. Motlanthe and Mbeki highlighted governmental programs and assured development, while Mandela accentuated societal unity and nation-building. Ramaphosa's emphasis leaned towards economic investment and support, Zuma prioritized governmental initiatives and societal support, and deKlerk focused on constitutional and governance reforms. Across all presidents, the persistent themes underscore a dedication to governance, the progress of South Africa, and the betterment of its citizens.
 
 ```{python}
 #| echo: false
-#| fig-cap: "Figure X: Wordcloud per president"
+#| fig-cap: "Figure 1: Wordcloud per president"
 data = a2data
 def remove_stopwords(sentence):
     words = sentence.split()
@@ -552,14 +552,14 @@ data['Predicted_Label'] = [s[1] for s in sentiment_data]
 data.to_csv("HFM1_SentimentData.csv")
 ```
 
-Figure XXX plots the mean sentiment score(-1 to 1, where -1 is perfectly negative, 0 is neutral and 1 is positive) across all presidents where presidents have been ordered by time. Beginning with de Klerk, there is a noticeable negative sentiment. However, as we transition to Mandela's era, a significant shift occurs, with sentiment becoming predominantly positive. This positive trend not only continues but also amplifies during Mbeki's tenure. 
+Figure 2 plots the mean sentiment score(-1 to 1, where -1 is perfectly negative, 0 is neutral and 1 is positive) across all presidents where presidents have been ordered by time. Beginning with de Klerk, there is a noticeable negative sentiment. However, as we transition to Mandela's era, a significant shift occurs, with sentiment becoming predominantly positive. This positive trend not only continues but also amplifies during Mbeki's tenure. 
 
 Following Mbeki, Motlanthe's sentiment score experiences a slight dip but remains firmly in the positive territory, suggesting his rhetoric, likely inifluenced by the poor economic conditions during this temulruous time in south africas politcs, was less positive than Mbeki's. The highest peak in positive sentiment is observed during Zuma's term, which is interesting considering the slide of economic performance during his tenure().This may point to a juxtoposition in his presentation of the stte of the nation and the reality of the peroid both regarding corruption and economic stability() However, it's noteworthy that Ramaphosa's sentiment, while still being robustly positive, sees a decline from the high set by Zuma, potentially indicating the effects of rhetoric regarding the COVID-19 pandemic.
 
 
 ```{python}
 #| echo: false
-#| fig-cap: "Figure X: RoBERTa 1 Mean Sentiment Scores per President"
+#| fig-cap: "Figure 2: RoBERTa 1 Mean Sentiment Scores per President"
 HFM1 = pd.read_csv("HFM1_SentimentData.csv")
 presidents_order = ['Mandela', 'deKlerk', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
 mean_scores_per_president = HFM1.groupby('Presidents')['Sentiment_Score'].mean()
@@ -576,11 +576,11 @@ plt.tight_layout()
 plt.show()
 ```
 
-In Figure XXX we plot the proportion of each sentiment class across all sentences per president.Mandela and Ramaphosa primarily have positive and neutral sentiments, with Mandela possessing a slightly broader share of positive mentions. De Klerk presents an interesting case; while he has the least proportion of positive sentiments among all the presidents, he also claims the highest negative sentiment. Mbeki and Zuma display an almost balanced distribution between positive and neutral sentiments, with Mbeki tipping slightly more towards the positive end. Motlanthe distinctly stands out, characterized by an overwhelming positive sentiment that far surpasses both the neutral and negative sentiments.
+In Figure 3 we plot the proportion of each sentiment class across all sentences per president.Mandela and Ramaphosa primarily have positive and neutral sentiments, with Mandela possessing a slightly broader share of positive mentions. De Klerk presents an interesting case; while he has the least proportion of positive sentiments among all the presidents, he also claims the highest negative sentiment. Mbeki and Zuma display an almost balanced distribution between positive and neutral sentiments, with Mbeki tipping slightly more towards the positive end. Motlanthe distinctly stands out, characterized by an overwhelming positive sentiment that far surpasses both the neutral and negative sentiments.
 
 ```{python}
 #| echo: false
-#| fig-cap: "Figure X: RoBERTa 1 Sentiment Distribution per President "
+#| fig-cap: "Figure 3: RoBERTa 1 Sentiment Distribution per President "
 colors = {'negative': '#FF9999', 'neutral': '#99CCFF', 'positive': '#99FF99'}
 sentiment_counts = HFM1.groupby('Presidents')['Predicted_Label'].value_counts(normalize=True).unstack().fillna(0)
 
@@ -592,10 +592,10 @@ plt.tight_layout()
 plt.show()
 ```
 
-To gain a depper understading of the change in sentiment over timie for each given president, and their speeches, we can look to figure XXX in the appendix. While the plot dos provide a granular insight into the variety of sentiment across sentences in presidents' speaches the lack of discernable trend makes the plot difficult to interpret. Furthermore the sentiment aggregatioin plots at an overall president level provides sufficient insiight.  Figure XXX plots the distribution of sentiment scores for each president. For de Klerk, there's a noticeable tilt towards neutral to negative sentiments. On the other hand, Mandela's mentions are predominantly positive. Mbeki's sentiment profile reveals an overwhelmingly positive tone, with more neutrality in tone than Mandela. Motlanthe's mentions also predominantly exhibit positivity, especially between the 0.50 to 1.00 range. Zuma presents a diverse sentiment spectrum; while there's a substantial representation in the positive range, especially towards the higher end, there's also a notable amount neutral sentiment and almost no negative rhetoric. Lastly, discussions about Ramaphosa are mostly tinted with positivity, particularly around the 0.50 to 0.75 range, although some neutral and negative sentiments are present. Overall, while Mandela, Mbeki, Motlanthe, Zuma, and Ramaphosa's mentions lean more towards positivity, de Klerk's profile hints at a more neutral with a  greater tilt towards negativity. 
+To gain a depper understading of the change in sentiment over timie for each given president, and their speeches, we can look to figure A1 in the appendix. While the plot dos provide a granular insight into the variety of sentiment across sentences in presidents' speaches the lack of discernable trend makes the plot difficult to interpret. Furthermore the sentiment aggregatioin plots at an overall president level provides sufficient insiight.  Figure 4 plots the distribution of sentiment scores for each president. For de Klerk, there's a noticeable tilt towards neutral to negative sentiments. On the other hand, Mandela's mentions are predominantly positive. Mbeki's sentiment profile reveals an overwhelmingly positive tone, with more neutrality in tone than Mandela. Motlanthe's mentions also predominantly exhibit positivity, especially between the 0.50 to 1.00 range. Zuma presents a diverse sentiment spectrum; while there's a substantial representation in the positive range, especially towards the higher end, there's also a notable amount neutral sentiment and almost no negative rhetoric. Lastly, discussions about Ramaphosa are mostly tinted with positivity, particularly around the 0.50 to 0.75 range, although some neutral and negative sentiments are present. Overall, while Mandela, Mbeki, Motlanthe, Zuma, and Ramaphosa's mentions lean more towards positivity, de Klerk's profile hints at a more neutral with a  greater tilt towards negativity. 
 
 ```{python}
-#| fig-cap: "Figure X: RoBERTa 1 Distribution of Sentiment Scores for each President"
+#| fig-cap: "Figure 4: RoBERTa 1 Distribution of Sentiment Scores for each President"
 #| echo: false
 pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
 
@@ -677,10 +677,9 @@ data.head()
 ```
 
 In Figure XXX we look at the mean sentiment scorees for each president. The resuls are largely similar as the prior model. De Klerk remains the president with the lowest mean sentiment score while Zuma retainis the highest value. The other preseidents scores while slighly altered still behave similar relative to eachother.
-
 ```{python}
 #| echo: false
-#| fig-cap: "Figure X: RoBERTa 2 Mean Sentiment Scores per President "
+#| fig-cap: "Figure 5: RoBERTa 2 Mean Sentiment Scores per President "
 HFM2 = pd.read_csv("HFM2_SentimentData.csv")
 presidents_order = ['Mandela', 'deKlerk', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
 mean_scores_per_president = HFM2.groupby('Presidents')['Sentiment_Score'].mean()
@@ -700,9 +699,10 @@ plt.show()
 
 Now looking to the proportion of sentiment classes per president in Figure XXX. We note that de Klerk's mean sentiment score became more positve we find that the proportioin of negative sentences has remained largely the same rather neutral sentencees in the previous model have now been classified as positve. While the results do look similar there is a clear trend of lesser neutral sentences, possibly speaking to the more domaini specific model's ability to better discern sentiment of political rhetoric. 
 
+
 ```{python}
 #| echo: false
-#| fig-cap: "Figure X: RoBERTa 2 Sentiment Distribution per President"
+#| fig-cap: "Figure 6: RoBERTa 2 Sentiment Distribution per President"
 colors = {'Negative': '#FF9999', 'Neutral': '#99CCFF', 'Positive': '#99FF99'}
 sentiment_counts = HFM2.groupby('Presidents')['Predicted_Label'].value_counts(normalize=True).unstack().fillna(0)
 
@@ -715,12 +715,12 @@ plt.show()
 ```
 
 
-Looking to the distribution of sentiments by presidents in figure XXX. De Klerk's sentiment heavily leans towards the negative, with only a sparse presence of positive sentiment. Contrastingly, Mandela garners a majority of positive sentiments, although there's a consistent representation across all sentiment spectrums, indicating diverse opinions. Mbeki's sentiment profile is unique, spanning from negative through neutral to positive, with a pronounced peak in neutral sentiments. Motlanthe enjoys overwhelmingly positive feedback, with minimal divergences towards neutrality or negativity. In Zuma's case, a dominant concentration of neutral sentiments emerges, bracketed by almost equal measures of positive and negative sentiments. Ramaphosa's sentiment distribution is inclined towards positivity, but it doesn't lack a substantial count of neutral mentions and a minor portion of negative sentiments. 
+Looking to the distribution of sentiments by presidents in figure 7. De Klerk's sentiment heavily leans towards the negative, with only a sparse presence of positive sentiment. Contrastingly, Mandela garners a majority of positive sentiments, although there's a consistent representation across all sentiment spectrums, indicating diverse opinions. Mbeki's sentiment profile is unique, spanning from negative through neutral to positive, with a pronounced peak in neutral sentiments. Motlanthe enjoys overwhelmingly positive feedback, with minimal divergences towards neutrality or negativity. In Zuma's case, a dominant concentration of neutral sentiments emerges, bracketed by almost equal measures of positive and negative sentiments. Ramaphosa's sentiment distribution is inclined towards positivity, but it doesn't lack a substantial count of neutral mentions and a minor portion of negative sentiments. 
 
 
 ```{python}
 #| echo: false
-#| fig-cap: "Figure X: RoBERTa 2 Distribution of Sentiment Scores for each President"
+#| fig-cap: "Figure 7: RoBERTa 2 Distribution of Sentiment Scores for each President"
 pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
 
 def plot_histogram(president, color, ax):
