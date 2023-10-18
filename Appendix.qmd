@@ -3,6 +3,114 @@ title: "Appendix"
 ---
 
 ```{python}
+#| eval: True
+#| echo: False
+#| fig-cap: "Figure A1: Sentiment Scores over time for each President using AFINN lexicon"
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import nltk
+from sklearn.preprocessing import StandardScaler
+from afinn import Afinn
+ 
+
+afn = Afinn()
+data = pd.read_csv("finalSentences2.csv")
+
+# compute scores (polarity) and labels
+scores = [afn.score(sentence) for sentence in data["Sentences"]]
+sentiment = ['positive' if score > 0
+						else 'negative' if score < 0
+							else 'neutral'
+								for score in scores]
+	
+# dataframe creation
+afn_df = pd.DataFrame()
+afn_df['Presidents'] = data['Presidents']
+afn_df['Sentences'] = data['Sentences']
+afn_df['scores'] = scores
+afn_df['sentiments'] = sentiment
+
+from matplotlib.colors import LinearSegmentedColormap
+from matplotlib import cm
+from matplotlib import cm
+
+presidents_order = ['Mandela', 'deKlerk', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
+mean_scores_per_president = afn_df.groupby('Presidents')['scores'].mean()
+adjusted_presidents_order = ['deKlerk'] + [president for president in presidents_order if president != 'deKlerk']
+
+def plot_for_president_gradient(president, df):
+    # Filter dataframe for the selected president
+    president_df = df[df['Presidents'] == president]
+    
+    # Sorting data by order (using the 'Unnamed: 0' column as the order)
+    president_df = president_df.sort_values(by='Unnamed: 0')
+    
+    # Normalize the scores to [0,1] for colormap
+    norm = plt.Normalize(-1, 1)
+    
+    # Custom colormap: Red -> Gray -> Blue
+    custom_cmap = LinearSegmentedColormap.from_list("custom", ["red", "gray", "blue"])
+    
+    # Plotting with a black background and custom colormap
+    fig, ax = plt.subplots()
+    bars = ax.bar(np.arange(len(president_df)), president_df['Sentiment_Score'], 
+                  color=custom_cmap(norm(president_df['Sentiment_Score'])), width=1.0)
+    
+    ax.set_title(f'Sentiment Score over time for President {president}')
+    ax.set_xlabel('Order of Sentences')
+    ax.set_ylabel('Sentiment Intensity')
+    ax.axhline(0, color='white',linewidth=0.5)
+    ax.grid(axis='y', color='white', linestyle='--', linewidth=0.5)
+    ax.set_facecolor('black')
+    fig.colorbar(cm.ScalarMappable(norm=norm, cmap=custom_cmap), ax=ax, label='Sentiment Score')
+    
+    plt.show()
+
+
+presidents_list = afn_df['Presidents'].unique()
+def plot_in_grid(president, ax):
+    """Plot sentiment scores for a given president on a given axes."""
+    president_df = afn_df[afn_df['Presidents'] == president]
+    #president_df = president_df.sort_values(by='Unnamed: 0')
+    
+    # Normalize the scores for colormap
+    norm = plt.Normalize(-1, 1)
+    custom_cmap = LinearSegmentedColormap.from_list("custom", ["red", "gray", "blue"])
+
+    bars = ax.bar(np.arange(len(president_df)), president_df['scores'], 
+                  color=custom_cmap(norm(president_df['scores'])), width=1.0)
+    ax.set_title(f'{president}')
+    ax.axhline(0, color='white', linewidth=0.5)
+    ax.grid(axis='y', color='white', linestyle='--', linewidth=0.5)
+    ax.set_facecolor('black')
+
+# Creating a 2x3 grid plot for all presidents
+fig, axes = plt.subplots(2, 3)
+
+for president, ax in zip(adjusted_presidents_order, axes.ravel()):
+    plot_in_grid(president, ax)
+
+# Adjust layout
+plt.tight_layout()
+plt.subplots_adjust(top=0.90)
+
+# for ax in axes.ravel():
+#     ax.tick_params(axis='x', labelrotation=45, labelsize=16)
+#     ax.tick_params(axis='y', labelsize=16)
+
+# Set x and y labels fontsize
+# for ax in axes[1, :]:
+#     ax.set_xlabel('Sentences', fontsize=20)
+# for ax in axes[:, 0]:
+#     ax.set_ylabel('Scores', fontsize=20)
+
+plt.show()
+```
+
+```{python}
 #| echo: false
 import pandas as pd
 from matplotlib.colors import LinearSegmentedColormap
@@ -50,6 +158,8 @@ def plot_for_president_gradient(president, df):
 
 ```{python}
 #| echo: false
+#| fig-cap: "Figure A2: Sentiment Scores over time for each President using Roberta"
+
 presidents_list = HFM1['Presidents'].unique()
 def plot_in_grid(president, ax):
     """Plot sentiment scores for a given president on a given axes."""
@@ -69,7 +179,6 @@ def plot_in_grid(president, ax):
 
 # Creating a 2x3 grid plot for all presidents
 fig, axes = plt.subplots(2, 3)
-fig.suptitle('Sentiment Scores over time for each President', fontsize=16)
 
 for president, ax in zip(adjusted_presidents_order, axes.ravel()):
     plot_in_grid(president, ax)
@@ -83,6 +192,7 @@ plt.show()
 
 ```{python}
 #| echo: false
+#| fig-cap: "Figure A3: Sentiment Scores over time for each President using RoBERTa: domain specific"
 HFM2 = pd.read_csv("HFM2_SentimentData.csv")
 
 presidents_list = HFM2['Presidents'].unique()
@@ -104,7 +214,6 @@ def plot_in_grid(president, ax):
 
 # Creating a 2x3 grid plot for all presidents
 fig, axes = plt.subplots(2, 3)
-fig.suptitle('Sentiment Scores over time for each President', fontsize=16)
 
 for president, ax in zip(adjusted_presidents_order, axes.ravel()):
     plot_in_grid(president, ax)
@@ -116,6 +225,7 @@ plt.show()
 ```
 
 ```{python}
+#| fig-cap: "Figure A4: Sentiment Scores over time for each President using Roberta"
 
 import matplotlib.pyplot as plt
 import numpy as np
