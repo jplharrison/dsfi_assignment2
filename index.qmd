@@ -250,6 +250,7 @@ In analyzing the word clouds of various South African presidents in Figure 1, th
 
 ```{python}
 #| echo: false
+#| warning: false
 #| fig-cap: "Figure 1: Wordcloud per president"
 data = a2data
 def remove_stopwords(sentence):
