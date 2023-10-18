@@ -334,13 +334,13 @@ The mean sentiment scores per president show President Mbeki exhibiting the high
 
 ```{python}
 #| echo: False
+#| fig-cap: "Figure x: Mean Sentiment Scores per President"
 mean_scores_reordered = pd.read_csv('wes_appendix/mean_scores_reordered.csv')
 # Plotting the reordered mean sentiment scores
 plt.figure()
 #mean_scores_reordered.plot(kind='bar', color='skyblue')
 plt.bar(mean_scores_reordered['Presidents'], mean_scores_reordered['scores'], color='skyblue')
 
-plt.title('Mean Sentiment Scores per President')
 plt.xlabel('President')
 plt.axhline(0, color='red', linestyle='--')  #line at y=0 for reference
 plt.ylabel('Mean Sentiment Score')
@@ -361,11 +361,13 @@ sentiment_counts = afn_df.groupby('Presidents')['sentiments'].value_counts(norma
 Figure X below shows that deKlerk is once again seen to possess less positive sentiments in his speeches than most of the other presidents, apart from Zuma, who has a very similar amount of positivity. Motlanthe and Mbeki are seen to have the greatest proportion of positive sentiments, while Zuma is seen to have the largest amount of neutral sentiments compared to the other presidents. As well as having the smallest proportion of positivity, deKlerk also has a large proportion of his sentences carrying negative sentiments.
 
 ```{python}
+#| echo: false
+#| fig-cap: "Figure x: Sentiment Distribution per President"
+
 # save object
 # sentiment_counts.reindex(adjusted_presidents_order).to_csv('wes_appendix/sentiment_counts.csv')
 sentiment_counts = pd.read_csv("wes_appendix/sentiment_counts.csv")
 sentiment_counts.plot(kind='bar', stacked=True, color=[colors[col] for col in sentiment_counts.columns if col != 'Presidents'])
-plt.title('Sentiment Distribution per President')
 plt.ylabel('Percentage')
 plt.xlabel('President')
 plt.legend(title='Sentiment')#, fontsize=20, title_fontsize=20)
@@ -383,7 +385,7 @@ The histograms below show the sentiment score distribution for the presidents. A
 ```{python}
 #| echo: false
 #| eval: true
-
+#| fig-cap: "Figure x: Distribution of Sentiment Scores for each President"
 pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
 
 def plot_histogram(president, color, ax):
@@ -406,7 +408,6 @@ def plot_histogram(president, color, ax):
 
 # Creating a 2x3 grid plot for histograms of all presidents
 fig, axes = plt.subplots(2, 3)
-fig.suptitle('Distribution of Sentiment Scores for each President')
 
 for president, color, ax in zip(adjusted_presidents_order, pastel_colors, axes.ravel()):
     plot_histogram(president, color, ax)
@@ -425,7 +426,7 @@ plt.show()
 ```{python}
 #| echo: false
 #| eval: true
-#| include: false
+
 import pandas as pd
 from nrclex import NRCLex
 
