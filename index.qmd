@@ -479,12 +479,12 @@ for president, ax, colour in zip(order, axes.ravel(), pastel_colors):
     ax.bar(x, y, color=colour)
     ax.set_title(president)
     # ax.set_xlabel('Sentiment Category', fontsize=16)
-    ax.set_ylabel('Sentiment Score')#, fontsize=16)
-    # ax.tick_params(axis='x', labelrotation=45, labelsize=16)
-    # ax.tick_params(axis='y', labelsize=16)
+    ax.set_ylabel('Sentiment Score', fontsize=16)
+    ax.tick_params(axis='x')#, labelsize=16)
+    ax.tick_params(axis='y', labelsize=16)
 
 # Adjust layout
-plt.tight_layout()
+#plt.tight_layout()
 plt.subplots_adjust(top=0.90)
 plt.show()
 ```
