@@ -1,0 +1,1 @@
+Everyone read everyone elses methods and writing to ensure that we all understood and agreed on what each person wrote. Jonathan's focus was on Topic Modeling, while Taahir and Wesley both tackled the Sentiment Analysis section. The rest of the paper was done in-person, together.

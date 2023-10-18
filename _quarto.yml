@@ -10,6 +10,7 @@ website:
         text: Home
       - Appendix.qmd
       - ChatGPT.qmd
+      - work_split.qmd
 
 format:
   html:
