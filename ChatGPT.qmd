@@ -1,0 +1,8 @@
+---
+title: "ChatGPT"
+format: html
+---
+
+ChatGPT had mixed results. On the one hand for a preliminary literature review, it provided useful results of methods, though in showing actual references ChatGPT often hallucinated references or misused nebulous references to make true but specific points not found in the references. Another plan we tried was to use chatGPT to try and make true class labels for sentiments of sentences. In small batches, this worked well, but across the entire dataset, we found it classed almost all sentences in neutral, proving chatGPT struggled to discern the detailed linguistic semantics of the political speeches.
+
+A useful application was topic modelling. As shown in the main body using it to try and interpret the topic model groups proved to be more fruitful as it was able to extract interpretability otherwise difficult to do for humans. Finally general troubleshooting for code syntax, chatGPT was used and aided in debugging speed without needing to search stackoverflow. Interpretation of error messages and quick improvements to plot layout ChatGPT was useful. 

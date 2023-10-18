@@ -1,5 +1,6 @@
 ---
-title: "DSFI_A2"
+title: "Data Science For Industry Assignment 2"
+author: "BHRTAA001, KNGWES002, HRRJON004"
 ---
 
 # Introduction
@@ -213,7 +214,7 @@ This is conducted by once again analysing each sentence in the dataset and selec
 
 ### RoBERTa Transfer Learning
 
-For sentiment analysis, we also employed a model belonging to hugging face called "twitter-roberta-base-sentiment-latest" and "". The architecture for these models is largely the same, but "" differs in that it was trained primarily on political tweets, which is lesser in the training data size but potentially more domain relevant to the task at hand. 
+For sentiment analysis, we also employed a model belonging to hugging face called "twitter-roberta-base-sentiment-latest" and "cardiffnlp/xlm-twitter-politics-sentiment". The architecture for these models is largely the same, but "cardiffnlp/xlm-twitter-politics-sentiment" differs in that it was trained primarily on political tweets, which is lesser in the training data size but potentially more domain relevant to the task at hand. 
 
  This is a transformer-based transfer learning approach. Essentially this means that the model has been pretrained on data to learn how to assign sentiment scores then the trained model is used to extract sentiment scores for our dataset. The model used is more specifically considered a time language model. The time Language Models (LM) foundation is anchored on the RoBERTa architecture, which is a refined variant of BERT (Bidirectional Encoder Representations from Transformers). One of the standout characteristics of RoBERTa is its bidirectional context processing. Unlike conventional models, RoBERTa reviews words in relation to their entire surrounding context, absorbing nuances from both the preceding and following parts of the text. 
 
@@ -249,6 +250,7 @@ In analyzing the word clouds of various South African presidents in Figure 1, th
 
 ```{python}
 #| echo: false
+#| warning: false
 #| fig-cap: "Figure 1: Wordcloud per president"
 data = a2data
 def remove_stopwords(sentence):
@@ -553,7 +555,7 @@ data.to_csv("HFM1_SentimentData.csv")
 
 Figure 6 plots the mean sentiment score(-1 to 1, where -1 is perfectly negative, 0 is neutral and 1 is positive) across all presidents where presidents have been ordered by time. Beginning with de Klerk, there is a noticeable negative sentiment. However, as we transition to Mandela's era, a significant shift occurs, with sentiment becoming predominantly positive. This positive trend not only continues but also amplifies during Mbeki's tenure. 
 
-Following Mbeki, Motlanthe's sentiment score experiences a slight dip but remains firmly in the positive territory, suggesting his rhetoric, likely inifluenced by the poor economic conditions during this temulruous time in south africas politcs, was less positive than Mbeki's. The highest peak in positive sentiment is observed during Zuma's term, which is interesting considering the slide of economic performance during his tenure().This may point to a juxtoposition in his presentation of the stte of the nation and the reality of the peroid both regarding corruption and economic stability() However, it's noteworthy that Ramaphosa's sentiment, while still being robustly positive, sees a decline from the high set by Zuma, potentially indicating the effects of rhetoric regarding the COVID-19 pandemic.
+Following Mbeki, Motlanthe's sentiment score experiences a slight dip but remains firmly in the positive territory, suggesting his rhetoric, likely inifluenced by the poor economic conditions during this temulruous time in south africas politcs, was less positive than Mbeki's. The highest peak in positive sentiment is observed during Zuma's term, which is interesting considering the slide of economic performance during his tenure(Bhorat et al., 2017).This may point to a juxtoposition in his presentation of the stte of the nation and the reality of the peroid both regarding corruption and economic stability(Bhorat et al., 2017) However, it's noteworthy that Ramaphosa's sentiment, while still being robustly positive, sees a decline from the high set by Zuma, potentially indicating the effects of rhetoric regarding the COVID-19 pandemic.
 
 
 ```{python}
@@ -942,6 +944,8 @@ The weights produced for each word in the topics of the pLSA models are not very
 
 
 ```{python}
+#| include:false
+#| eval:true
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -978,7 +982,7 @@ for i in [0,1]:
         axs[i, j].set_xlabel('Words')
         axs[i, j].set_ylabel('Weight')
         axs[i, j].set_title(f'M4: Topic {t}')
-        axs[i, j].tick_params(axis='x', rotation=90, labelsize=10)
+        axs[i, j].tick_params(axis='x', rotation=90, labelsize=8)
         axs[i, j].tick_params(axis='y', rotation=0, labelsize=6)
 plt.tight_layout()
 plt.show()
