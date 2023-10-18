@@ -1000,3 +1000,24 @@ While insightful, the study has limitations. Sentiment analysis can sometimes si
 # Conclusion
 
 The NLP-based SONA speech analysis paints a multifaceted South African political journey narrative. As sentiments evolved and topics transitioned, they narrated a nation grappling with its past, shaping its present, and envisioning its future. With advancing NLP methodologies, such analyses will be pivotal in decoding global political and societal narratives.
+
+
+# Bibliography
+
+Al-Shabi, M. (2020) Evaluating the performance of the most important Lexicons used to Sentiment analysis and opinions Mining . Available at: https://www.researchgate.net/profile/Mohammed-Al-Shabi/publication/343473213_Evaluating_the_performance_of_the_most_important_Lexicons_used_to_Sentiment_analysis_and_opinions_Mining/links/5f2bc7a7458515b72906aee9/
+
+Deerwester, Dumais and Furnas (1990) Indexing by latent semantic analysis. Available at: https://asistdl.onlinelibrary.wiley.com/doi/abs/10.1002/%28SICI%291097-4571%28199009%2941%3A6%3C391%3A%3AAID-ASI1%3E3.0.CO%3B2-9 (Accessed: 17 October 2023). 
+David M. Blei Computer Science Division et al. (2003) Latent dirichlet allocation, The Journal of Machine Learning Research. Available at: https://dl.acm.org/doi/10.5555/944919.944937 (Accessed: 17 October 2023). 
+
+Evaluating-the-performance-of-the-most-important-Lexicons-used-to-Sentiment-analysis-and-opinions-Mining.pdf (Accessed: 16 October 2023). 
+
+Mohammad, S. and Turney, P. (2010) Emotions evoked by common words and phrases: Using mechanical turk to create an emotion lexicon, ACL Anthology. Available at: https://aclanthology.org/W10-0204/ (Accessed: 16 October 2023). 
+
+Plutchik, R. (1980) A general psychoevolutionary theory of emotion, Theories of Emotion. Available at: https://www.sciencedirect.com/science/article/pii/B9780125587013500077 (Accessed: 16 October 2023). 
+
+Ligthart, A., Catal, C. and Tekinerdogan, B. (2021) Systematic reviews in sentiment analysis: A tertiary study - artificial intelligence review, SpringerLink. Available at: https://link.springer.com/article/10.1007/s10462-021-09973-3 (Accessed: 16 October 2023). 
+
+Loureiro, D. et al. (2022) TimeLMs: Diachronic language models from Twitter, arXiv.org. Available at: https://arxiv.org/abs/2202.03829 (Accessed: 16 October 2023). 
+
+
+(2009) Topic models - department of computer science, Columbia University. Available at: https://www.cs.columbia.edu/~blei/papers/BleiLafferty2009.pdf (Accessed: 17 October 2023).
