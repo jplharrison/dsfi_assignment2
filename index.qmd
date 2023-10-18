@@ -1,5 +1,6 @@
 ---
-title: "DSFI_A2"
+title: "Data Science For Industry Assignment 2"
+author: "BHRTAA001, KNGWES002, HRRJON004"
 ---
 
 # Introduction
@@ -1028,6 +1029,8 @@ The weights produced for each word in the topics of the pLSA models are not very
 
 
 ```{python}
+#| include:false
+#| eval:true
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -1064,7 +1067,7 @@ for i in [0,1]:
         axs[i, j].set_xlabel('Words')
         axs[i, j].set_ylabel('Weight')
         axs[i, j].set_title(f'M4: Topic {t}')
-        axs[i, j].tick_params(axis='x', rotation=90, labelsize=10)
+        axs[i, j].tick_params(axis='x', rotation=90, labelsize=8)
         axs[i, j].tick_params(axis='y', rotation=0, labelsize=6)
 plt.tight_layout()
 plt.show()
