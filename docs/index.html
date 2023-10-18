@@ -174,6 +174,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
   <li><a href="#limitations-and-recommendations" id="toc-limitations-and-recommendations" class="nav-link" data-scroll-target="#limitations-and-recommendations">Limitations and Recommendations</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#bibliography" id="toc-bibliography" class="nav-link" data-scroll-target="#bibliography">Bibliography</a></li>
   </ul>
 </nav>
     </div>
@@ -217,7 +218,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="topic-modelling" class="level2">
 <h2 class="anchored" data-anchor-id="topic-modelling">Topic Modelling</h2>
 <p>In the 1980s, topic modelling emerged as a means to enhance the accuracy of information retrieval systems. (Deerwester et al., 1990) founded one of the earliest topic models known as Latent Semantic Analysis (LSA). LSA groups documents based on latent semantic formations, and makes the assumption that words with similar semantic meanings tend to co-occur. This found great use in document retrieval systems because users were no longer required to employ the exact words found in the desired documents - similarity could be determined through a broader semantic context.</p>
-<p>Blei et al.&nbsp;(2003) advanced the techniques implemented in LSA by developing a related modelling algorithm called Latent Dirichlet Allocation (LDA). In LDA, a document is seen as a collection of words drawn from unobserved topics. LDA subsequently assesses the likelihood distribution of a specific word across a range of topics and then the distribution of a specific topic across a collection of documents.</p>
+<p>(Blei et al., 2003) advanced the techniques implemented in LSA by developing a related modelling algorithm called Latent Dirichlet Allocation (LDA). In LDA, a document is seen as a collection of words drawn from unobserved topics. LDA subsequently assesses the likelihood distribution of a specific word across a range of topics and then the distribution of a specific topic across a collection of documents.</p>
 </section>
 </section>
 <section id="methods" class="level1">
@@ -310,7 +311,7 @@ The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two m
 </div>
 </div>
 </div>
-<p>Figure X below shows that deKlerk is once again seen to possess less positive sentiments in his speeches than most of the other presidents, apart from Zuma, who has a very similar amount of positivity. Motlanthe and Mbeki are seen to have the greatest proportion of positive sentiments, while Zuma is seen to have the largest amount of neutral sentiments compared to the other presidents. As well as having the smallest proportion of positivity, deKlerk also has a large proportion of his sentences carrying negative sentiments.</p>
+<p>Figure 3 below shows that deKlerk is once again seen to possess less positive sentiments in his speeches than most of the other presidents, apart from Zuma, who has a very similar amount of positivity. Motlanthe and Mbeki are seen to have the greatest proportion of positive sentiments, while Zuma is seen to have the largest amount of neutral sentiments compared to the other presidents. As well as having the smallest proportion of positivity, deKlerk also has a large proportion of his sentences carrying negative sentiments.</p>
 <div class="cell" data-execution_count="14">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -321,7 +322,7 @@ The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two m
 </div>
 </div>
 </div>
-<p>Figure Ax in the appendix shows the sentiments of each president over time. However, once again the extreme granularity of the plots makes it difficult to extract any useful information. Noticeably however, deKlerk’s strong negative sentiments are apparent from such a broad scoped view.</p>
+<p>Figure A1 in the appendix shows the sentiments of each president over time. The extreme granularity of the plots makes it difficult to extract any useful information. Noticeably however, deKlerk’s strong negative sentiments are apparent from such a broad scoped view.</p>
 <p>The histograms below show the sentiment score distribution for the presidents. All histograms appear to be slightly skewed to the left, indicating a high frequency of positive sentiment. Mandela appears to have the most evenly spread sentiment distribution, with the fewest number of protruding bars, while de Klerk mainly has a uniform sentiment distribution, with a notable deviation from that occuring in the neutral sentiment territory. Ramaphosa’s, Mbeki’s and Zuma’s sentiment distributions are both centered on the positive side of zero, indicating a generally positive sentiment, while Motlanthe’s most common sentiment is actually slightly negative, however that is offset by the high frequency of positive sentiments.</p>
 <div class="cell" data-execution_count="15">
 <div class="cell-output cell-output-display">
@@ -341,7 +342,7 @@ The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two m
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-17-output-1.png" width="1442" height="877" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-17-output-1.png" width="597" height="506" class="figure-img"></p>
 <figcaption class="figure-caption">Figure 5: Distribution of Emotions for each President</figcaption>
 </figure>
 </div>
@@ -373,7 +374,7 @@ The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two m
 </div>
 </div>
 </div>
-<p>To gain a depper understading of the change in sentiment over timie for each given president, and their speeches, we can look to figure A1 in the appendix. While the plot dos provide a granular insight into the variety of sentiment across sentences in presidents’ speaches the lack of discernable trend makes the plot difficult to interpret. Furthermore the sentiment aggregatioin plots at an overall president level provides sufficient insiight. Figure 8 plots the distribution of sentiment scores for each president. For de Klerk, there’s a noticeable tilt towards neutral to negative sentiments. On the other hand, Mandela’s mentions are predominantly positive. Mbeki’s sentiment profile reveals an overwhelmingly positive tone, with more neutrality in tone than Mandela. Motlanthe’s mentions also predominantly exhibit positivity, especially between the 0.50 to 1.00 range. Zuma presents a diverse sentiment spectrum; while there’s a substantial representation in the positive range, especially towards the higher end, there’s also a notable amount neutral sentiment and almost no negative rhetoric. Lastly, discussions about Ramaphosa are mostly tinted with positivity, particularly around the 0.50 to 0.75 range, although some neutral and negative sentiments are present. Overall, while Mandela, Mbeki, Motlanthe, Zuma, and Ramaphosa’s mentions lean more towards positivity, de Klerk’s profile hints at a more neutral with a greater tilt towards negativity.</p>
+<p>To gain a depper understading of the change in sentiment over time for each given president, and their speeches, we can look to figure A2 in the appendix. While the plot does provide a granular insight into the variety of sentiment across sentences in presidents’ speaches the lack of discernable trend makes the plot difficult to interpret. Furthermore the sentiment aggregatioin plots at an overall president level provides sufficient insiight. Figure 8 plots the distribution of sentiment scores for each president. For de Klerk, there’s a noticeable tilt towards neutral to negative sentiments. On the other hand, Mandela’s mentions are predominantly positive. Mbeki’s sentiment profile reveals an overwhelmingly positive tone, with more neutrality in tone than Mandela. Motlanthe’s mentions also predominantly exhibit positivity, especially between the 0.50 to 1.00 range. Zuma presents a diverse sentiment spectrum; while there’s a substantial representation in the positive range, especially towards the higher end, there’s also a notable amount neutral sentiment and almost no negative rhetoric. Lastly, discussions about Ramaphosa are mostly tinted with positivity, particularly around the 0.50 to 0.75 range, although some neutral and negative sentiments are present. Overall, while Mandela, Mbeki, Motlanthe, Zuma, and Ramaphosa’s mentions lean more towards positivity, de Klerk’s profile hints at a more neutral with a greater tilt towards negativity.</p>
 <div class="cell" data-execution_count="20">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -602,6 +603,19 @@ The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two m
 <section id="conclusion" class="level1">
 <h1>Conclusion</h1>
 <p>The NLP-based SONA speech analysis paints a multifaceted South African political journey narrative. As sentiments evolved and topics transitioned, they narrated a nation grappling with its past, shaping its present, and envisioning its future. With advancing NLP methodologies, such analyses will be pivotal in decoding global political and societal narratives.</p>
+</section>
+<section id="bibliography" class="level1">
+<h1>Bibliography</h1>
+<p>Al-Shabi, M. (2020) Evaluating the performance of the most important Lexicons used to Sentiment analysis and opinions Mining . Available at: https://www.researchgate.net/profile/Mohammed-Al-Shabi/publication/343473213_Evaluating_the_performance_of_the_most_important_Lexicons_used_to_Sentiment_analysis_and_opinions_Mining/links/5f2bc7a7458515b72906aee9/</p>
+<p>Deerwester, Dumais and Furnas (1990) Indexing by latent semantic analysis. Available at: https://asistdl.onlinelibrary.wiley.com/doi/abs/10.1002/%28SICI%291097-4571%28199009%2941%3A6%3C391%3A%3AAID-ASI1%3E3.0.CO%3B2-9 (Accessed: 17 October 2023). David M. Blei Computer Science Division et al.&nbsp;(2003) Latent dirichlet allocation, The Journal of Machine Learning Research. Available at: https://dl.acm.org/doi/10.5555/944919.944937 (Accessed: 17 October 2023).</p>
+<p>Evaluating-the-performance-of-the-most-important-Lexicons-used-to-Sentiment-analysis-and-opinions-Mining.pdf (Accessed: 16 October 2023).</p>
+<p>Mohammad, S. and Turney, P. (2010) Emotions evoked by common words and phrases: Using mechanical turk to create an emotion lexicon, ACL Anthology. Available at: https://aclanthology.org/W10-0204/ (Accessed: 16 October 2023).</p>
+<p>Plutchik, R. (1980) A general psychoevolutionary theory of emotion, Theories of Emotion. Available at: https://www.sciencedirect.com/science/article/pii/B9780125587013500077 (Accessed: 16 October 2023).</p>
+<p>Ligthart, A., Catal, C. and Tekinerdogan, B. (2021) Systematic reviews in sentiment analysis: A tertiary study - artificial intelligence review, SpringerLink. Available at: https://link.springer.com/article/10.1007/s10462-021-09973-3 (Accessed: 16 October 2023).</p>
+<p>Loureiro, D. et al.&nbsp;(2022) TimeLMs: Diachronic language models from Twitter, arXiv.org. Available at: https://arxiv.org/abs/2202.03829 (Accessed: 16 October 2023).</p>
+<ol start="2009" type="1">
+<li>Topic models - department of computer science, Columbia University. Available at: https://www.cs.columbia.edu/~blei/papers/BleiLafferty2009.pdf (Accessed: 17 October 2023).</li>
+</ol>
 
 
 </section>

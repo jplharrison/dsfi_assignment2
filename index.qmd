@@ -466,7 +466,7 @@ for president, df in president_dataframes.items():
         df.drop(columns=['anticip'], inplace=True)  # Remove 'anticip' column
 
 pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
-fig, axes = plt.subplots(2, 3, figsize=(18, 10))
+fig, axes = plt.subplots(2, 3, figsize=(12,5))
 
 order = ['deKlerk','Mandela', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
 
@@ -481,7 +481,7 @@ for president, ax, colour in zip(order, axes.ravel(), pastel_colors):
     ax.set_title(president)
     # ax.set_xlabel('Sentiment Category', fontsize=16)
     ax.set_ylabel('Sentiment Score')
-    ax.tick_params(axis='x')#, labelsize=16)
+    ax.tick_params(axis='x', rotation=90)
     ax.tick_params(axis='y')
 
 # Adjust layout
