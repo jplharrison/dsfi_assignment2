@@ -1,5 +1,6 @@
 ---
-title: "DSFI_A2"
+title: "Data Science For Industry Assignment 2"
+author: "BHRTAA001, KNGWES002, HRRJON004"
 ---
 
 # Introduction
@@ -8,33 +9,30 @@ The State of the Nation Address (SONA) serves as an annual narrative roadmap of 
 
 In the era of data science, where Natural Language Processing(NLP) has become a potent tool to extract meaningful patterns from large volumes of textual data, it is of profound interest to apply such methods to SONA speeches. By employing advanced techniques such as sentiment analysis and topic modelling, one can unearth the latent themes dominating these addresses over three decades and gauge the sentiment fluctuations accompanying them. This presents a data-driven perspective on South Africa's political discourse,
 
-The following proceeds XXX first sections. Firstly a literature review will be conducted on the existing sentiment analysis and topic modelling methods available and used in academia and industry. Thereafter a preliminary exploration of the data occurs to understand the structure and potential trends in the data prior to modelling applications. The Methods section will then detail the sentiment analysis, topic modelling and metrics used in these models. The results of the paper are briefly presented and interpreted before we discuss the overall trends and findings of the paper. We conclude by surmising the findings of the paper, highlighting limitations and presenting avenues for future research into SONA NLP work. 
+The following proceeds follow this course. Firstly a literature review will be conducted on the existing sentiment analysis and topic modelling methods available and used in academia and industry. Thereafter a preliminary exploration of the data occurs to understand the structure and potential trends in the data prior to modelling applications. The Methods section will then detail the sentiment analysis, topic modelling and metrics used in these models. The results of the paper are briefly presented and interpreted before we discuss the overall trends and findings of the paper. We conclude by surmising the findings of the paper, highlighting limitations and presenting avenues for future research into SONA NLP work. 
 
 
 # Literature Review
 
 ## Sentiment Analysis
 
-Sentiment Analysis is a prominent field within the broader scope of NLP techniques, and it has gained significant attention in scientific research in recent years. Sentiment classification, specifically polarity estimation, is amongst the most extensively studied tasks of sentiment analysis. Polarity is often categorized as either positive or negative, but a third category labeled as "neutral" can be introduced (Wang et al., 2014). This is what our sentiment analysis will focus on. 
+Sentiment Analysis is a prominent field within the broader scope of NLP techniques, and it has gained significant attention in scientific research in recent years. Sentiment classification, specifically polarity estimation, is amongst the most extensively studied tasks of sentiment analysis. Polarity is often categorized as either positive or negative (Wang et al., 2014). This is what our sentiment analysis will focus on. 
 
-There are two primary approaches to sentiment analysis, the machine learning and lexicon-based approaches. 
+According to the wider literature, there are two primary approaches to sentiment analysis, the machine learning and lexicon-based approaches. The other primary approach to sentiment analysis is the lexicon-based approach. This approach analyzes each word in a document and gives it a score, on a scale where one side is completely negative, and the other is completely positive, with neutral in the middle. For example, words that would get a negative rating include, “ugly”,  while a positively rated word is “good”(Ligthart et al., 2021). (Vinodhini 2012) notes that lexicons are heavily reliant on the domain, due to the type of language used in different fields. This is why adjusting the lexicon to the target domain is needed, however can be very time consuming.
 
-The other primary approach to sentiment analysis is the lexicon-based approach. This approach analyzes each word in a document and gives it a score, on a scale where one side is completely negative, and the other is completely positive, with neutral in the middle. For example, words that would get a negative rating include, “ugly”,  while a positively rated word is “good”(Ligthart et al., 2021). (Vinodhini 2012) notes that lexicons are heavily reliant on the domain, due to the type of language used in different fields. This is why adjusting the lexicon to the target domain is needed, however can be very time consuming.
+Popular lexicons include the AFINN lexicon, which gives words a rating between -5 and 5, with -5 meaning a very negative word while 5 indicates that the word is very positive (Al-Shabi, 2020), and  the NRC Emotion Lexicon (Mohammad & Turney, 2010) which focuses on emotional words only. This provides a list of words that are classified as “negative”, “positive”, and then based on (Plutchik, 1980), words are given corresponding emotions, such as: “anger”, “disgust”, “joy”, etc. These are the two lexicons we will be using in this paper.
 
-Two popular lexicons are AFINN and NRC. 
-AFINN gives words a rating between -5 and 5, with -5 meaning a very negative word while 5 indicates that the word is very positive (Al-Shabi, 2020). The lexicon was created by Finn Arup Nielsen. The NRC Emotion Lexicon (Mohammad & Turney, 2010) on the other hand focuses on emotional words only, and provides a list of 13,872 terms in several categories. Specifically, the terms are classified as “negative”, “positive”, and then based on (Plutchik, 1980), words have corresponding can have associated emotions: “anger”, “disgust”, “fear”, “sadness”, “joy” , “anticipation”, “trust”, and “surprise”. These are the two lexicons we will be using in this paper.
+Machine learning approaches for sentiment analysis tasks are often divided into three categories: unsupervised learning, semi-supervised learning, and supervised learning. Unsupervised learning methods cluster unlabeled data into groups that exhibit similarity (Li and Liu 2014). Semi-supervised learning makes use of both labeled and unlabelled data in the training process (da Silva et al. 2016a, b),  while supervised learning, which is the most human-intensive, occurs when a model is trained on fully labeled data. This can often result in the optimal model performance, however due to the requirement of labeled data it can be inefficient to acquire (Hemmatian and Sohrabi 2017).
 
-Machine learning approaches for sentiment analysis tasks are divided into three categories: unsupervised learning, semi-supervised learning, and supervised learning. Unsupervised learning methods cluster unlabeled data into groups that exhibit similarity (Li and Liu 2014). Semi-supervised learning makes use of both labeled and unlabelled data in the training process (da Silva et al. 2016a, b), and can lead to good model performance while less human work is required compared to supervised learning. Supervised learning, which is the most human-intensive, occurs when a model is trained on fully labeled data. This can often result in the optimal model performance, however due to the requirement of labeled data it can lead to inefficiencies (Hemmatian and Sohrabi 2017).
-
-According to (Yadav and Vishwakarma, 2019) who reviewed over 100 papers which used deep learning (subset of machine learning) techniques to perform sentiment analysis, the most common deep learning models are RNNs, CNNs, and LSTMs, with the latter providing the best performance. They also said that utilizing machine learning approaches to conduct sentiment analysis was a promising field, while noting that the dataset needs to be large enough for a respectable analysis to take place, which is a challenge.
+(Yadav and Vishwakarma, 2019) reviewed over 100 papers which used deep learning (subset of machine learning) techniques to perform sentiment analysis, and found that the most common deep learning models are RNNs, CNNs, and LSTMs, with the latter providing the best performance. They also said that utilizing machine learning approaches to conduct sentiment analysis was a promising field, while noting that the dataset needs to be large enough for a respectable analysis to take place, which can be a challenge.
 
 Furthermore, (Loureiro et al., 2022) showed the importance of Time language models, which are a set of language models which undergo continual learning on, in this case, tweets. (Loureiro et al., 2022) shows that this approach enhances the models ability to deal with out-of-distribution inputs, as well enhances competitiveness with standard benchmark tests. They’re also seen to deal well with the problem of concept drift. Since our data is over a long period of time, we will be using these time language models too.
 
 ## Topic Modelling
 
-In the 1980s, topic modelling emerged as a means to enhance the accuracy of information retrieval systems. Deerwester et al (1990) founded one of the earliest topic models known as Latent Semantic Analysis (LSA). LSA groups documents based on latent semantic formations, and makes the assumption that words with similar semantic meanings tend to co-occur. This innovation greatly advanced the capabilities of document retrieval systems because users were no longer required to employ the exact words found in related documents - similarity could be determined through a broader semantic context.
+In the 1980s, topic modelling emerged as a means to enhance the accuracy of information retrieval systems. (Deerwester et al., 1990) founded one of the earliest topic models known as Latent Semantic Analysis (LSA). LSA groups documents based on latent semantic formations, and makes the assumption that words with similar semantic meanings tend to co-occur. This found great use in document retrieval systems because users were no longer required to employ the exact words found in the desired documents - similarity could be determined through a broader semantic context.
 
-Blei et al. (2003) advanced the techniques implemented in LSA by developing a related modelling algorithm called Latent Dirichlet Allocation (LDA). In LDA, a document is seen as a collection of words drawn from unobserved topics. LDA subsequently assesses the likelihood distribution of a specific word across a range of topics and then the distribution of a specific topic across a collection of documents.
+(Blei et al., 2003) advanced the techniques implemented in LSA by developing a related modelling algorithm called Latent Dirichlet Allocation (LDA). In LDA, a document is seen as a collection of words drawn from unobserved topics. LDA subsequently assesses the likelihood distribution of a specific word across a range of topics and then the distribution of a specific topic across a collection of documents.
 
 ```{python}
 #| include: false
@@ -285,6 +283,214 @@ plt.show()
 
 
 
+## AFINN
+
+```{python}
+#| echo: false
+#| eval: true
+#| include: false
+
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import nltk
+from sklearn.preprocessing import StandardScaler
+from afinn import Afinn
+ 
+#instantiate afinn
+afn = Afinn()
+data = pd.read_csv("finalSentences2.csv")
+
+# compute scores (polarity) and labels
+scores = [afn.score(sentence) for sentence in data["Sentences"]]
+sentiment = ['positive' if score > 0
+						else 'negative' if score < 0
+							else 'neutral'
+								for score in scores]
+	
+# dataframe creation
+afn_df = pd.DataFrame()
+afn_df['Presidents'] = data['Presidents']
+afn_df['Sentences'] = data['Sentences']
+afn_df['scores'] = scores
+afn_df['sentiments'] = sentiment
+
+# scaler = StandardScaler()
+# scaled_data = scaler.fit_transform(afn_df['scores'].values.reshape(-1,1))
+# afn_df['scores'] = scaled_data.squeeze()
+
+presidents_order = ['Mandela', 'deKlerk', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
+mean_scores_per_president = afn_df.groupby('Presidents')['scores'].mean()
+adjusted_presidents_order = ['deKlerk'] + [president for president in presidents_order if president != 'deKlerk']
+mean_scores_reordered = mean_scores_per_president.reindex(adjusted_presidents_order)
+
+# save object
+# mean_scores_reordered.to_csv('wes_appendix/mean_scores_reordered.csv')
+```
+
+The mean sentiment scores per president show President Mbeki exhibiting the highest mean sentiment score at approximately 1.65, suggesting a generally positive sentiment in his speeches. President Motlanthe followed closely with a mean sentiment score of approximately 1.44, indicating a similar trend of positively oriented speeches. In contrast, President de Klerk presented the lowest mean sentiment score, around 0.67, while Presidents Ramaphosa and Zuma demonstrated mean sentiment scores around 0.95 and 0.92, respectively.
+
+```{python}
+#| echo: False
+#| fig-cap: "Figure 2: Mean Sentiment Scores per President"
+mean_scores_reordered = pd.read_csv('wes_appendix/mean_scores_reordered.csv')
+# Plotting the reordered mean sentiment scores
+plt.figure()
+#mean_scores_reordered.plot(kind='bar', color='skyblue')
+plt.bar(mean_scores_reordered['Presidents'], mean_scores_reordered['scores'], color='skyblue')
+
+plt.xlabel('President')
+plt.axhline(0, color='red', linestyle='--')  #line at y=0 for reference
+plt.ylabel('Mean Sentiment Score')
+plt.xticks(rotation=90)
+#plt.yticks(fontsize=16)  # Set the font size for y-axis tick labels
+plt.tight_layout()
+plt.show()
+```
+
+```{python}
+#| echo: false
+#| include: false
+colors = {'negative': '#FF9999', 'neutral': '#99CCFF', 'positive': '#99FF99'}
+sentiment_counts = afn_df.groupby('Presidents')['sentiments'].value_counts(normalize=True).unstack().fillna(0)
+```
+
+
+Figure 3 below shows that deKlerk is once again seen to possess less positive sentiments in his speeches than most of the other presidents, apart from Zuma, who has a very similar amount of positivity. Motlanthe and Mbeki are seen to have the greatest proportion of positive sentiments, while Zuma is seen to have the largest amount of neutral sentiments compared to the other presidents. As well as having the smallest proportion of positivity, deKlerk also has a large proportion of his sentences carrying negative sentiments.
+
+```{python}
+#| echo: false
+#| fig-cap: "Figure 3: Sentiment Distribution per President"
+
+# save object
+# sentiment_counts.reindex(adjusted_presidents_order).to_csv('wes_appendix/sentiment_counts.csv')
+sentiment_counts = pd.read_csv("wes_appendix/sentiment_counts.csv")
+sentiment_counts.plot(kind='bar', stacked=True, color=[colors[col] for col in sentiment_counts.columns if col != 'Presidents'])
+plt.ylabel('Percentage')
+plt.xlabel('President')
+plt.legend(title='Sentiment')#, fontsize=20, title_fontsize=20)
+plt.tight_layout()
+plt.xticks(rotation=0)
+#plt.yticks(fontsize=16) 
+plt.show()
+```
+
+
+Figure A1 in the appendix shows the sentiments of each president over time. The extreme granularity of the plots makes it difficult to extract any useful information. Noticeably however, deKlerk's strong negative sentiments are apparent from such a broad scoped view.
+
+The histograms below show the sentiment score distribution for the presidents. All histograms appear to be slightly skewed to the left, indicating a high frequency of positive sentiment. Mandela appears to have the most evenly spread sentiment distribution, with the fewest number of protruding bars, while de Klerk mainly has a uniform sentiment distribution, with a notable deviation from that occuring in the neutral sentiment territory. Ramaphosa's, Mbeki's and Zuma's sentiment distributions are both centered on the positive side of zero, indicating a generally positive sentiment, while Motlanthe's most common sentiment is actually slightly negative, however that is offset by the high frequency of positive sentiments.
+
+```{python}
+#| echo: false
+#| eval: true
+#| fig-cap: "Figure 4: Distribution of Sentiment Scores for each President"
+pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
+
+def plot_histogram(president, color, ax):
+    """Plot histogram of sentiment scores for a given president on a given axes."""
+    president_df = afn_df[afn_df['Presidents'] == president]
+    
+    x_range = max(president_df['scores']) - min(president_df['scores'])
+    half_x_range = x_range / 2
+    
+    # Set the x-axis limits to center the histogram around 0
+    ax.set_xlim(-10, 10)
+
+    ax.hist(president_df['scores'], bins=30, color=color, edgecolor='white')
+    ax.set_title(f'{president}')
+    ax.set_xlabel('Sentiment Score')
+    ax.set_ylabel('Frequency')
+    ax.tick_params(axis='x')
+    ax.tick_params(axis='y')
+    ax.grid(axis='y', linestyle='--', linewidth=0.5)
+
+# Creating a 2x3 grid plot for histograms of all presidents
+fig, axes = plt.subplots(2, 3)
+
+for president, color, ax in zip(adjusted_presidents_order, pastel_colors, axes.ravel()):
+    plot_histogram(president, color, ax)
+
+# Adjust layout
+plt.tight_layout()
+plt.subplots_adjust(top=0.90)
+plt.show()
+
+```
+
+
+## NRC
+
+Using the NRC emotion lexicon we see that all presidents have their most common sentiment being positive, while the particular emotions in there sentences differ. A common emotion amongst all presidents is trust. Anticipation is a frequently evoked emotion from the presidents, besides for deKlerk. Other relatively common emotions include fear and joy.
+
+```{python}
+#| echo: false
+#| eval: true
+#| fig-cap: "Figure 5: Distribution of Emotions for each President"
+
+import pandas as pd
+from nrclex import NRCLex
+
+# Function to find the top emotions for a text
+def find_top_emotions(text):
+    emotion = NRCLex(text)
+    return emotion.top_emotions
+
+# Apply the function to each row in the DataFrame
+data['Top_Emotions'] = data['Sentences'].apply(find_top_emotions)
+
+unique_emotion_columns = ['fear', 'anger', 'anticipation','anticip', 'trust', 'surprise', 'positive', 'negative', 'sadness', 'disgust', 'joy']
+presidents = data['Presidents'].unique()
+
+president_dataframes = {president: pd.DataFrame(0, columns=unique_emotion_columns, index=[0]) for president in presidents}
+
+for index, row in data.iterrows():
+    president = row['Presidents']
+    emotions = dict(row['Top_Emotions'])
+    #president_df = president_dataframes[president]
+    
+    # Iterate through unique_emotion_columns
+    for emotion_column in emotions.keys():
+        if emotion_column in emotions:
+            value = emotions[emotion_column]
+            president_dataframes[president][emotion_column] += value
+
+president_dataframes['Mandela']
+
+for pres in presidents:
+    president_dataframes[pres] = president_dataframes[pres].div(president_dataframes[pres].sum(axis=1), axis=0)
+
+for president, df in president_dataframes.items():
+    if 'anticipation' in df.columns and 'anticip' in df.columns:
+        df['anticipation'] += df['anticip']  # Add 'anticip' to 'anticipation'
+        df.drop(columns=['anticip'], inplace=True)  # Remove 'anticip' column
+
+pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
+fig, axes = plt.subplots(2, 3, figsize=(18, 10))
+
+order = ['deKlerk','Mandela', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
+
+for president, ax, colour in zip(order, axes.ravel(), pastel_colors):
+    data = president_dataframes[president]
+    x = list(data.keys())
+    x.remove('positive')
+    x.remove('negative')
+    y = data[x].values.squeeze()
+    ax.set_ylim(0, 0.25)
+    ax.bar(x, y, color=colour)
+    ax.set_title(president)
+    # ax.set_xlabel('Sentiment Category', fontsize=16)
+    ax.set_ylabel('Sentiment Score')
+    ax.tick_params(axis='x')#, labelsize=16)
+    ax.tick_params(axis='y')
+
+# Adjust layout
+#plt.tight_layout()
+plt.subplots_adjust(top=0.90)
+plt.show()
+```
+
 
 ## RoBERTa 
 
@@ -346,14 +552,15 @@ data['Predicted_Label'] = [s[1] for s in sentiment_data]
 data.to_csv("HFM1_SentimentData.csv")
 ```
 
-Figure 2 plots the mean sentiment score(-1 to 1, where -1 is perfectly negative, 0 is neutral and 1 is positive) across all presidents where presidents have been ordered by time. Beginning with de Klerk, there is a noticeable negative sentiment. However, as we transition to Mandela's era, a significant shift occurs, with sentiment becoming predominantly positive. This positive trend not only continues but also amplifies during Mbeki's tenure. 
+Figure 6 plots the mean sentiment score(-1 to 1, where -1 is perfectly negative, 0 is neutral and 1 is positive) across all presidents where presidents have been ordered by time. Beginning with de Klerk, there is a noticeable negative sentiment. However, as we transition to Mandela's era, a significant shift occurs, with sentiment becoming predominantly positive. This positive trend not only continues but also amplifies during Mbeki's tenure. 
 
 Following Mbeki, Motlanthe's sentiment score experiences a slight dip but remains firmly in the positive territory, suggesting his rhetoric, likely inifluenced by the poor economic conditions during this temulruous time in south africas politcs, was less positive than Mbeki's. The highest peak in positive sentiment is observed during Zuma's term, which is interesting considering the slide of economic performance during his tenure(Bhorat et al., 2017).This may point to a juxtoposition in his presentation of the stte of the nation and the reality of the peroid both regarding corruption and economic stability(Bhorat et al., 2017) However, it's noteworthy that Ramaphosa's sentiment, while still being robustly positive, sees a decline from the high set by Zuma, potentially indicating the effects of rhetoric regarding the COVID-19 pandemic.
 
 
 ```{python}
 #| echo: false
-#| fig-cap: "Figure 2: RoBERTa 1 Mean Sentiment Scores per President"
+#| fig-cap: "Figure 6: RoBERTa 1 Mean Sentiment Scores per President"
+
 HFM1 = pd.read_csv("HFM1_SentimentData.csv")
 presidents_order = ['Mandela', 'deKlerk', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
 mean_scores_per_president = HFM1.groupby('Presidents')['Sentiment_Score'].mean()
@@ -370,11 +577,11 @@ plt.tight_layout()
 plt.show()
 ```
 
-In Figure 3 we plot the proportion of each sentiment class across all sentences per president.Mandela and Ramaphosa primarily have positive and neutral sentiments, with Mandela possessing a slightly broader share of positive mentions. De Klerk presents an interesting case; while he has the least proportion of positive sentiments among all the presidents, he also claims the highest negative sentiment. Mbeki and Zuma display an almost balanced distribution between positive and neutral sentiments, with Mbeki tipping slightly more towards the positive end. Motlanthe distinctly stands out, characterized by an overwhelming positive sentiment that far surpasses both the neutral and negative sentiments.
+In Figure 7 we plot the proportion of each sentiment class across all sentences per president.Mandela and Ramaphosa primarily have positive and neutral sentiments, with Mandela possessing a slightly broader share of positive mentions. De Klerk presents an interesting case; while he has the least proportion of positive sentiments among all the presidents, he also claims the highest negative sentiment. Mbeki and Zuma display an almost balanced distribution between positive and neutral sentiments, with Mbeki tipping slightly more towards the positive end. Motlanthe distinctly stands out, characterized by an overwhelming positive sentiment that far surpasses both the neutral and negative sentiments.
 
 ```{python}
 #| echo: false
-#| fig-cap: "Figure 3: RoBERTa 1 Sentiment Distribution per President "
+#| fig-cap: "Figure 7: RoBERTa 1 Sentiment Distribution per President "
 colors = {'negative': '#FF9999', 'neutral': '#99CCFF', 'positive': '#99FF99'}
 sentiment_counts = HFM1.groupby('Presidents')['Predicted_Label'].value_counts(normalize=True).unstack().fillna(0)
 
@@ -386,10 +593,10 @@ plt.tight_layout()
 plt.show()
 ```
 
-To gain a depper understading of the change in sentiment over timie for each given president, and their speeches, we can look to figure A1 in the appendix. While the plot dos provide a granular insight into the variety of sentiment across sentences in presidents' speaches the lack of discernable trend makes the plot difficult to interpret. Furthermore the sentiment aggregatioin plots at an overall president level provides sufficient insiight.  Figure 4 plots the distribution of sentiment scores for each president. For de Klerk, there's a noticeable tilt towards neutral to negative sentiments. On the other hand, Mandela's mentions are predominantly positive. Mbeki's sentiment profile reveals an overwhelmingly positive tone, with more neutrality in tone than Mandela. Motlanthe's mentions also predominantly exhibit positivity, especially between the 0.50 to 1.00 range. Zuma presents a diverse sentiment spectrum; while there's a substantial representation in the positive range, especially towards the higher end, there's also a notable amount neutral sentiment and almost no negative rhetoric. Lastly, discussions about Ramaphosa are mostly tinted with positivity, particularly around the 0.50 to 0.75 range, although some neutral and negative sentiments are present. Overall, while Mandela, Mbeki, Motlanthe, Zuma, and Ramaphosa's mentions lean more towards positivity, de Klerk's profile hints at a more neutral with a  greater tilt towards negativity. 
+To gain a depper understading of the change in sentiment over time for each given president, and their speeches, we can look to figure A2 in the appendix. While the plot does provide a granular insight into the variety of sentiment across sentences in presidents' speaches the lack of discernable trend makes the plot difficult to interpret. Furthermore the sentiment aggregatioin plots at an overall president level provides sufficient insiight.  Figure 8 plots the distribution of sentiment scores for each president. For de Klerk, there's a noticeable tilt towards neutral to negative sentiments. On the other hand, Mandela's mentions are predominantly positive. Mbeki's sentiment profile reveals an overwhelmingly positive tone, with more neutrality in tone than Mandela. Motlanthe's mentions also predominantly exhibit positivity, especially between the 0.50 to 1.00 range. Zuma presents a diverse sentiment spectrum; while there's a substantial representation in the positive range, especially towards the higher end, there's also a notable amount neutral sentiment and almost no negative rhetoric. Lastly, discussions about Ramaphosa are mostly tinted with positivity, particularly around the 0.50 to 0.75 range, although some neutral and negative sentiments are present. Overall, while Mandela, Mbeki, Motlanthe, Zuma, and Ramaphosa's mentions lean more towards positivity, de Klerk's profile hints at a more neutral with a  greater tilt towards negativity. 
 
 ```{python}
-#| fig-cap: "Figure 4: RoBERTa 1 Distribution of Sentiment Scores for each President"
+#| fig-cap: "Figure 8: RoBERTa 1 Distribution of Sentiment Scores for each President"
 #| echo: false
 pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
 
@@ -470,11 +677,10 @@ data.to_csv("HFM2_SentimentData.csv")
 data.head()
 ```
 
-
-In Figure 5 we look at the mean sentiment scorees for each president. The resuls are largely similar as the prior model. De Klerk remains the president with the lowest mean sentiment score while Zuma retainis the highest value. The other preseidents scores while slighly altered still behave similar relative to eachother.
+In Figure 9 we look at the mean sentiment scorees for each president. The resuls are largely similar as the prior model. De Klerk remains the president with the lowest mean sentiment score while Zuma retainis the highest value. The other preseidents scores while slighly altered still behave similar relative to eachother.
 ```{python}
 #| echo: false
-#| fig-cap: "Figure 5: RoBERTa 2 Mean Sentiment Scores per President "
+#| fig-cap: "Figure 9: RoBERTa 2 Mean Sentiment Scores per President "
 HFM2 = pd.read_csv("HFM2_SentimentData.csv")
 presidents_order = ['Mandela', 'deKlerk', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
 mean_scores_per_president = HFM2.groupby('Presidents')['Sentiment_Score'].mean()
@@ -492,12 +698,12 @@ plt.show()
 ```
 
 
-Now looking to the proportion of sentiment classes per president in Figure 6. We note that de Klerk's mean sentiment score became more positve we find that the proportioin of negative sentences has remained largely the same rather neutral sentencees in the previous model have now been classified as positve. While the results do look similar there is a clear trend of lesser neutral sentences, possibly speaking to the more domaini specific model's ability to better discern sentiment of political rhetoric. 
+Now looking to the proportion of sentiment classes per president in Figure 10. We note that de Klerk's mean sentiment score became more positve we find that the proportioin of negative sentences has remained largely the same rather neutral sentencees in the previous model have now been classified as positve. While the results do look similar there is a clear trend of lesser neutral sentences, possibly speaking to the more domaini specific model's ability to better discern sentiment of political rhetoric. 
 
 
 ```{python}
 #| echo: false
-#| fig-cap: "Figure 6: RoBERTa 2 Sentiment Distribution per President"
+#| fig-cap: "Figure 10: RoBERTa 2 Sentiment Distribution per President"
 colors = {'Negative': '#FF9999', 'Neutral': '#99CCFF', 'Positive': '#99FF99'}
 sentiment_counts = HFM2.groupby('Presidents')['Predicted_Label'].value_counts(normalize=True).unstack().fillna(0)
 
@@ -510,12 +716,12 @@ plt.show()
 ```
 
 
-Looking to the distribution of sentiments by presidents in figure 7. De Klerk's sentiment heavily leans towards the negative, with only a sparse presence of positive sentiment. Contrastingly, Mandela garners a majority of positive sentiments, although there's a consistent representation across all sentiment spectrums, indicating diverse opinions. Mbeki's sentiment profile is unique, spanning from negative through neutral to positive, with a pronounced peak in neutral sentiments. Motlanthe enjoys overwhelmingly positive feedback, with minimal divergences towards neutrality or negativity. In Zuma's case, a dominant concentration of neutral sentiments emerges, bracketed by almost equal measures of positive and negative sentiments. Ramaphosa's sentiment distribution is inclined towards positivity, but it doesn't lack a substantial count of neutral mentions and a minor portion of negative sentiments. 
+Looking to the distribution of sentiments by presidents in figure 11. De Klerk's sentiment heavily leans towards the negative, with only a sparse presence of positive sentiment. Contrastingly, Mandela garners a majority of positive sentiments, although there's a consistent representation across all sentiment spectrums, indicating diverse opinions. Mbeki's sentiment profile is unique, spanning from negative through neutral to positive, with a pronounced peak in neutral sentiments. Motlanthe enjoys overwhelmingly positive feedback, with minimal divergences towards neutrality or negativity. In Zuma's case, a dominant concentration of neutral sentiments emerges, bracketed by almost equal measures of positive and negative sentiments. Ramaphosa's sentiment distribution is inclined towards positivity, but it doesn't lack a substantial count of neutral mentions and a minor portion of negative sentiments. 
 
 
 ```{python}
 #| echo: false
-#| fig-cap: "Figure 7: RoBERTa 2 Distribution of Sentiment Scores for each President"
+#| fig-cap: "Figure 11: RoBERTa 2 Distribution of Sentiment Scores for each President"
 pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
 
 def plot_histogram(president, color, ax):
@@ -634,7 +840,7 @@ topics_df = pd.concat([extract_topics(m_lda_3, 3),extract_topics(m_lda_4, 4),ext
 
 ```{python}
 #| echo: false
-#| fig-cap: "Figure X: Topic Weights and Terms Table"
+#| fig-cap: "Figure 12: Topic Weights and Terms Table"
 data_display = []
 lda_df = pd.read_csv("lda_all_topics_df.csv")
 for i in range(lda_df.shape[0]):
@@ -662,297 +868,6 @@ for (i, j), cell in table.get_celld().items():
         cell.set_facecolor('#40466e')  # setting a dark background for contrast
 plt.show()
 ```
-
-```{python}
-#| echo: false
-#| eval: true
-#| include: false
-
-
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-import nltk
-from sklearn.preprocessing import StandardScaler
-from afinn import Afinn
- 
-#instantiate afinn
-afn = Afinn()
-data = pd.read_csv("finalSentences2.csv")
-
-# compute scores (polarity) and labels
-scores = [afn.score(sentence) for sentence in data["Sentences"]]
-sentiment = ['positive' if score > 0
-						else 'negative' if score < 0
-							else 'neutral'
-								for score in scores]
-	
-# dataframe creation
-afn_df = pd.DataFrame()
-afn_df['Presidents'] = data['Presidents']
-afn_df['Sentences'] = data['Sentences']
-afn_df['scores'] = scores
-afn_df['sentiments'] = sentiment
-
-# scaler = StandardScaler()
-# scaled_data = scaler.fit_transform(afn_df['scores'].values.reshape(-1,1))
-# afn_df['scores'] = scaled_data.squeeze()
-
-presidents_order = ['Mandela', 'deKlerk', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
-mean_scores_per_president = afn_df.groupby('Presidents')['scores'].mean()
-adjusted_presidents_order = ['deKlerk'] + [president for president in presidents_order if president != 'deKlerk']
-mean_scores_reordered = mean_scores_per_president.reindex(adjusted_presidents_order)
-
-# save object
-# mean_scores_reordered.to_csv('wes_appendix/mean_scores_reordered.csv')
-```
-
-The mean sentiment scores per president show President Mbeki exhibiting the highest mean sentiment score at approximately 1.65, suggesting a generally positive sentiment in his speeches. President Motlanthe followed closely with a mean sentiment score of approximately 1.44, indicating a similar trend of positively oriented speeches. In contrast, President de Klerk presented the lowest mean sentiment score, around 0.67, while Presidents Ramaphosa and Zuma demonstrated mean sentiment scores around 0.95 and 0.92, respectively.
-
-
-```{python}
-#| echo: False
-mean_scores_reordered = pd.read_csv('wes_appendix/mean_scores_reordered.csv')
-# Plotting the reordered mean sentiment scores
-plt.figure()
-#mean_scores_reordered.plot(kind='bar', color='skyblue')
-plt.bar(mean_scores_reordered['Presidents'], mean_scores_reordered['scores'], color='skyblue')
-
-plt.title('Mean Sentiment Scores per President')
-
-plt.title("Mean Sentiment Scores per President", fontsize=20)
-plt.xlabel('President', fontsize=20)
-plt.ylabel('Mean Sentiment Score', fontsize=20)
-plt.xticks(rotation=45, fontsize=16)
-plt.yticks(fontsize=16)  # Set the font size for y-axis tick labels
-plt.tight_layout()
-plt.show()
-```
-
-```{python}
-#| echo: false
-#| include: false
-colors = {'negative': '#FF9999', 'neutral': '#99CCFF', 'positive': '#99FF99'}
-sentiment_counts = afn_df.groupby('Presidents')['sentiments'].value_counts(normalize=True).unstack().fillna(0)
-```
-
-
-Figure X below shows that deKlerk is once again seen to possess less positive sentiments in his speeches than most of the other presidents, apart from Zuma, who has a very similar amount of positivity. Motlanthe and Mbeki are seen to have the greatest proportion of positive sentiments, while Zuma is seen to have the largest amount of neutral sentiments compared to the other presidents. As well as having the smallest proportion of positivity, deKlerk also has a large proportion of his sentences carrying negative sentiments.
-
-```{python}
-#| echo: false
-# save object
-# sentiment_counts.reindex(adjusted_presidents_order).to_csv('wes_appendix/sentiment_counts.csv')
-sentiment_counts = pd.read_csv("wes_appendix/sentiment_counts.csv")
-sentiment_counts.plot(kind='bar', stacked=True, color=[colors[col] for col in sentiment_counts.columns if col != 'Presidents'])
-plt.title('Sentiment Distribution per President', fontsize=20)
-plt.ylabel('Percentage', fontsize=20)
-plt.xlabel('President', fontsize=20)
-plt.legend(title='Sentiment', fontsize=20, title_fontsize=20)
-plt.tight_layout()
-plt.xticks(rotation=45, fontsize=16)
-plt.yticks(fontsize=16) 
-plt.show()
-```
-
-
-Figure Ax in the appendix shows the sentiments of each president over time. However, once again the extreme granularity of the plots makes it difficult to extract any useful information. Noticeably however, deKlerk's strong negative sentiments are apparent from such a broad scoped view.
-
-```{python}
-#| eval: true
-#| include: false
-
-from matplotlib.colors import LinearSegmentedColormap
-from matplotlib import cm
-from matplotlib import cm
-
-def plot_for_president_gradient(president, df):
-    # Filter dataframe for the selected president
-    president_df = df[df['Presidents'] == president]
-    
-    # Sorting data by order (using the 'Unnamed: 0' column as the order)
-    president_df = president_df.sort_values(by='Unnamed: 0')
-    
-    # Normalize the scores to [0,1] for colormap
-    norm = plt.Normalize(-1, 1)
-    
-    # Custom colormap: Red -> Gray -> Blue
-    custom_cmap = LinearSegmentedColormap.from_list("custom", ["red", "gray", "blue"])
-    
-    # Plotting with a black background and custom colormap
-    fig, ax = plt.subplots()
-    bars = ax.bar(np.arange(len(president_df)), president_df['Sentiment_Score'], 
-                  color=custom_cmap(norm(president_df['Sentiment_Score'])), width=1.0)
-    
-    ax.set_title(f'Sentiment Score over time for President {president}')
-    ax.set_xlabel('Order of Sentences')
-    ax.set_ylabel('Sentiment Intensity')
-    ax.axhline(0, color='white',linewidth=0.5)
-    ax.grid(axis='y', color='white', linestyle='--', linewidth=0.5)
-    ax.set_facecolor('black')
-    fig.colorbar(cm.ScalarMappable(norm=norm, cmap=custom_cmap), ax=ax, label='Sentiment Score')
-    
-    plt.show()
-
-
-presidents_list = afn_df['Presidents'].unique()
-def plot_in_grid(president, ax):
-    """Plot sentiment scores for a given president on a given axes."""
-    president_df = afn_df[afn_df['Presidents'] == president]
-    #president_df = president_df.sort_values(by='Unnamed: 0')
-    
-    # Normalize the scores for colormap
-    norm = plt.Normalize(-1, 1)
-    custom_cmap = LinearSegmentedColormap.from_list("custom", ["red", "gray", "blue"])
-
-    bars = ax.bar(np.arange(len(president_df)), president_df['scores'], 
-                  color=custom_cmap(norm(president_df['scores'])), width=1.0)
-    ax.set_title(f'{president}', fontsize=20)
-    ax.axhline(0, color='white', linewidth=0.5)
-    ax.grid(axis='y', color='white', linestyle='--', linewidth=0.5)
-    ax.set_facecolor('black')
-
-# Creating a 2x3 grid plot for all presidents
-fig, axes = plt.subplots(2, 3)
-fig.suptitle('Sentiment Scores over time for each President', fontsize=20)
-
-for president, ax in zip(adjusted_presidents_order, axes.ravel()):
-    plot_in_grid(president, ax)
-
-# Adjust layout
-plt.tight_layout()
-plt.subplots_adjust(top=0.90)
-
-for ax in axes.ravel():
-    ax.tick_params(axis='x', labelrotation=45, labelsize=16)
-    ax.tick_params(axis='y', labelsize=16)
-
-# Set x and y labels fontsize
-for ax in axes[1, :]:
-    ax.set_xlabel('Sentences', fontsize=20)
-for ax in axes[:, 0]:
-    ax.set_ylabel('Scores', fontsize=20)
-
-plt.show()
-```
-
-
-The histograms below show the sentiment score distribution for the presidents. All histograms appear to be slightly skewed to the left, indicating a high frequency of positive sentiment. Mandela appears to have the most evenly spread sentiment distribution, with the fewest number of protruding bars, while de Klerk mainly has a uniform sentiment distribution, with a notable deviation from that occuring in the neutral sentiment territory. Ramaphosa's, Mbeki's and Zuma's sentiment distributions are both centered on the positive side of zero, indicating a generally positive sentiment, while Motlanthe's most common sentiment is actually slightly negative, however that is offset by the high frequency of positive sentiments.
-
-```{python}
-#| echo: false
-#| eval: true
-
-pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
-
-def plot_histogram(president, color, ax):
-    """Plot histogram of sentiment scores for a given president on a given axes."""
-    president_df = afn_df[afn_df['Presidents'] == president]
-    
-    x_range = max(president_df['scores']) - min(president_df['scores'])
-    half_x_range = x_range / 2
-    
-    # Set the x-axis limits to center the histogram around 0
-    ax.set_xlim(-10, 10)
-
-    ax.hist(president_df['scores'], bins=30, color=color, edgecolor='white')
-    ax.set_title(f'{president}', fontsize=20)
-    ax.set_xlabel('Sentiment Score', fontsize=20)
-    ax.set_ylabel('Frequency', fontsize=20)
-    ax.tick_params(axis='x', labelsize=16)
-    ax.tick_params(axis='y', labelsize=16)
-    ax.grid(axis='y', linestyle='--', linewidth=0.5)
-
-# Creating a 2x3 grid plot for histograms of all presidents
-fig, axes = plt.subplots(2, 3)
-fig.suptitle('Distribution of Sentiment Scores for each President', fontsize=20)
-
-for president, color, ax in zip(adjusted_presidents_order, pastel_colors, axes.ravel()):
-    plot_histogram(president, color, ax)
-
-# Adjust layout
-plt.tight_layout()
-plt.subplots_adjust(top=0.90)
-plt.show()
-
-```
-
-
-
-### NRC
-
-```{python}
-#| echo: false
-#| eval: true
-#| include: false
-import pandas as pd
-from nrclex import NRCLex
-
-# Function to find the top emotions for a text
-def find_top_emotions(text):
-    emotion = NRCLex(text)
-    return emotion.top_emotions
-
-# Apply the function to each row in the DataFrame
-data['Top_Emotions'] = data['Sentences'].apply(find_top_emotions)
-
-unique_emotion_columns = ['fear', 'anger', 'anticipation','anticip', 'trust', 'surprise', 'positive', 'negative', 'sadness', 'disgust', 'joy']
-presidents = data['Presidents'].unique()
-
-president_dataframes = {president: pd.DataFrame(0, columns=unique_emotion_columns, index=[0]) for president in presidents}
-
-for index, row in data.iterrows():
-    president = row['Presidents']
-    emotions = dict(row['Top_Emotions'])
-    #president_df = president_dataframes[president]
-    
-    # Iterate through unique_emotion_columns
-    for emotion_column in emotions.keys():
-        if emotion_column in emotions:
-            value = emotions[emotion_column]
-            president_dataframes[president][emotion_column] += value
-
-president_dataframes['Mandela']
-
-for pres in presidents:
-    president_dataframes[pres] = president_dataframes[pres].div(president_dataframes[pres].sum(axis=1), axis=0)
-
-for president, df in president_dataframes.items():
-    if 'anticipation' in df.columns and 'anticip' in df.columns:
-        df['anticipation'] += df['anticip']  # Add 'anticip' to 'anticipation'
-        df.drop(columns=['anticip'], inplace=True)  # Remove 'anticip' column
-
-pastel_colors = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D9BAFF']
-fig, axes = plt.subplots(2, 3, figsize=(18, 10))
-fig.suptitle('Distribution of Sentiment Scores for each President', fontsize=20)
-
-order = ['deKlerk','Mandela', 'Mbeki', ' Motlanthe', 'Zuma', 'Ramaphosa']
-
-for president, ax, colour in zip(order, axes.ravel(), pastel_colors):
-    data = president_dataframes[president]
-    x = list(data.keys())
-    x.remove('positive')
-    x.remove('negative')
-    y = data[x].values.squeeze()
-    ax.set_ylim(0, 0.25)
-    ax.bar(x, y, color=colour)
-    ax.set_title(president, fontsize=20)
-    # ax.set_xlabel('Sentiment Category', fontsize=16)
-    ax.set_ylabel('Sentiment Score', fontsize=16)
-    ax.tick_params(axis='x', labelrotation=45, labelsize=16)
-    ax.tick_params(axis='y', labelsize=16)
-
-# Adjust layout
-plt.tight_layout()
-plt.subplots_adjust(top=0.90)
-plt.show()
-```
-
-Using the NRC emotion lexicon we see that all presidents have their most common sentiment being positive, while the particular emotions in there sentences differ. A common emotion amongst all presidents is trust. Anticipation is a frequently evoked emotion from the presidents, besides for deKlerk. Other relatively common emotions include fear and joy.
-
-
-
 
 
 ## Latent Dirichlet Allocation
@@ -1028,6 +943,8 @@ The weights produced for each word in the topics of the pLSA models are not very
 
 
 ```{python}
+#| include:false
+#| eval:true
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -1064,7 +981,7 @@ for i in [0,1]:
         axs[i, j].set_xlabel('Words')
         axs[i, j].set_ylabel('Weight')
         axs[i, j].set_title(f'M4: Topic {t}')
-        axs[i, j].tick_params(axis='x', rotation=90, labelsize=10)
+        axs[i, j].tick_params(axis='x', rotation=90, labelsize=8)
         axs[i, j].tick_params(axis='y', rotation=0, labelsize=6)
 plt.tight_layout()
 plt.show()
@@ -1087,3 +1004,25 @@ While insightful, the study has limitations. Sentiment analysis can sometimes si
 
 The NLP-based SONA speech analysis paints a multifaceted South African political journey narrative. As sentiments evolved and topics transitioned, they narrated a nation grappling with its past, shaping its present, and envisioning its future. With advancing NLP methodologies, such analyses will be pivotal in decoding global political and societal narratives.
 
+
+
+
+# Bibliography
+
+Al-Shabi, M. (2020) Evaluating the performance of the most important Lexicons used to Sentiment analysis and opinions Mining . Available at: https://www.researchgate.net/profile/Mohammed-Al-Shabi/publication/343473213_Evaluating_the_performance_of_the_most_important_Lexicons_used_to_Sentiment_analysis_and_opinions_Mining/links/5f2bc7a7458515b72906aee9/
+
+Deerwester, Dumais and Furnas (1990) Indexing by latent semantic analysis. Available at: https://asistdl.onlinelibrary.wiley.com/doi/abs/10.1002/%28SICI%291097-4571%28199009%2941%3A6%3C391%3A%3AAID-ASI1%3E3.0.CO%3B2-9 (Accessed: 17 October 2023). 
+David M. Blei Computer Science Division et al. (2003) Latent dirichlet allocation, The Journal of Machine Learning Research. Available at: https://dl.acm.org/doi/10.5555/944919.944937 (Accessed: 17 October 2023). 
+
+Evaluating-the-performance-of-the-most-important-Lexicons-used-to-Sentiment-analysis-and-opinions-Mining.pdf (Accessed: 16 October 2023). 
+
+Mohammad, S. and Turney, P. (2010) Emotions evoked by common words and phrases: Using mechanical turk to create an emotion lexicon, ACL Anthology. Available at: https://aclanthology.org/W10-0204/ (Accessed: 16 October 2023). 
+
+Plutchik, R. (1980) A general psychoevolutionary theory of emotion, Theories of Emotion. Available at: https://www.sciencedirect.com/science/article/pii/B9780125587013500077 (Accessed: 16 October 2023). 
+
+Ligthart, A., Catal, C. and Tekinerdogan, B. (2021) Systematic reviews in sentiment analysis: A tertiary study - artificial intelligence review, SpringerLink. Available at: https://link.springer.com/article/10.1007/s10462-021-09973-3 (Accessed: 16 October 2023). 
+
+Loureiro, D. et al. (2022) TimeLMs: Diachronic language models from Twitter, arXiv.org. Available at: https://arxiv.org/abs/2202.03829 (Accessed: 16 October 2023). 
+
+
+(2009) Topic models - department of computer science, Columbia University. Available at: https://www.cs.columbia.edu/~blei/papers/BleiLafferty2009.pdf (Accessed: 17 October 2023).
