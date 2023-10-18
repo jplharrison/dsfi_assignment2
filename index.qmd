@@ -348,7 +348,7 @@ data.to_csv("HFM1_SentimentData.csv")
 
 Figure 2 plots the mean sentiment score(-1 to 1, where -1 is perfectly negative, 0 is neutral and 1 is positive) across all presidents where presidents have been ordered by time. Beginning with de Klerk, there is a noticeable negative sentiment. However, as we transition to Mandela's era, a significant shift occurs, with sentiment becoming predominantly positive. This positive trend not only continues but also amplifies during Mbeki's tenure. 
 
-Following Mbeki, Motlanthe's sentiment score experiences a slight dip but remains firmly in the positive territory, suggesting his rhetoric, likely inifluenced by the poor economic conditions during this temulruous time in south africas politcs, was less positive than Mbeki's. The highest peak in positive sentiment is observed during Zuma's term, which is interesting considering the slide of economic performance during his tenure().This may point to a juxtoposition in his presentation of the stte of the nation and the reality of the peroid both regarding corruption and economic stability() However, it's noteworthy that Ramaphosa's sentiment, while still being robustly positive, sees a decline from the high set by Zuma, potentially indicating the effects of rhetoric regarding the COVID-19 pandemic.
+Following Mbeki, Motlanthe's sentiment score experiences a slight dip but remains firmly in the positive territory, suggesting his rhetoric, likely inifluenced by the poor economic conditions during this temulruous time in south africas politcs, was less positive than Mbeki's. The highest peak in positive sentiment is observed during Zuma's term, which is interesting considering the slide of economic performance during his tenure(Bhorat et al., 2017).This may point to a juxtoposition in his presentation of the stte of the nation and the reality of the peroid both regarding corruption and economic stability(Bhorat et al., 2017) However, it's noteworthy that Ramaphosa's sentiment, while still being robustly positive, sees a decline from the high set by Zuma, potentially indicating the effects of rhetoric regarding the COVID-19 pandemic.
 
 
 ```{python}
@@ -1086,3 +1086,4 @@ While insightful, the study has limitations. Sentiment analysis can sometimes si
 # Conclusion
 
 The NLP-based SONA speech analysis paints a multifaceted South African political journey narrative. As sentiments evolved and topics transitioned, they narrated a nation grappling with its past, shaping its present, and envisioning its future. With advancing NLP methodologies, such analyses will be pivotal in decoding global political and societal narratives.
+
