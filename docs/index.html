@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="BHRTAA001, KNGWES002, HRRJON004">
 
-<title>DSFI_A2</title>
+<title>DSFI_A2 - Data Science For Industry Assignment 2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -123,6 +90,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="./Appendix.html" rel="" target="">
  <span class="menu-text">Appendix</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./ChatGPT.html" rel="" target="">
+ <span class="menu-text">ChatGPT</span></a>
+  </li>  
 </ul>
             <div class="quarto-navbar-tools ms-auto">
 </div>
@@ -183,13 +154,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">DSFI_A2</h1>
+<h1 class="title">Data Science For Industry Assignment 2</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>BHRTAA001, KNGWES002, HRRJON004 </p>
+          </div>
+  </div>
     
   
     
@@ -237,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="roberta-transfer-learning" class="level3">
 <h3 class="anchored" data-anchor-id="roberta-transfer-learning">RoBERTa Transfer Learning</h3>
-<p>For sentiment analysis, we also employed a model belonging to hugging face called “twitter-roberta-base-sentiment-latest” and ““. The architecture for these models is largely the same, but”” differs in that it was trained primarily on political tweets, which is lesser in the training data size but potentially more domain relevant to the task at hand.</p>
+<p>For sentiment analysis, we also employed a model belonging to hugging face called “twitter-roberta-base-sentiment-latest” and “cardiffnlp/xlm-twitter-politics-sentiment”. The architecture for these models is largely the same, but “cardiffnlp/xlm-twitter-politics-sentiment” differs in that it was trained primarily on political tweets, which is lesser in the training data size but potentially more domain relevant to the task at hand.</p>
 <p>This is a transformer-based transfer learning approach. Essentially this means that the model has been pretrained on data to learn how to assign sentiment scores then the trained model is used to extract sentiment scores for our dataset. The model used is more specifically considered a time language model. The time Language Models (LM) foundation is anchored on the RoBERTa architecture, which is a refined variant of BERT (Bidirectional Encoder Representations from Transformers). One of the standout characteristics of RoBERTa is its bidirectional context processing. Unlike conventional models, RoBERTa reviews words in relation to their entire surrounding context, absorbing nuances from both the preceding and following parts of the text.</p>
 <p>Moreover, RoBERTa adopts a Transformer architecture, known for its self-attention mechanism. This mechanism empowers RoBERTa to assign varying importance levels to distinct words in a sentence, ensuring it recognizes and processes dependencies irrespective of their dispersion within the body of text.</p>
 <p>Key to its training process is RoBERTa’s utilization of masked language modelling. Here, select words in a sentence are intermittently substituted with a [MASK] token. The model is then tasked with deducing the original word, relying solely on the surrounding context. This method is important in refining RoBERTa’s grasp of language semantics.</p>
@@ -262,36 +239,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="data-exploration">Data Exploration</h2>
 <p>In analyzing the word clouds of various South African presidents in Figure 1, there’s a discernible emphasis on governance, nation-building, and the welfare of the South African people. Motlanthe and Mbeki highlighted governmental programs and assured development, while Mandela accentuated societal unity and nation-building. Ramaphosa’s emphasis leaned towards economic investment and support, Zuma prioritized governmental initiatives and societal support, and deKlerk focused on constitutional and governance reforms. Across all presidents, the persistent themes underscore a dedication to governance, the progress of South Africa, and the betterment of its citizens.</p>
 <div class="cell" data-execution_count="10">
-<div class="cell-output cell-output-stderr">
-<pre><code>C:\Users\Wesley King\AppData\Local\Programs\Python\Python311\Lib\site-packages\wordcloud\wordcloud.py:106: MatplotlibDeprecationWarning:
-
-The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
-
-C:\Users\Wesley King\AppData\Local\Programs\Python\Python311\Lib\site-packages\wordcloud\wordcloud.py:106: MatplotlibDeprecationWarning:
-
-The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
-
-C:\Users\Wesley King\AppData\Local\Programs\Python\Python311\Lib\site-packages\wordcloud\wordcloud.py:106: MatplotlibDeprecationWarning:
-
-The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
-
-C:\Users\Wesley King\AppData\Local\Programs\Python\Python311\Lib\site-packages\wordcloud\wordcloud.py:106: MatplotlibDeprecationWarning:
-
-The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
-
-C:\Users\Wesley King\AppData\Local\Programs\Python\Python311\Lib\site-packages\wordcloud\wordcloud.py:106: MatplotlibDeprecationWarning:
-
-The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
-
-C:\Users\Wesley King\AppData\Local\Programs\Python\Python311\Lib\site-packages\wordcloud\wordcloud.py:106: MatplotlibDeprecationWarning:
-
-The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
-</code></pre>
-</div>
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-11-output-2.png" width="1063" height="778" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-11-output-1.png" width="1063" height="778" class="figure-img"></p>
 <figcaption class="figure-caption">Figure 1: Wordcloud per president</figcaption>
 </figure>
 </div>
@@ -342,7 +293,7 @@ The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two m
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-17-output-1.png" width="597" height="506" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-17-output-1.png" width="1110" height="469" class="figure-img"></p>
 <figcaption class="figure-caption">Figure 5: Distribution of Emotions for each President</figcaption>
 </figure>
 </div>
@@ -352,7 +303,7 @@ The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two m
 <section id="roberta" class="level2">
 <h2 class="anchored" data-anchor-id="roberta">RoBERTa</h2>
 <p>Figure 6 plots the mean sentiment score(-1 to 1, where -1 is perfectly negative, 0 is neutral and 1 is positive) across all presidents where presidents have been ordered by time. Beginning with de Klerk, there is a noticeable negative sentiment. However, as we transition to Mandela’s era, a significant shift occurs, with sentiment becoming predominantly positive. This positive trend not only continues but also amplifies during Mbeki’s tenure.</p>
-<p>Following Mbeki, Motlanthe’s sentiment score experiences a slight dip but remains firmly in the positive territory, suggesting his rhetoric, likely inifluenced by the poor economic conditions during this temulruous time in south africas politcs, was less positive than Mbeki’s. The highest peak in positive sentiment is observed during Zuma’s term, which is interesting considering the slide of economic performance during his tenure().This may point to a juxtoposition in his presentation of the stte of the nation and the reality of the peroid both regarding corruption and economic stability() However, it’s noteworthy that Ramaphosa’s sentiment, while still being robustly positive, sees a decline from the high set by Zuma, potentially indicating the effects of rhetoric regarding the COVID-19 pandemic.</p>
+<p>Following Mbeki, Motlanthe’s sentiment score experiences a slight dip but remains firmly in the positive territory, suggesting his rhetoric, likely inifluenced by the poor economic conditions during this temulruous time in south africas politcs, was less positive than Mbeki’s. The highest peak in positive sentiment is observed during Zuma’s term, which is interesting considering the slide of economic performance during his tenure(Bhorat et al., 2017).This may point to a juxtoposition in his presentation of the stte of the nation and the reality of the peroid both regarding corruption and economic stability(Bhorat et al., 2017) However, it’s noteworthy that Ramaphosa’s sentiment, while still being robustly positive, sees a decline from the high set by Zuma, potentially indicating the effects of rhetoric regarding the COVID-19 pandemic.</p>
 <div class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -543,50 +494,6 @@ The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two m
 <section id="probablistic-latent-semantic-analysis-1" class="level3">
 <h3 class="anchored" data-anchor-id="probablistic-latent-semantic-analysis-1">Probablistic Latent Semantic Analysis</h3>
 <p>The weights produced for each word in the topics of the pLSA models are not very evenly distributed. This suggests that there may have be numerical difficulties in the computation during model training. pLSA models are very sensitive to data sparsity, the document-term matrix has only around a third of its cells populated. The model struggles to capture meaningful relationships through its dimensionality reduction techniques in the sparse data.</p>
-<div class="cell" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gensim.models <span class="im">import</span> LdaModel, LsiModel</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gensim <span class="im">import</span> corpora</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>m_pLSA_4 <span class="op">=</span> LsiModel.load(<span class="st">"topic_models/m_pLSA_4"</span>)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>num_words<span class="op">=</span><span class="dv">20</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>topics <span class="op">=</span> m_pLSA_4.print_topics(num_topics<span class="op">=</span><span class="dv">4</span>, num_words<span class="op">=</span>num_words)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>df4<span class="op">=</span>pd.DataFrame({})</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> topic <span class="kw">in</span> topics:</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    content <span class="op">=</span> topic[<span class="dv">1</span>]</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    words<span class="op">=</span>[]</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    scores<span class="op">=</span>[]</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    scorewords <span class="op">=</span> content.split(<span class="st">' + '</span>)</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> item <span class="kw">in</span> scorewords:</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        spl<span class="op">=</span>item.split(<span class="st">'*'</span>)</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        scores.append(spl[<span class="dv">0</span>])</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        words.append(spl[<span class="dv">1</span>].replace(<span class="st">'"'</span>,<span class="st">''</span>))</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    topic_df<span class="op">=</span>pd.DataFrame({<span class="ss">f'T</span><span class="sc">{</span>topic[<span class="dv">0</span>]<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> Words'</span>: words, <span class="ss">f'T</span><span class="sc">{</span>topic[<span class="dv">0</span>]<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> Scores'</span>: scores})</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    df4 <span class="op">=</span> pd.concat([df4, topic_df], axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a 2x2 grid of subplots</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>)</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> [<span class="dv">0</span>,<span class="dv">1</span>]:</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> [<span class="dv">0</span>,<span class="dv">1</span>]:</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>        t<span class="op">=</span><span class="dv">2</span><span class="op">*</span>i<span class="op">+</span>j<span class="op">+</span><span class="dv">1</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>        axs[i, j].barh(df4[<span class="ss">f'T</span><span class="sc">{</span>t<span class="sc">}</span><span class="ss"> Words'</span>], df4[<span class="ss">f'T</span><span class="sc">{</span>t<span class="sc">}</span><span class="ss"> Scores'</span>])</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>        axs[i, j].set_xlabel(<span class="st">'Words'</span>)</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        axs[i, j].set_ylabel(<span class="st">'Weight'</span>)</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>        axs[i, j].set_title(<span class="ss">f'M4: Topic </span><span class="sc">{</span>t<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>        axs[i, j].tick_params(axis<span class="op">=</span><span class="st">'x'</span>, rotation<span class="op">=</span><span class="dv">90</span>, labelsize<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>        axs[i, j].tick_params(axis<span class="op">=</span><span class="st">'y'</span>, rotation<span class="op">=</span><span class="dv">0</span>, labelsize<span class="op">=</span><span class="dv">6</span>)</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<p><img src="index_files/figure-html/cell-30-output-1.png" width="662" height="470"></p>
-</div>
-</div>
 </section>
 </section>
 </section>
